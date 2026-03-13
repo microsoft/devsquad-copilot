@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/detect-repo-platform.sh",
+        "timeoutSec": 10
+      },
+      {
+        "type": "command",
+        "bash": ".github/hooks/detect-branching-strategy.sh",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/validate-work-item-tags.sh",
+        "timeoutSec": 10
+      },
+      {
+        "type": "command",
+        "bash": ".github/hooks/lint-markdown.sh",
+        "timeoutSec": 10
+      }
+    ],
+    "sessionEnd": []
+  }
+}

@@ -1,0 +1,23 @@
+# All rules enabled by default
+default: true
+
+# MD013 - Line length
+# Disabled: tables, long links, and mermaid blocks frequently exceed 80 chars
+MD013: false
+
+# MD033 - Inline HTML
+# Disabled: Azure DevOps mermaid syntax (:::mermaid / :::) is parsed as HTML
+MD033: false
+
+# MD041 - First line in file should be a top-level heading
+# Disabled: agent files and instructions start with YAML frontmatter (---)
+MD041: false
+
+# MD060 - Table column style
+# Disabled: "compact" style used for tables with few columns, "pipe" for tables with many columns.
+# "pipe" style is more readable for wide tables.
+MD060: false
+
+# MD032 - Lists should be surrounded by blank lines
+# Disabled: in some cases, such as lists inside tables or code blocks, blank lines are not necessary or desirable.
+MD032: false
