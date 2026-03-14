@@ -97,13 +97,13 @@ For more details, see the [VS Code Agent Plugins documentation](https://code.vis
 
 ### Usage
 
-Use the `sdd` agent as a single entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
+#### Option 1: Guided (Recommended)
 
-To invoke a specific phase directly, use any agent from the [agent catalog](docs/framework/core-components/custom-agents.md).
+Use `sdd` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
 
-### Where to Start
+#### Option 2: Direct
 
-The entry point depends on your current state:
+Invoke a specific agent based on your current state:
 
 | You have... | Start with |
 |-------------|-----------|
@@ -114,7 +114,7 @@ The entry point depends on your current state:
 | Tasks ready to implement | `sdd.implement` to execute from tasks or work items |
 | An existing backlog that needs organization | `sdd.refine` to detect inconsistencies and classify readiness |
 
-For a guided experience across all phases, use `sdd` as the single entry point.
+For the full list of agents, see the [agent catalog](docs/framework/core-components/custom-agents.md).
 
 ## Tips for Effective Sessions
 
