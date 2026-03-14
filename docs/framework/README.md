@@ -25,7 +25,7 @@
 
 ## Architecture Diagram
 
-:::mermaid
+```mermaid
 flowchart LR
     user["User"] --> conductor["sdd (conductor)"]
 
@@ -121,7 +121,7 @@ flowchart LR
     skills -.->|enriches<br/>context| agents
     path -.->|enriches<br/>context| agents
     agents -.->|deterministic<br/>guardrails| hooks
-:::
+```
 
 ### Main Components
 
@@ -141,10 +141,10 @@ When use cases and feature scope are well defined during envisioning sessions.
 
 > Example: E-commerce system with cart, checkout, and payment.
 
-:::mermaid
+```mermaid
 flowchart LR
     envision --> kickoff --> specify --> plan --> decompose --> implement
-:::
+```
 
 Technical decisions before features. Common in modernizations and integrations.
 
@@ -153,14 +153,14 @@ Technical decisions before features. Common in modernizations and integrations.
 
 > Example: Monolith to microservices migration. Define decomposition strategy before features.
 
-:::mermaid
+```mermaid
 flowchart LR
     envision --> kickoff
     kickoff --> plan
     plan --> specify
     specify --> decompose
     decompose --> implement
-:::
+```
 
 ### Validation-first
 
@@ -170,7 +170,7 @@ Hypothesis to validate before committing to product scope. The full flow (envisi
 - `plan` generates exploratory technical artifacts (contracts, data-model, ADRs as Proposed)
 - After implementing and validating the PoC, the cycle restarts with `specify` to define product requirements
 
-:::mermaid
+```mermaid
 flowchart LR
     subgraph poc["PoC"]
         envision --> kickoff --> plan --> decompose --> implement
@@ -181,7 +181,7 @@ flowchart LR
     subgraph mvp["MVP"]
         specify --> plan2[plan] --> decompose2[decompose] --> implement2[implement]
     end
-:::
+```
 
 **PoC to MVP Transition**: PoC artifacts (ADRs, contracts, data-model) serve as input for the specification phase. ADRs validated during the PoC can be accepted directly. Technical artifacts are refined (not rewritten from scratch) based on learnings.
 
@@ -194,14 +194,14 @@ Clear vision, undefined scope. Features emerge during specification while explor
 
 > Example: Client with a product idea without a defined MVP.
 
-:::mermaid
+```mermaid
 flowchart LR
     envision --> kickoff
     kickoff -->|"epic"| specify
     specify -->|"features<br>emerge"| plan
     plan --> decompose
     decompose --> implement
-:::
+```
 
 ### Iterative
 
@@ -209,14 +209,14 @@ Continuous discovery. Each feature reveals the need for others.
 
 > Example: Planning "authentication" reveals the need for "user management" and "auditing".
 
-:::mermaid
+```mermaid
 flowchart LR
     specify -->|"feature A"| plan
     plan -->|"discovers B"| specify2[specify]
     specify2 -->|"feature B"| plan2[plan]
     plan2 --> decompose
     decompose --> implement
-:::
+```
 
 ### Board-first
 
@@ -224,13 +224,13 @@ Existing project with a disorganized backlog. Focus on mapping structure and fil
 
 > Example: Team inherited a project with N work items without hierarchy. Kickoff maps which are epics/features, specify creates specs for items without documentation.
 
-:::mermaid
+```mermaid
 flowchart LR
     kickoff -->|"maps existing"| specify
     specify -->|"details specs"| plan
     plan --> decompose
     decompose --> implement
-:::
+```
 
 ## Known Limitations
 

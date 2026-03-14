@@ -56,7 +56,7 @@ The accepted trade-off is that sub-agents need to format output in two ways (str
 
 ### Communication flow via conductor
 
-:::mermaid
+```mermaid
 sequenceDiagram
     participant Dev as User
     participant Conductor as sdd (conductor)
@@ -77,13 +77,13 @@ sequenceDiagram
     Conductor->>Conductor: Execute [CREATE spec.md]
     SubAgent-->>Conductor: [DONE] Spec created, next: sdd.plan
     Conductor-->>Dev: "Spec completed! Continue to planning?"
-:::
+```
 
 ### Dual-mode of sub-agents
 
 Sub-agents detect the invocation mode by the `[CONDUCTOR]` prefix in the prompt:
 
-:::mermaid
+```mermaid
 flowchart TB
     invoke["Sub-agent invoked"]
     invoke --> check{"Prompt starts<br/>with [CONDUCTOR]?"}
@@ -104,7 +104,7 @@ flowchart TB
     interactive --> socratic["Socratic Questions"]
     interactive --> generates["Create files"]
     interactive --> boards["Create work items"]
-:::
+```
 
 Both modes:
 * Execute the same domain logic (context analysis, artifact generation)

@@ -10,6 +10,8 @@ Shipping reliable enterprise software is a team activity. It requires shared und
 
 Faster code production means more decisions per day, more artifacts to track, and more surface area for misalignment between developers, architects, product managers, and stakeholders. Without visibility into progress, rationale, and quality at each stage, speed works against reliability.
 
+The DevSquad Delivery Framework brings structure to that speed. It embeds delivery guardrails directly into the development workflow through AI agents that guide each phase, from vision and specification through implementation and review, so teams move fast without losing traceability, consistency, or control.
+
 ## Core Features
 
 ### Delivery Lifecycle

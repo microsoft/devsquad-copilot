@@ -20,13 +20,13 @@ The framework needs to coordinate more than 10 specialized agents (envisioning, 
 
 A central agent that knows *what* to do and *how* to decompose work. It defines the plan, distributes granular tasks to workers, and controls the flow top-down.
 
-:::mermaid
+```mermaid
 flowchart TB
     user["User"] --> orch["Orchestrator"]
     orch -->|"decomposes and distributes"| w1["Worker A"]
     orch -->|"decomposes and distributes"| w2["Worker B"]
     orch -->|"decomposes and distributes"| w3["Worker C"]
-:::
+```
 
 **Evaluation against priorities**:
 - **Resilience**: Single point of failure. If the orchestrator fails, workers cannot function on their own (they lack the full task context).
@@ -38,12 +38,12 @@ flowchart TB
 
 Each agent operates in isolation. The user chooses which to invoke and manages the sequence manually.
 
-:::mermaid
+```mermaid
 flowchart TB
     user["User"] --> a1["Agent A"]
     user --> a2["Agent B"]
     user --> a3["Agent C"]
-:::
+```
 
 **Evaluation against priorities**:
 - **Resilience**: Excellent. No central point of failure.
@@ -57,7 +57,7 @@ Inspired by the Mediator pattern. A conductor agent is the entry point that dete
 
 Sub-agents operate in dual-mode: via conductor or direct invocation by the user.
 
-:::mermaid
+```mermaid
 flowchart TB
     user["User"] <-->|"interact"| conductor["Conductor"]
     conductor -->|"invoke"| w1["Sub-agent A"]
@@ -66,7 +66,7 @@ flowchart TB
     w1 -.->|"actions"| conductor
     w2 -.->|"actions"| conductor
     w3 -.->|"actions"| conductor
-:::
+```
 
 **Evaluation against priorities**:
 - **Resilience**: High. When the conductor fails, sub-agents remain directly accessible (dual-mode). Gradual degradation instead of total failure.

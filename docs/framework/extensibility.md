@@ -16,7 +16,7 @@ This documentation guides **when and how** to extend the framework, focusing on 
 
 ### When to use each mechanism
 
-:::mermaid
+```mermaid
 flowchart TD
     start["I need to add specific<br>knowledge to the framework"]
 
@@ -33,7 +33,7 @@ flowchart TD
     q4 -->|No| q5{"Does it need access<br>to an external system<br>via API?"}
     q5 -->|Yes| mcp["**MCP Server**<br>tools for agents"]
     q5 -->|No| agent2["**Agent or Skill**<br>depends on volume"]
-:::
+```
 
 ---
 

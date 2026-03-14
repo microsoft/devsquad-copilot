@@ -104,7 +104,7 @@ Categories: Fragmentation, Scalability, Security, Observability, Agility, Integr
 
 [Mapping of the main journey phases]
 
-:::mermaid
+```mermaid
 flowchart LR
     subgraph Fase1[Phase 1: Name]
         A1[Step 1] --> A2[Step 2]
@@ -115,7 +115,7 @@ flowchart LR
     end
     
     Fase1 --> Fase2
-:::
+```
 
 ### 5.1 Phase: [Phase Name]
 
