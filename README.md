@@ -6,11 +6,17 @@ A GitHub Copilot delivery framework with guardrails to make AI-assisted developm
 
 ## Structured Delivery at AI Speed
 
-Shipping reliable enterprise software is a team activity. It requires shared understanding of what is being built, why, and what state it is in. When that understanding breaks down, teams duplicate effort, revisit settled decisions, and lose time aligning across roles.
+Shipping reliable enterprise software is a team activity. AI accelerates code generation, but also accelerates decisions, artifacts, and assumptions. Requirements evolve, architecture gets revisited, and parallel work often starts from incomplete or stale context. In fast-moving projects, staying aligned as the system evolves can be challenging.
 
-Faster code production means more decisions per day, more artifacts to track, and more surface area for misalignment between developers, architects, product managers, and stakeholders. Without visibility into progress, rationale, and quality at each stage, speed works against reliability.
+The DevSquad Delivery Framework aims to bring structure to that speed. It embeds delivery guardrails directly into the development workflow through AI agents that guide each phase, from vision and specification through implementation and review, so teams move fast without losing traceability, consistency, or control.
 
-The DevSquad Delivery Framework brings structure to that speed. It embeds delivery guardrails directly into the development workflow through AI agents that guide each phase, from vision and specification through implementation and review, so teams move fast without losing traceability, consistency, or control.
+## Who is this for?
+
+* Multiple developers working on the same product, where handoffs, shared decisions, and backlog coordination are constant.
+* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow team members who miss some sessions to catch up through the repository, and reduce onboarding time for new contributors.
+
+> [!NOTE]
+> For smaller scopes (solo projects, prototypes, well-defined tasks), the full lifecycle may not be necessary. The framework is modular: you can invoke any agent directly (e.g., `sdd.implement` or `sdd.plan`) without going through the complete flow.
 
 ## Core Features
 
@@ -94,6 +100,21 @@ For more details, see the [VS Code Agent Plugins documentation](https://code.vis
 Use the `sdd` agent as a single entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
 
 To invoke a specific phase directly, use any agent from the [agent catalog](docs/framework/core-components/custom-agents.md).
+
+### Where to Start
+
+The entry point depends on your current state:
+
+| You have... | Start with |
+|-------------|-----------|
+| A product idea without defined scope | `sdd.envision` to capture vision, pains, and objectives |
+| A clear vision, ready to structure the backlog | `sdd.kickoff` to create epics and features |
+| A defined feature to specify | `sdd.specify` to write the spec with requirements and conformance criteria |
+| A spec ready for technical planning | `sdd.plan` to produce ADRs, contracts, and data models |
+| Tasks ready to implement | `sdd.implement` to execute from tasks or work items |
+| An existing backlog that needs organization | `sdd.refine` to detect inconsistencies and classify readiness |
+
+For a guided experience across all phases, use `sdd` as the single entry point.
 
 ## Tips for Effective Sessions
 
