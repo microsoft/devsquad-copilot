@@ -2,7 +2,7 @@
 
 A GitHub Copilot delivery framework with guardrails to make AI-assisted development consistent, traceable, and maintainable.
 
-<img src="./docs/framework/images/overview.png" alt="Overview" width="600" />
+<img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
 ## Structured Delivery at AI Speed
 
@@ -17,6 +17,12 @@ The DevSquad Delivery Framework aims to bring structure to that speed. It embeds
 
 > [!NOTE]
 > For smaller scopes (solo projects, prototypes, well-defined tasks), the full lifecycle may not be necessary. The framework is modular: you can invoke any agent directly (e.g., `sdd.implement` or `sdd.plan`) without going through the complete flow.
+
+## What this is not
+
+This framework is not a vibe-coding tool. It does not accept a single prompt and autonomously produce a finished system. Every phase includes human checkpoints: agents ask clarifying questions, propose plans for review, and wait for confirmation before executing high-impact changes.
+
+If you are looking for one-shot, fully autonomous code generation without review, this framework will feel like friction — and that friction is intentional.
 
 ## Core Features
 
