@@ -86,18 +86,20 @@ An extension agent guides creation of new skills, agents, hooks, and instruction
 
 Add the repository as a plugin marketplace in your settings:
 
-1. Open VS Code settings and add the repository to `chat.plugins.marketplaces`:
+1. Ensure `chat.plugins.enabled` is set to `true` in VS Code settings.
+
+2. Add the repository to `chat.plugins.marketplaces`:
 
    ```jsonc
    // settings.json
    "chat.plugins.marketplaces": [
-       "https://github.com/microsoft/devsquad-copilot.git"
+       "microsoft/devsquad-copilot"
    ]
    ```
 
-2. Open the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`), search for `@agentPlugins`, and install the plugin.
+3. Open the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`), search for `@agentPlugins`, and install the **devsquad** plugin.
 
-3. To manage installed plugins, open the **Agent Plugins - Installed** view in the Extensions sidebar, or select the **gear icon** in the Chat view and choose **Plugins**.
+4. To manage installed plugins, open the **Agent Plugins - Installed** view in the Extensions sidebar, or select the **gear icon** in the Chat view and choose **Plugins**.
 
 For more details, see the [VS Code Agent Plugins documentation](https://code.visualstudio.com/docs/copilot/customization/agent-plugins).
 
