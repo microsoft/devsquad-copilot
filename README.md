@@ -67,7 +67,7 @@ An extension agent guides creation of new skills, agents, hooks, and instruction
 1. Install the plugin:
 
    ```bash
-   copilot plugin install https://github.com/microsoft/devsquad-copilot.git
+   copilot plugin install microsoft/devsquad-copilot
    ```
 
 2. To update:
