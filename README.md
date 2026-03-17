@@ -55,53 +55,50 @@ An extension agent guides creation of new skills, agents, hooks, and instruction
 ### Prerequisites
 
 * Node.js 18+ (for lint hooks and MCP servers)
-* **Copilot CLI** or **VS Code** with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+* Development tools (at least one)
+  * [VS Code](https://code.visualstudio.com/download) 1.111.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+  * [Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
 * **If using VS Code**: enable in extension settings:
-  * `github.copilot.advanced.experimental.subagents` (required for sub-agents)
   * `github.copilot.advanced.experimental.memory` (optional, for cross-session memory)
 
 ### Installation
 
 #### Option 1: Via Copilot CLI
 
-1. Install the plugin:
+Install the plugin:
 
    ```bash
    copilot plugin install microsoft/devsquad-copilot
    ```
 
-2. To update:
+To update:
 
    ```bash
    copilot plugin update devsquad
    ```
 
-3. To uninstall:
+To uninstall:
 
    ```bash
    copilot plugin uninstall devsquad
    ```
 
-#### Option 2: Via VS Code Agent Plugins
+#### Option 2: Via VS Code
 
-Add the repository as a plugin marketplace in your settings:
-
-1. Ensure `chat.plugins.enabled` is set to `true` in VS Code settings.
-
-2. Add the repository to `chat.plugins.marketplaces`:
+1. Add the following to your VS Code user settings (`Ctrl+Shift+P` / `Cmd+Shift+P` then "Open User Settings (JSON)"):
 
    ```jsonc
-   // settings.json
-   "chat.plugins.marketplaces": [
-       "microsoft/devsquad-copilot"
-   ]
+   {
+     "chat.plugins.enabled": true,
+     "chat.plugins.marketplaces": [
+         "microsoft/devsquad-copilot"
+     ]
+   }
    ```
 
-3. Open the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`), search for `@agentPlugins`, and install the **devsquad** plugin.
+2. Open the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`), search for `@agentPlugins devsquad`, and install.
 
-4. To manage installed plugins, open the **Agent Plugins - Installed** view in the Extensions sidebar, or select the **gear icon** in the Chat view and choose **Plugins**.
-
-For more details, see the [VS Code Agent Plugins documentation](https://code.visualstudio.com/docs/copilot/customization/agent-plugins).
+3. To manage installed plugins, open the **Agent Plugins - Installed** view in the Extensions sidebar, or select the **gear icon** in the Chat view and choose **Plugins**.
 
 ### Usage
 
