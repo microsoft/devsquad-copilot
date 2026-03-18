@@ -1,6 +1,8 @@
-# DevSquad Delivery Framework
+# DevSquad GitHub Copilot
 
-A GitHub Copilot delivery framework with guardrails to make AI-assisted development consistent, traceable, and maintainable.
+GitHub Copilot agents that bring structure to iterative delivery: from business vision through specs, backlog, and implementation.
+
+Every phase includes human checkpoints: agents ask clarifying questions, propose plans for review, and wait for confirmation before executing high-impact changes.
 
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
