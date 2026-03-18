@@ -1,0 +1,16 @@
+{
+  "name": "devsquad",
+  "description": "A GitHub Copilot delivery framework with guardrails to make AI-assisted development consistent, traceable, and maintainable.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Microsoft CSU DevSquad"
+  },
+  "homepage": "https://github.com/microsoft/devsquad-copilot",
+  "repository": "https://github.com/microsoft/devsquad-copilot",
+  "license": "MIT",
+  "keywords": ["sdd", "spec-driven", "delivery", "planning", "implementation", "devsquad", "codewith"],
+  "agents": ".github/plugins/devsquad/agents/",
+  "skills": [".github/plugins/devsquad/skills/"],
+  "hooks": ".github/plugins/devsquad/hooks/hooks.json",
+  "mcpServers": ".github/plugins/devsquad/.mcp.json"
+}
