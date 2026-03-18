@@ -99,10 +99,10 @@ docs/
 
 | Area | Location | Description |
 |------|----------|-------------|
-| Agents | `.github/agents/` | Specialized agents for each delivery phase |
-| Skills | `.github/skills/` | Reusable capabilities activated by semantic matching |
+| Agents | `.github/plugins/devsquad/agents/` (symlinked at `.github/agents/`) | Specialized agents for each delivery phase |
+| Skills | `.github/plugins/devsquad/skills/` (symlinked at `.github/skills/`) | Reusable capabilities activated by semantic matching |
 | Instructions | `.github/instructions/` | Path-specific rules applied automatically by glob pattern |
-| Hooks | `.github/hooks/` | Session lifecycle scripts (sessionStart, preToolUse, etc.) |
+| Hooks | `.github/plugins/devsquad/hooks/` | Session lifecycle scripts (sessionStart, preToolUse, etc.) |
 | Templates | `docs/templates/` | Files distributed to consumer projects via `sdd.init` |
 | Documentation | `docs/framework/` | Architecture decisions, component guides, extensibility |
 

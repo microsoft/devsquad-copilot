@@ -77,10 +77,19 @@ This repository is the **SDD Framework source code** (GitHub Copilot plugin). Th
 
 ```
 .github/
-├── agents/          # Custom agents (.agent.md)
-├── skills/          # Agent skills (SKILL.md per directory)
+├── agents -> plugins/devsquad/agents  # Symlink for workspace discovery
+├── skills -> plugins/devsquad/skills  # Symlink for workspace discovery
+├── hooks/           # Workspace-level hooks config (references plugin scripts)
 ├── instructions/    # Path-specific instructions (.instructions.md)
-├── hooks/           # Session hooks (hooks.json + scripts)
+├── plugin/
+│   └── marketplace.json
+├── plugins/
+│   └── devsquad/    # Self-contained plugin (distributed as installable unit)
+│       ├── .github/plugin/plugin.json   # Plugin manifest
+│       ├── agents/          # Custom agents (.agent.md)
+│       ├── skills/          # Agent skills (SKILL.md per directory)
+│       ├── hooks/           # Plugin hooks (hooks.json + scripts)
+│       └── .mcp.json        # MCP server config
 ├── docs/            # Internal documentation (coding-guidelines, README)
 docs/
 ├── framework/
@@ -141,14 +150,15 @@ Rules:
 - Content must be concise and actionable rules, not documentation.
 - Do not duplicate rules that are already in skills or agents.
 
-### Hooks (`.github/hooks/`)
+### Hooks (`.github/plugins/devsquad/hooks/`)
 
 Official reference:
 - [Use hooks](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/use-hooks)
 
 Rules:
 
-- `hooks.json` defines triggers: `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse`, `postToolUse`, `errorOccurred`.
+- Two hooks config files exist: `.github/hooks/hooks.json` (workspace-level, uses `bash` field with workspace-relative paths) and `.github/plugins/devsquad/hooks/hooks.json` (plugin-level, uses `command` field with `${CLAUDE_PLUGIN_ROOT}` paths).
+- When adding or modifying hooks, update **both** files to keep them in sync.
 - Scripts must have a shebang (`#!/bin/bash`) and be executable (`chmod +x`).
 - JSON output must be on a single line. Use `jq -c` to validate.
 - Default timeout: 30 seconds. Adjust `timeoutSec` for slow scripts.

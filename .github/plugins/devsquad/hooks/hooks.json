@@ -4,24 +4,24 @@
     "sessionStart": [
       {
         "type": "command",
-        "bash": ".github/plugins/devsquad/hooks/detect-repo-platform.sh",
+        "bash": "hooks/detect-repo-platform.sh",
         "timeoutSec": 10
       },
       {
         "type": "command",
-        "bash": ".github/plugins/devsquad/hooks/detect-branching-strategy.sh",
+        "bash": "hooks/detect-branching-strategy.sh",
         "timeoutSec": 10
       }
     ],
     "postToolUse": [
       {
         "type": "command",
-        "bash": ".github/plugins/devsquad/hooks/validate-work-item-tags.sh",
+        "bash": "hooks/validate-work-item-tags.sh",
         "timeoutSec": 10
       },
       {
         "type": "command",
-        "bash": ".github/plugins/devsquad/hooks/lint-markdown.sh",
+        "bash": "hooks/lint-markdown.sh",
         "timeoutSec": 10
       }
     ],

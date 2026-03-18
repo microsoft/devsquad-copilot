@@ -11,8 +11,9 @@
     {
       "name": "devsquad",
       "description": "A GitHub Copilot delivery framework with guardrails to make AI-assisted development consistent, traceable, and maintainable.",
-      "version": "0.1.0",
-      "source": "."
+      "version": "0.2.0",
+      "source": "./.github/plugins/devsquad",
+      "homepage": "https://github.com/microsoft/devsquad-copilot"
     }
   ]
 }
