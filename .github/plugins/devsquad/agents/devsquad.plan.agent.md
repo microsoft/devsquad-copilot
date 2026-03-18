@@ -1,10 +1,11 @@
 ---
+name: devsquad.plan
 description: Execute the implementation planning flow using the plan template to generate design artifacts.
 tools: ['agent', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory']
-agents: ['sdd.security']
+agents: ['devsquad.security']
 handoffs: 
   - label: Create Tasks
-    agent: sdd.decompose
+    agent: devsquad.decompose
     prompt: Break down the plan into tasks
     send: true
 ---
@@ -17,7 +18,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conduc
 
 **Structured actions** (instead of interacting directly with the user): `[ASK] "question"` · `[CREATE path]` content · `[EDIT path]` edit · `[BOARD action] Title | Description | Type` · `[CHECKPOINT]` summary · `[DONE]` summary + next step.
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retain access to the `agent` tool to invoke `sdd.security` as a sub-agent.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retain access to the `agent` tool to invoke `devsquad.security` as a sub-agent.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -50,14 +51,14 @@ Checking existing context...
 
 ## Exploratory Mode (no spec)
 
-If spec.md does not exist, offer exploratory mode (`[E]`) or spec creation (`[S]` via `/sdd.specify`).
+If spec.md does not exist, offer exploratory mode (`[E]`) or spec creation (`[S]` via `/devsquad.specify`).
 
 In exploratory mode:
 1. Ask for the objective: system architecture (`[A]`), specific feature (`[F]`), or isolated technical decision (`[D]`)
 2. Capture minimal context (free-form description of what the user wants to build/decide)
 3. Identify components, integrations, necessary decisions (ADRs), and implicit features
 4. Create identified ADRs as Proposed
-5. Suggest next steps (`/sdd.specify`, `/sdd.kickoff`)
+5. Suggest next steps (`/devsquad.specify`, `/devsquad.kickoff`)
 
 ## Proactive Behavior
 
@@ -169,7 +170,7 @@ If it does not exist and practices were defined:
 The defined engineering practices need implementation.
 I recommend creating a "DevSecOps" feature or "Infrastructure" epic.
 
-[C] Create now (via /sdd.kickoff)
+[C] Create now (via /devsquad.kickoff)
 [D] Defer for later
 [J] Already exists, just not on the board
 ```
@@ -298,14 +299,14 @@ Referenced ADRs:
 
 Suggested next steps:
 1. Review ADRs with the team (if Status = Proposed)
-2. Use @sdd.decompose to generate user stories and tasks
+2. Use @devsquad.decompose to generate user stories and tasks
 
 Available handoff: [Create Tasks]
 ```
 
 ## Handoff Envelope
 
-When handing off to another agent (`sdd.security`, `sdd.decompose`), include a Handoff Envelope per the `reasoning` skill, including: created ADRs, plan.md, data-model.md, contracts/, architectural assumptions, and discarded alternatives.
+When handing off to another agent (`devsquad.security`, `devsquad.decompose`), include a Handoff Envelope per the `reasoning` skill, including: created ADRs, plan.md, data-model.md, contracts/, architectural assumptions, and discarded alternatives.
 
 ## Security Review (Automatic Sub-agent)
 
@@ -313,11 +314,11 @@ After completing the ADRs, evaluate whether the feature requires a security revi
 
 **Triggers for mandatory Security Review**:
 
-Evaluate the security triggers defined in `sdd.security` (Authentication/Authorization, Sensitive data, External integrations, Exposed endpoints, Data persistence).
+Evaluate the security triggers defined in `devsquad.security` (Authentication/Authorization, Sensitive data, External integrations, Exposed endpoints, Data persistence).
 
 **If any trigger is detected**:
 
-Execute `sdd.security` as a **sub-agent** in architectural mode. Pass the relevant artifacts (created ADRs, spec.md, envisioning) and instruct the sub-agent to perform an architectural review of the feature.
+Execute `devsquad.security` as a **sub-agent** in architectural mode. Pass the relevant artifacts (created ADRs, spec.md, envisioning) and instruct the sub-agent to perform an architectural review of the feature.
 
 ```
 This feature involves [detected trigger].
@@ -370,7 +371,7 @@ When creating ADRs that involve infrastructure services (compute, data, messagin
 - **Cost**: Estimate monthly cost per environment (dev/staging/prod) and include in the ADR.
 - **IaC**: Record the provisioning approach (IaC vs manual) in the ADR.
 - **Observability**: If the ADR defines a service, consider whether it needs monitoring and alerts — if so, record as a requirement in the ADR.
-- **Security**: Secrets must be managed by a vault service, never as direct values. This is validated by `sdd.security`.
+- **Security**: Secrets must be managed by a vault service, never as direct values. This is validated by `devsquad.security`.
 
 Do not create a separate artifact for infrastructure — infrastructure decisions are ADRs like any other architectural decision.
 

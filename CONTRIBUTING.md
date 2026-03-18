@@ -103,14 +103,14 @@ docs/
 | Skills | `.github/plugins/devsquad/skills/` (symlinked at `.github/skills/`) | Reusable capabilities activated by semantic matching |
 | Instructions | `.github/instructions/` | Path-specific rules applied automatically by glob pattern |
 | Hooks | `.github/plugins/devsquad/hooks/` | Session lifecycle scripts (sessionStart, preToolUse, etc.) |
-| Templates | `docs/templates/` | Files distributed to consumer projects via `sdd.init` |
+| Templates | `docs/templates/` | Files distributed to consumer projects via `devsquad.init` |
 | Documentation | `docs/framework/` | Architecture decisions, component guides, extensibility |
 
 ## Style Guides
 
 ### Agents
 
-* Naming: `sdd.<phase>.agent.md`
+* Naming: `devsquad.<phase>.agent.md`
 * Required frontmatter: `description`, `tools`
 * Instructions must be procedural and imperative (third person)
 * Each agent must have the minimum required tools (principle of least privilege)

@@ -50,7 +50,7 @@ Don't create separate test tasks. Tests are part of each implementation task's a
 
 Tests integrated as acceptance criteria (Option 3). The primary priority is guaranteed coverage, and this option is the only one that makes tests a completion condition instead of a separate task that can be forgotten or postponed. The accepted trade-off is lower tracking granularity: it's not possible to see on the board "implementation ready, testing pending". In practice, this intermediate state is exactly what we want to avoid, as it incentivizes closing "almost done" tasks.
 
-The `sdd.implement` agent is responsible for verifying coverage upon completing each task, ensuring the criterion is enforced and doesn't depend on individual discipline.
+The `devsquad.implement` agent is responsible for verifying coverage upon completing each task, ensuring the criterion is enforced and doesn't depend on individual discipline.
 
 ### Summary comparison
 

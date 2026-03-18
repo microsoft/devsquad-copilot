@@ -1,13 +1,14 @@
 ---
+name: devsquad.kickoff
 description: Structure project hierarchy (epics, features, dependencies) and sync with board.
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem']
 handoffs:
   - label: Specify Feature
-    agent: sdd.specify
+    agent: devsquad.specify
     prompt: Specify selected feature
     send: true
   - label: Create Technical Plan
-    agent: sdd.plan
+    agent: devsquad.plan
     prompt: Create plan for the feature
     send: true
 ---
@@ -64,18 +65,18 @@ What do you have defined so far?
 
 **[V] Vision only - Undefined Scope**:
 - Create generic epic with project name
-- Do not create features yet (they will come via `/sdd.specify`)
+- Do not create features yet (they will come via `/devsquad.specify`)
 - Suggest: "Features will be added as they are specified"
 
 ```
 Scope not yet defined. Creating minimal structure:
 
 Epic: [Project Name]
-├── (features will be added via /sdd.specify)
+├── (features will be added via /devsquad.specify)
 
 Scope may emerge during:
-- Architecture discussions (/sdd.plan)
-- Feature specification (/sdd.specify)
+- Architecture discussions (/devsquad.plan)
+- Feature specification (/devsquad.specify)
 
 Create epic on board? [Y/N]
 ```
@@ -96,7 +97,7 @@ Create epic on board? [Y/N]
 ```
 New project. Where do you want to start?
 
-[E] Envisioning first (/sdd.envision)
+[E] Envisioning first (/devsquad.envision)
 [D] Directly to structure (create generic epic)
 ```
 
@@ -368,4 +369,4 @@ Epic: [Product Name]
 
 ## Handoff Envelope
 
-When handing off to another agent (`sdd.specify`, `sdd.plan`), include Handoff Envelope per skill `reasoning`, including: docs/envisioning/structure.md, README.md, feature dependency assumptions, and pending prioritization.
+When handing off to another agent (`devsquad.specify`, `devsquad.plan`), include Handoff Envelope per skill `reasoning`, including: docs/envisioning/structure.md, README.md, feature dependency assumptions, and pending prioritization.

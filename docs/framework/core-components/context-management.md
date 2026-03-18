@@ -4,7 +4,7 @@ For the architectural decision on how context is managed across phases (artifact
 
 ## Copilot Memory
 
-Built-in GitHub Copilot memory enabled in agents that work with code and architecture: `sdd.implement`, `sdd.plan`, `sdd.review`, `sdd.security`.
+Built-in GitHub Copilot memory enabled in agents that work with code and architecture: `devsquad.implement`, `devsquad.plan`, `devsquad.review`, `devsquad.security`.
 
 Stores stable facts that the agent discovers during work:
 

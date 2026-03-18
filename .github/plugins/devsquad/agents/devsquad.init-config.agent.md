@@ -1,6 +1,6 @@
 ---
-name: sdd.init-config
-description: Sub-agent of sdd.init to verify and create SDD Framework configuration files.
+name: devsquad.init-config
+description: Sub-agent of devsquad.init to verify and create SDD Framework configuration files.
 user-invocable: false
 tools: ['read/readFile', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---

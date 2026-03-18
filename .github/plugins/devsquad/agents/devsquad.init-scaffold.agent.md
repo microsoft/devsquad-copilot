@@ -1,6 +1,6 @@
 ---
-name: sdd.init-scaffold
-description: Sub-agent of sdd.init to guide creation of community and governance files (SECURITY.md, CONTRIBUTING.md, LICENSE, CODE_OF_CONDUCT.md).
+name: devsquad.init-scaffold
+description: Sub-agent of devsquad.init to guide creation of community and governance files (SECURITY.md, CONTRIBUTING.md, LICENSE, CODE_OF_CONDUCT.md).
 user-invocable: false
 tools: ['read/readFile', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---

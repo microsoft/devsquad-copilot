@@ -1,6 +1,6 @@
 ---
 name: pull-request
-description: "Implementation finalization with PR. Use when implementation is complete and you need to commit, push, or open a pull request. Includes automated reviews and technical debt tracking. Do not use during implementation (use sdd.implement), for standalone intermediate commits (use git-commit), or for branch creation (use git-branch)."
+description: "Implementation finalization with PR. Use when implementation is complete and you need to commit, push, or open a pull request. Includes automated reviews and technical debt tracking. Do not use during implementation (use devsquad.implement), for standalone intermediate commits (use git-commit), or for branch creation (use git-branch)."
 ---
 
 # Pull Request — Implementation Finalization
@@ -20,7 +20,7 @@ If there are uncommitted changes, use the `git-commit` skill to commit.
 
 ## Offer PR Creation
 
-If the automated review was already executed by `sdd.implement` (step 9 of the orchestration flow), **do not re-execute review**. Use the result already obtained.
+If the automated review was already executed by `devsquad.implement` (step 9 of the orchestration flow), **do not re-execute review**. Use the result already obtained.
 
 ```
 Implementation completed and committed.
@@ -36,7 +36,7 @@ If the user chooses **[R]** and the automated review was already executed, prese
 
 ## Automated Reviews (sub-agents)
 
-The type of review depends on the task's impact. Security review is delegated to `sdd.review` when it is invoked — both never run separately.
+The type of review depends on the task's impact. Security review is delegated to `devsquad.review` when it is invoked — both never run separately.
 
 ### High impact: Implementation Review (includes security)
 
@@ -46,7 +46,7 @@ The type of review depends on the task's impact. Security review is delegated to
 - Multiple user stories affected
 - Changes to public API or schema
 
-Execute `sdd.review` as a **sub-agent**. Pass the feature, task, and modified files.
+Execute `devsquad.review` as a **sub-agent**. Pass the feature, task, and modified files.
 
 ```
 High impact task. Running independent review...
@@ -60,9 +60,9 @@ After sub-agent result:
 
 ### Medium/low impact: Direct Security Review
 
-When `sdd.review` is **not** invoked automatically, assess if a security review is needed by evaluating the security triggers defined in `sdd.security` (Authentication/Authorization, Sensitive data, External input, Persistence, Integrations).
+When `devsquad.review` is **not** invoked automatically, assess if a security review is needed by evaluating the security triggers defined in `devsquad.security` (Authentication/Authorization, Sensitive data, External input, Persistence, Integrations).
 
-If a trigger is detected, execute `sdd.security` as a **sub-agent** in code mode.
+If a trigger is detected, execute `devsquad.security` as a **sub-agent** in code mode.
 
 After the result, present the verdict (PASSED / PASSED_WITH_FINDINGS / FAILED) following the same format above.
 
@@ -72,8 +72,8 @@ If no trigger is detected, proceed with PR.
 
 | Impact | Review | Security |
 |--------|--------|----------|
-| High | `sdd.review` (auto) | Delegated by `sdd.review` internally |
-| Medium/Low + security trigger | No (available via `[R]`) | `sdd.security` direct |
+| High | `devsquad.review` (auto) | Delegated by `devsquad.review` internally |
+| Medium/Low + security trigger | No (available via `[R]`) | `devsquad.security` direct |
 | Medium/Low without trigger | No (available via `[R]`) | No |
 
 ## Record Technical Debt

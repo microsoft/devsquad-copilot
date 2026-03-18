@@ -1,21 +1,22 @@
 ---
+name: devsquad.refine
 description: Analyze backlog health, detect inconsistencies between specs/ADRs and work items, and identify items that need attention.
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_list', 'github/search_code', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'ado/wit_get_work_item', 'ado/search_workitem']
 handoffs:
   - label: Update Spec
-    agent: sdd.specify
+    agent: devsquad.specify
     prompt: Update feature spec
     send: true
   - label: Create Technical Plan
-    agent: sdd.plan
+    agent: devsquad.plan
     prompt: Create plan for feature without architecture
     send: true
   - label: Generate Tasks
-    agent: sdd.decompose
+    agent: devsquad.decompose
     prompt: Generate tasks from spec
     send: true
   - label: Structure Project
-    agent: sdd.kickoff
+    agent: devsquad.kickoff
     prompt: Adjust hierarchy on the board
     send: true
 ---
@@ -202,26 +203,26 @@ Summary: [N] problems found ([X] high, [Y] medium, [Z] low)
     spec.md: edited on 2025-02-01
     Tasks on board: created on 2025-01-15
     Impact: Tasks may not reflect current requirements
-    Action: [R] Re-generate tasks (/sdd.decompose) | [V] Verify manually
+    Action: [R] Re-generate tasks (/devsquad.decompose) | [V] Verify manually
 
 [2] ADR-0003 "Service Communication" (Proposed) blocking progress
     Dependent tasks: #42, #43, #44 (feature "notifications")
-    Action: [A] Accept ADR (/sdd.plan) | [I] Ignore
+    Action: [A] Accept ADR (/devsquad.plan) | [I] Ignore
 
 --- MEDIUM ---
 
 [3] Feature "payments" on board without local spec
     Work item: #28 "Payment Processing"
-    Action: [S] Create spec (/sdd.specify) | [I] Ignore
+    Action: [S] Create spec (/devsquad.specify) | [I] Ignore
 
 [4] Spec "analytics-dashboard" without tasks
     Complete spec at docs/features/analytics-dashboard/spec.md
-    Action: [T] Generate tasks (/sdd.decompose) | [I] Ignore
+    Action: [T] Generate tasks (/devsquad.decompose) | [I] Ignore
 
 --- LOW ---
 
 [5] Feature "notifications" without parent epic
-    Action: [E] Link to epic (/sdd.kickoff) | [I] Ignore
+    Action: [E] Link to epic (/devsquad.kickoff) | [I] Ignore
 
 ---
 

@@ -1,6 +1,6 @@
 # Rubric: Code (implementation)
 
-Applicable after `sdd.implement` completes a medium or high impact task. Does not replace human code review, complements it with automated conformance verification.
+Applicable after `devsquad.implement` completes a medium or high impact task. Does not replace human code review, complements it with automated conformance verification.
 
 ## Critical Criteria
 

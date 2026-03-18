@@ -1,9 +1,10 @@
 ---
+name: devsquad.security
 description: Security assessment in two modes - architectural (design) and code (implementation).
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/list_code_scanning_alerts', 'github/get_code_scanning_alert', 'github/list_secret_scanning_alerts', 'github/get_secret_scanning_alert', 'github/list_dependabot_alerts', 'github/get_dependabot_alert', 'github/list_repository_security_advisories', 'github/list_global_security_advisories', 'github/get_global_security_advisory', 'azure/policy', 'azure/role', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'drawio/create_diagram', 'memory']
 handoffs: 
   - label: Fix Issues
-    agent: sdd.implement
+    agent: devsquad.implement
     prompt: Fix found vulnerabilities
     send: true
 ---
@@ -436,7 +437,7 @@ Don't just find problems. Acknowledge when the code follows best practices:
 
 ## Execution as Sub-agent
 
-This agent can be invoked as a **sub-agent** by `sdd.plan` (architectural review) and `sdd.implement` (code review).
+This agent can be invoked as a **sub-agent** by `devsquad.plan` (architectural review) and `devsquad.implement` (code review).
 
 When executed as a sub-agent:
 
@@ -468,4 +469,4 @@ The operating mode (architectural or code) is determined by the coordinating age
 
 ## Handoff Envelope
 
-When handing off to `sdd.implement` (vulnerability fixes), include the Handoff Envelope as per the `reasoning` skill, including: security-review, security assumptions, findings that require design decisions, and discarded threats with justification.
+When handing off to `devsquad.implement` (vulnerability fixes), include the Handoff Envelope as per the `reasoning` skill, including: security-review, security assumptions, findings that require design decisions, and discarded threats with justification.

@@ -80,7 +80,7 @@ Process Template: [scrum|agile|basic|cmmi] (if Azure DevOps)
 | `type:xxx` or `kind:xxx` | Prefix `type:` or `kind:` |
 | `priority:xxx` or `P1/P2/P3` | Same format found |
 | `feature/xxx` or `feature:xxx` | Same format found |
-| No pattern | Use sdd default: `type:user-story`, `feature:<name>` |
+| No pattern | Use devsquad default: `type:user-story`, `feature:<name>` |
 
 ## Process Templates (Azure DevOps)
 

@@ -189,10 +189,10 @@ Agents are specialists that operate in isolated context with their own tools, su
 ### Agent example
 
 ```yaml
-# .github/agents/sdd.implement-python.agent.md
+# .github/agents/devsquad.implement-python.agent.md
 ---
 description: Python implementation specialist. Invoked by
-  sdd.implement for task execution in Python projects.
+  devsquad.implement for task execution in Python projects.
 tools: ['edit/editFiles', 'edit/createFile', 'execute/runInTerminal',
   'execute/getTerminalOutput', 'search/codebase']
 ---
@@ -215,28 +215,28 @@ Followed by the markdown prompt with the agent's instructions.
 
 | Modality | Activation | Example |
 |----------|----------|---------|
-| **Direct** | User selects from the Chat dropdown | `sdd.implement`, `sdd.plan` |
-| **Sub-agent** | Programmatically invoked by another agent | `sdd.security` (invoked by `sdd.plan`) |
-| **Both** | Accessible directly and as sub-agent | `sdd.review` (direct or via `sdd.implement`) |
+| **Direct** | User selects from the Chat dropdown | `devsquad.implement`, `devsquad.plan` |
+| **Sub-agent** | Programmatically invoked by another agent | `devsquad.security` (invoked by `devsquad.plan`) |
+| **Both** | Accessible directly and as sub-agent | `devsquad.review` (direct or via `devsquad.implement`) |
 
 ### Agents by project need
 
 | Need | Agent | Modality |
 |------|-------|----------|
-| Specialized Python implementation | `sdd.implement-python` | Sub-agent of implement |
-| Specialized TypeScript implementation | `sdd.implement-typescript` | Sub-agent of implement |
-| Accessibility review | `sdd.accessibility` | Sub-agent of review |
-| Regulatory compliance validation | `sdd.compliance` | Direct or sub-agent |
-| API documentation generation | `sdd.api-docs` | Direct |
-| Data migration | `sdd.migration` | Direct |
+| Specialized Python implementation | `devsquad.implement-python` | Sub-agent of implement |
+| Specialized TypeScript implementation | `devsquad.implement-typescript` | Sub-agent of implement |
+| Accessibility review | `devsquad.accessibility` | Sub-agent of review |
+| Regulatory compliance validation | `devsquad.compliance` | Direct or sub-agent |
+| API documentation generation | `devsquad.api-docs` | Direct |
+| Data migration | `devsquad.migration` | Direct |
 
 ### Integration with existing agents
 
 For an existing agent to delegate to the new sub-agent, add it to the frontmatter:
 
 ```yaml
-# In sdd.implement.agent.md, add to the frontmatter:
-agents: ['sdd.security', 'sdd.review', 'sdd.implement-python']
+# In devsquad.implement.agent.md, add to the frontmatter:
+agents: ['devsquad.security', 'devsquad.review', 'devsquad.implement-python']
 ```
 
 And add the delegation logic in the agent body:
@@ -248,8 +248,8 @@ Detect the project stack (via plan.md, package.json, pyproject.toml, go.mod):
 
 | Stack | Sub-agent | When to delegate |
 |-------|-----------|------------------|
-| Python | sdd.implement-python | Implementation tasks in .py |
-| TypeScript | sdd.implement-typescript | Implementation tasks in .ts |
+| Python | devsquad.implement-python | Implementation tasks in .py |
+| TypeScript | devsquad.implement-typescript | Implementation tasks in .ts |
 ```
 
 ### Agent advantages and disadvantages
@@ -383,7 +383,7 @@ MCP Servers expose tools from external systems to agents. They allow agents to i
 | TypeScript conventions | Instruction (`**/*.ts`, `**/*.tsx`) | Short rules, always applies |
 | React patterns (components, hooks, state) | Skill (`react-patterns`) | Larger volume, activated by relevance |
 | Terraform patterns | Instruction (`**/*.tf`) | Short rules, always applies |
-| Go implementation agent (if > 200 lines) | Agent (`sdd.implement-go`) | Isolated context with own tools |
+| Go implementation agent (if > 200 lines) | Agent (`devsquad.implement-go`) | Isolated context with own tools |
 
 ### Project with regulatory compliance
 
@@ -395,7 +395,7 @@ MCP Servers expose tools from external systems to agents. They allow agents to i
 |------|-----------|---------------|
 | Compliance rules in code | Instruction (per language) | Applies on every edit |
 | Pre-PR compliance checklist | Skill (`compliance-checklist`) | Activated at PR time |
-| Compliance review agent | Agent (`sdd.compliance`) | Multi-step flow with evidence |
+| Compliance review agent | Agent (`devsquad.compliance`) | Multi-step flow with evidence |
 | Post-edit sensitive data validation | Hook (postToolUse) | Deterministic, must not fail |
 
 ### Project with complex domain
@@ -454,18 +454,18 @@ When the framework is installed as a plugin (`copilot plugin install`), consumer
 
 ### Limitation: integrated sub-agents
 
-Consumers cannot create sub-agents that are automatically invoked by plugin agents (e.g., `sdd.implement-python` delegated by `sdd.implement`). This requires editing the `agents:` frontmatter of the parent agent, which is in the installed plugin.
+Consumers cannot create sub-agents that are automatically invoked by plugin agents (e.g., `devsquad.implement-python` delegated by `devsquad.implement`). This requires editing the `agents:` frontmatter of the parent agent, which is in the installed plugin.
 
-The `sdd.extend` detects this automatically by checking if the parent agent exists as a locally editable file (`.github/agents/{parent}.agent.md`). If it does not exist, it suggests alternatives.
+The `devsquad.extend` detects this automatically by checking if the parent agent exists as a locally editable file (`.github/agents/{parent}.agent.md`). If it does not exist, it suggests alternatives.
 
 **Recommended alternatives:**
 
-1. **Skill**: create a skill with a good description. It automatically enriches the context of any agent (including `sdd.implement`) via semantic relevance. This is the most powerful mechanism for consumers.
+1. **Skill**: create a skill with a good description. It automatically enriches the context of any agent (including `devsquad.implement`) via semantic relevance. This is the most powerful mechanism for consumers.
 2. **Direct agent**: create an agent that the developer explicitly invokes when stack specialization is needed.
 
-### Guide agent: `sdd.extend`
+### Guide agent: `devsquad.extend`
 
-The `sdd.extend` agent interactively guides the creation of extensions. It:
+The `devsquad.extend` agent interactively guides the creation of extensions. It:
 
 - Detects if the parent agent exists as a locally editable file before suggesting sub-agents
 - Recommends the appropriate mechanism with justification
@@ -473,7 +473,7 @@ The `sdd.extend` agent interactively guides the creation of extensions. It:
 - Detects name collisions with plugin components
 - Validates quality (skill description, instruction size)
 
-Invoke directly or via conductor: `sdd.extend` or ask `sdd` to "extend the framework".
+Invoke directly or via conductor: `devsquad.extend` or ask `sdd` to "extend the framework".
 
 ---
 
@@ -491,6 +491,6 @@ Invoke directly or via conductor: `sdd.extend` or ask `sdd` to "extend the frame
 
 6. **Hooks are the last line of defense**. Use for validations that cannot depend on the LLM. Hooks do not replace instructions or skills, they complement them.
 
-7. **Keep the Conductor updated**. If you add a direct agent (not a sub-agent), add the corresponding entry in the sub-agents table of `sdd.agent.md`.
+7. **Keep the Conductor updated**. If you add a direct agent (not a sub-agent), add the corresponding entry in the sub-agents table of `devsquad.agent.md`.
 
 8. **Document extensions in the delivery-framework README**. Project-specific extensions should be listed so that new team members know they exist.

@@ -1,8 +1,8 @@
 ---
-name: sdd.init
+name: devsquad.init
 description: Initialize or update a project with SDD Framework files. Orchestrates sub-agents to verify and create templates, instructions, and configurations.
 tools: ['agent', 'read/readFile', 'search/listDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
-agents: ['sdd.init-config', 'sdd.init-docs', 'sdd.init-scaffold']
+agents: ['devsquad.init-config', 'devsquad.init-docs', 'devsquad.init-scaffold']
 ---
 
 Detect the user's language from their messages or existing non-framework project documents and use it for all responses and generated artifacts (specs, ADRs, tasks, work items). When updating an existing artifact, continue in the artifact's current language regardless of the user's message language. Template section headings (e.g., ## Requirements, ## Acceptance Criteria) are translated to match the artifact language. Framework-internal identifiers (agent names, skill names, action tags, file paths) always remain in their original form.
@@ -20,7 +20,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conduc
 - `[CHECKPOINT]` summary
 - `[DONE]` summary + next step
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retain access to the `agent` tool to invoke `sdd.init-config`, `sdd.init-docs`, and `sdd.init-scaffold` as sub-agents.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retain access to the `agent` tool to invoke `devsquad.init-config`, `devsquad.init-docs`, and `devsquad.init-scaffold` as sub-agents.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -32,13 +32,13 @@ You are the initialization coordinator agent for the SDD Framework. Your job is 
 
 You delegate all file verification and creation to three specialized sub-agents:
 
-- **sdd.init-config**: configuration files and instructions (.github/)
-- **sdd.init-docs**: documentation templates (docs/)
-- **sdd.init-scaffold** (optional): community and governance files (SECURITY.md, CONTRIBUTING.md, LICENSE, CODE_OF_CONDUCT.md)
+- **devsquad.init-config**: configuration files and instructions (.github/)
+- **devsquad.init-docs**: documentation templates (docs/)
+- **devsquad.init-scaffold** (optional): community and governance files (SECURITY.md, CONTRIBUTING.md, LICENSE, CODE_OF_CONDUCT.md)
 
 ## Managed Files
 
-### Config Group (sdd.init-config)
+### Config Group (devsquad.init-config)
 
 - `.github/copilot-instructions.md`
 - `.github/instructions/adrs.instructions.md`
@@ -49,13 +49,13 @@ You delegate all file verification and creation to three specialized sub-agents:
 - `.github/docs/coding-guidelines.md`
 - `.markdownlint.yaml`
 
-### Docs Group (sdd.init-docs)
+### Docs Group (devsquad.init-docs)
 
 - `docs/features/TEMPLATE.md`
 - `docs/envisioning/TEMPLATE.md`
 - `docs/architecture/decisions/ADR-TEMPLATE.md`
 
-### Scaffold Group (sdd.init-scaffold, optional)
+### Scaffold Group (devsquad.init-scaffold, optional)
 
 - `SECURITY.md`
 - `CONTRIBUTING.md`
@@ -112,7 +112,7 @@ Show a consolidated summary of SDD Framework files:
 
 ### Step 5: Offer community and governance scaffold (optional)
 
-After the SDD files are handled, invoke `sdd.init-scaffold` in **verification mode** to check which community/governance files exist at the repository root.
+After the SDD files are handled, invoke `devsquad.init-scaffold` in **verification mode** to check which community/governance files exist at the repository root.
 
 Present the results and ask the user:
 
@@ -126,9 +126,9 @@ Present the results and ask the user:
 > - **[P]** Placeholder: create files with `[TODO]` markers to fill in later
 > - **[S]** Skip: do not create these files
 
-If the user chooses **[G]**, invoke `sdd.init-scaffold` in **guided creation mode** for the missing files.
+If the user chooses **[G]**, invoke `devsquad.init-scaffold` in **guided creation mode** for the missing files.
 
-If the user chooses **[P]**, invoke `sdd.init-scaffold` in **batch mode** (`--placeholder`) for the missing files.
+If the user chooses **[P]**, invoke `devsquad.init-scaffold` in **batch mode** (`--placeholder`) for the missing files.
 
 If the user chooses **[S]**, skip this step.
 

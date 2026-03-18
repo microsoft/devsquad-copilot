@@ -1,6 +1,6 @@
 ---
 name: complexity-analysis
-description: Complexity analysis for user stories with known work, risks, and scenarios. Use when you need to estimate effort, points, size, or analyze complexity of a user story. Do not use for sprint estimates (use sdd.sprint) or for artifact quality validation (use quality-gate).
+description: Complexity analysis for user stories with known work, risks, and scenarios. Use when you need to estimate effort, points, size, or analyze complexity of a user story. Do not use for sprint estimates (use devsquad.sprint) or for artifact quality validation (use quality-gate).
 ---
 
 ## Principle

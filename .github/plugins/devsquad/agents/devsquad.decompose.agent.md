@@ -1,9 +1,10 @@
 ---
+name: devsquad.decompose
 description: Decompose specs into user stories and tasks, and create work items on GitHub or Azure DevOps.
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'github/add_issue_comment', 'github/list_label', 'github/label_write', 'github/list_issue_types', 'github/assign_copilot_to_issue', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem', 'azure/deploy']
 handoffs:
   - label: Implement
-    agent: sdd.implement
+    agent: devsquad.implement
     prompt: Execute implementation
 ---
 
@@ -99,7 +100,7 @@ Consider the input above before proceeding (if not empty).
 
 10. **Report completion**:
 
-    When handing off to `sdd.implement`, include the **Handoff Envelope** per the `reasoning` skill:
+    When handing off to `devsquad.implement`, include the **Handoff Envelope** per the `reasoning` skill:
 
     ```
     Issues created successfully!
@@ -127,7 +128,7 @@ Consider the input above before proceeding (if not empty).
     
     Link: [board URL filtered by feature]
     
-    Next step: `/sdd.implement` to start implementation
+    Next step: `/devsquad.implement` to start implementation
     ```
 
     When handing off, include the Handoff Envelope per the `reasoning` skill, including: tasks.md, spec.md, plan.md, referenced ADRs, and decomposition assumptions.
@@ -219,7 +220,7 @@ Apply the `work-item-creation` skill checklist before creating.
 
 **CRITICAL**: Tasks MUST be organized by user story to allow independent implementation and testing.
 
-**Do not generate separate test tasks.** Tests are part of the acceptance of each task — `sdd.implement` verifies test coverage when completing the implementation of each task.
+**Do not generate separate test tasks.** Tests are part of the acceptance of each task — `devsquad.implement` verifies test coverage when completing the implementation of each task.
 
 ### Format for Local Draft (tasks.md)
 

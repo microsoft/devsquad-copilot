@@ -56,12 +56,12 @@ Socratic AI (Option 3). The primary priority (knowledge transfer) is met signifi
 
 | Mechanism | Where | Behavior |
 |-----------|-------|----------|
-| Socratic questioning | `sdd.plan` | Guides technical decisions with questions instead of prescribing solutions |
-| Principle explanation | `sdd.implement` | When presenting an implementation plan (medium/high impact), makes explicit the engineering principle guiding the approach |
-| Comprehension checkpoint | `sdd.implement` | Before executing, asks the developer to explain what will be done; rejects generic responses |
-| Anti-pattern detection | `sdd.implement` | When the user says "it works but I don't know why", questions understanding before proceeding |
-| Knowledge transfer | `sdd.implement` | After implementation, asks verification questions and reports principles practiced in the session |
-| Learning Insights | `sdd.review` | Connects findings to reusable fundamentals, explains why something is a problem in production |
+| Socratic questioning | `devsquad.plan` | Guides technical decisions with questions instead of prescribing solutions |
+| Principle explanation | `devsquad.implement` | When presenting an implementation plan (medium/high impact), makes explicit the engineering principle guiding the approach |
+| Comprehension checkpoint | `devsquad.implement` | Before executing, asks the developer to explain what will be done; rejects generic responses |
+| Anti-pattern detection | `devsquad.implement` | When the user says "it works but I don't know why", questions understanding before proceeding |
+| Knowledge transfer | `devsquad.implement` | After implementation, asks verification questions and reports principles practiced in the session |
+| Learning Insights | `devsquad.review` | Connects findings to reusable fundamentals, explains why something is a problem in production |
 | Applied principle | Reasoning Log | Each recorded decision includes the principle or heuristic that guided it |
 
 ### What Socratic AI is not

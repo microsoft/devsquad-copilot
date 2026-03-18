@@ -1,6 +1,6 @@
 ---
 name: engineering-practices
-description: Socratic guide for engineering practice decisions (DevOps, SRE, CI/CD, branch strategy, observability, IaC). Guides the agent to ask questions based on project context, rather than prescribing solutions. Use during planning of initial features. Do not use for application architecture decisions (use sdd.plan) or for pipeline/infra creation (use sdd.implement).
+description: Socratic guide for engineering practice decisions (DevOps, SRE, CI/CD, branch strategy, observability, IaC). Guides the agent to ask questions based on project context, rather than prescribing solutions. Use during planning of initial features. Do not use for application architecture decisions (use devsquad.plan) or for pipeline/infra creation (use devsquad.implement).
 ---
 
 ## Purpose

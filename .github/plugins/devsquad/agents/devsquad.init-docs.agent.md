@@ -1,6 +1,6 @@
 ---
-name: sdd.init-docs
-description: Sub-agent of sdd.init for verifying and creating SDD Framework documentation templates.
+name: devsquad.init-docs
+description: Sub-agent of devsquad.init for verifying and creating SDD Framework documentation templates.
 user-invocable: false
 tools: ['read/readFile', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---

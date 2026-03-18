@@ -1,6 +1,6 @@
 ---
 name: next-task
-description: "Next task suggestion after completing implementation. Use when the developer finishes a task and wants a recommendation for the next one. Do not use during an ongoing implementation, for initial task selection (use work-item-workflow), or for sprint planning (use sdd.sprint)."
+description: "Next task suggestion after completing implementation. Use when the developer finishes a task and wants a recommendation for the next one. Do not use during an ongoing implementation, for initial task selection (use work-item-workflow), or for sprint planning (use devsquad.sprint)."
 ---
 
 # Next Task — Next Task Suggestion

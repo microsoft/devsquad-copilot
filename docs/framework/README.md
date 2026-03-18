@@ -27,7 +27,7 @@
 
 ```mermaid
 flowchart LR
-    user["User"] --> conductor["sdd (conductor)"]
+    user["User"] --> conductor["devsquad (conductor)"]
 
     conductor -->|"invokes as<br/>sub-agent"| agents
     user -.->|"direct invocation<br/>(optional)"| agents
@@ -35,17 +35,17 @@ flowchart LR
     subgraph agents["Specialist Agents"]
         subgraph agents-row1[" "]
             direction LR
-            envision["sdd.envision"]
-            kickoff["sdd.kickoff"]
-            specify["sdd.specify"]
-            plan["sdd.plan"]
+            envision["devsquad.envision"]
+            kickoff["devsquad.kickoff"]
+            specify["devsquad.specify"]
+            plan["devsquad.plan"]
         end
         subgraph agents-row2[" "]
             direction LR
-            decompose["sdd.decompose"]
-            implement["sdd.implement"]
-            sprint["sdd.sprint"]
-            init["sdd.init"]
+            decompose["devsquad.decompose"]
+            implement["devsquad.implement"]
+            sprint["devsquad.sprint"]
+            init["devsquad.init"]
         end
     end
 
@@ -70,9 +70,9 @@ flowchart LR
 
     subgraph subagents["Sub-agents (invoked by other agents)"]
         direction LR
-        security["sdd.security"]
-        review["sdd.review"]
-        refine["sdd.refine"]
+        security["devsquad.security"]
+        review["devsquad.review"]
+        refine["devsquad.refine"]
         review --> security
     end
 
@@ -245,7 +245,7 @@ The current flow supports incremental updates to specs, ADRs, and envisioning, b
 | Feature canceled | Work items become orphaned | Close or archive automatically |
 | Re-prioritization | Requires manual board update | Assisted re-prioritization mode |
 
-**Mitigation**: `/sdd.refine` detects specs updated after task creation and superseded ADRs with active tasks. Use it periodically to identify inconsistencies.
+**Mitigation**: `/devsquad.refine` detects specs updated after task creation and superseded ADRs with active tasks. Use it periodically to identify inconsistencies.
 
 ### Centralized Board
 

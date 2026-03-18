@@ -16,7 +16,7 @@ The DevSquad Delivery Framework aims to bring structure to that speed. It embeds
 * Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow team members who miss some sessions to catch up through the repository, and reduce onboarding time for new contributors.
 
 > [!NOTE]
-> For smaller scopes (solo projects, prototypes, well-defined tasks), the full lifecycle may not be necessary. The framework is modular: you can invoke any agent directly (e.g., `sdd.implement` or `sdd.plan`) without going through the complete flow.
+> For smaller scopes (solo projects, prototypes, well-defined tasks), the full lifecycle may not be necessary. The framework is modular: you can invoke any agent directly (e.g., `devsquad.implement` or `devsquad.plan`) without going through the complete flow.
 
 ## What this is not
 
@@ -104,7 +104,7 @@ To uninstall:
 
 #### Option 1: Guided (Recommended)
 
-Use `sdd` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
+Use `devsquad` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
 
 #### Option 2: Direct
 
@@ -112,12 +112,12 @@ Invoke a specific agent based on your current state:
 
 | You have... | Start with |
 |-------------|-----------|
-| A product idea without defined scope | `sdd.envision` to capture vision, pains, and objectives |
-| A clear vision, ready to structure the backlog | `sdd.kickoff` to create epics and features |
-| A defined feature to specify | `sdd.specify` to write the spec with requirements and conformance criteria |
-| A spec ready for technical planning | `sdd.plan` to produce ADRs, contracts, and data models |
-| Tasks ready to implement | `sdd.implement` to execute from tasks or work items |
-| An existing backlog that needs organization | `sdd.refine` to detect inconsistencies and classify readiness |
+| A product idea without defined scope | `devsquad.envision` to capture vision, pains, and objectives |
+| A clear vision, ready to structure the backlog | `devsquad.kickoff` to create epics and features |
+| A defined feature to specify | `devsquad.specify` to write the spec with requirements and conformance criteria |
+| A spec ready for technical planning | `devsquad.plan` to produce ADRs, contracts, and data models |
+| Tasks ready to implement | `devsquad.implement` to execute from tasks or work items |
+| An existing backlog that needs organization | `devsquad.refine` to detect inconsistencies and classify readiness |
 
 For the full list of agents, see the [agent catalog](docs/framework/core-components/custom-agents.md).
 

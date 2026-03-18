@@ -59,7 +59,7 @@ The accepted trade-off is that sub-agents need to format output in two ways (str
 ```mermaid
 sequenceDiagram
     participant Dev as User
-    participant Conductor as sdd (conductor)
+    participant Conductor as devsquad (conductor)
     participant SubAgent as sub-agent
 
     Dev->>Conductor: "I want to specify a feature"
@@ -75,7 +75,7 @@ sequenceDiagram
     Conductor-->>Dev: Present summary, request confirmation
     Dev->>Conductor: "approved"
     Conductor->>Conductor: Execute [CREATE spec.md]
-    SubAgent-->>Conductor: [DONE] Spec created, next: sdd.plan
+    SubAgent-->>Conductor: [DONE] Spec created, next: devsquad.plan
     Conductor-->>Dev: "Spec completed! Continue to planning?"
 ```
 

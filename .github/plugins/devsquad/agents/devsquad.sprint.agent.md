@@ -1,18 +1,19 @@
 ---
+name: devsquad.sprint
 description: Prepare sprint planning with previous sprint closure, velocity analysis, adaptive capacity, and scope options with committed vs stretch. Does not pre-assign work items.
 tools: ['agent', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'github/issue_read', 'github/list_issues', 'github/projects_get', 'github/projects_list', 'github/projects_write', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/work_list_team_iterations', 'ado/work_get_team_capacity', 'ado/wit_get_work_items_for_iteration']
-agents: ['sdd.refine']
+agents: ['devsquad.refine']
 handoffs:
   - label: Create Technical Plan
-    agent: sdd.plan
+    agent: devsquad.plan
     prompt: Define architecture for item without ADR
     send: true
   - label: Generate Tasks
-    agent: sdd.decompose
+    agent: devsquad.decompose
     prompt: Decompose item into tasks
     send: true
   - label: Specify Feature
-    agent: sdd.specify
+    agent: devsquad.specify
     prompt: Complete feature spec
     send: true
 ---
@@ -25,7 +26,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conduc
 
 **Structured actions** (instead of interacting directly with the user): `[ASK] "question"` · `[CREATE path]` content · `[EDIT path]` edit · `[BOARD action] Title | Description | Type` · `[CHECKPOINT]` summary · `[DONE]` summary + next step.
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retains access to the `agent` tool to invoke `sdd.refine` as sub-agent.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retains access to the `agent` tool to invoke `devsquad.refine` as sub-agent.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -215,7 +216,7 @@ Before planning the next sprint, analyze what happened in the previous one.
 
 ### Step 2.5: Backlog Health Pre-analysis (Sub-agent)
 
-After collecting data, run `sdd.refine` as a **sub-agent** to obtain a backlog health analysis. Instruct the sub-agent to analyze the full scope (or the scope defined by the user in Step 1) and return findings grouped by severity.
+After collecting data, run `devsquad.refine` as a **sub-agent** to obtain a backlog health analysis. Instruct the sub-agent to analyze the full scope (or the scope defined by the user in Step 1) and return findings grouped by severity.
 
 ```
 Running backlog health analysis...
@@ -241,7 +242,7 @@ For each item in the backlog, classify:
 - **When classifying**: Cite the evidence (e.g., "Ready — spec without clarifications, 5 tasks created, ADR-0003 Accepted")
 
 **Almost ready**: Needs minor action before the sprint.
-- Spec complete but without tasks (needs to run /sdd.decompose)
+- Spec complete but without tasks (needs to run /devsquad.decompose)
 - ADR in "Proposed" status but without blocking impact
 - Dependency on an item that is "In Progress" and near completion
 - **When classifying**: Cite what is missing (e.g., "Almost ready — spec OK, but tasks.md does not exist")
@@ -326,9 +327,9 @@ Delivery at end of sprint: [what the team will have working]
 
 | Item | Reason | Required action |
 |------|--------|-----------------|
-| [title] | No tasks | /sdd.decompose |
-| [title] | Pending ADR | /sdd.plan |
-| [title] | Incomplete spec | /sdd.specify |
+| [title] | No tasks | /devsquad.decompose |
+| [title] | Pending ADR | /devsquad.plan |
+| [title] | Incomplete spec | /devsquad.specify |
 ```
 
 **Committed vs Stretch**: If capacity data is available (Step 1), split each option:
@@ -345,7 +346,7 @@ Planning Alerts
 
 [1] [Feature X] has spec updated after tasks were created
     Risk: Tasks may not reflect current requirements
-    Suggestion: Run /sdd.refine before committing
+    Suggestion: Run /devsquad.refine before committing
 
 [2] [Task Y] depends on [Task Z] which is with another dev
     Risk: Blocked if Z is delayed
@@ -477,10 +478,10 @@ Decisions the team needs to make:
 3. **No false alerts**: Only flag gaps with concrete evidence.
 4. **Respect priorities**: Present P1 before P2, P2 before P3. Within the same priority, group by feature.
 5. **Cross-feature dependencies first**: They are the easiest to forget and the most expensive when forgotten.
-6. **Backlog health**: The pre-analysis via sub-agent `sdd.refine` (Step 2.5) runs automatically. If the sub-agent reports high-severity issues in significant volume, alert the team before proceeding with planning.
-7. **No pre-assignment**: Do not suggest or distribute items to specific devs. The team uses a pull model (via `sdd.implement` + skill `next-task`).
+6. **Backlog health**: The pre-analysis via sub-agent `devsquad.refine` (Step 2.5) runs automatically. If the sub-agent reports high-severity issues in significant volume, alert the team before proceeding with planning.
+7. **No pre-assignment**: Do not suggest or distribute items to specific devs. The team uses a pull model (via `devsquad.implement` + skill `next-task`).
 8. **Graceful degradation**: The agent works with whatever is available. No information is a blocking prerequisite — without velocity, without capacity, without iterations, planning continues. Data enriches the analysis, it does not block it.
 
 ## Handoff Envelope
 
-When handing off to another agent (`sdd.plan`, `sdd.decompose`, `sdd.specify`), include the Handoff Envelope per the `reasoning` skill, including: analyzed board items, capacity assumptions, and presented focus options.
+When handing off to another agent (`devsquad.plan`, `devsquad.decompose`, `devsquad.specify`), include the Handoff Envelope per the `reasoning` skill, including: analyzed board items, capacity assumptions, and presented focus options.

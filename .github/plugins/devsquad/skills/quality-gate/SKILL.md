@@ -15,10 +15,10 @@ Use this skill **after generating an artifact and before presenting it to the us
 
 | Agent | Artifact | Activate when |
 |-------|----------|---------------|
-| `sdd.specify` | spec.md | Spec generated or updated |
-| `sdd.plan` | ADRs, plan.md | ADR created or plan finalized |
-| `sdd.decompose` | tasks.md, work items | Task decomposition completed |
-| `sdd.implement` | Code | Medium or high impact task implemented |
+| `devsquad.specify` | spec.md | Spec generated or updated |
+| `devsquad.plan` | ADRs, plan.md | ADR created or plan finalized |
+| `devsquad.decompose` | tasks.md, work items | Task decomposition completed |
+| `devsquad.implement` | Code | Medium or high impact task implemented |
 
 **Do not use for**: low impact tasks (typo, log, formatting), intermediate artifacts that will be reviewed manually, or when the user explicitly asks to skip validation.
 
@@ -122,4 +122,4 @@ Deliver the artifact with documented failures.
 - Do not evaluate style or formatting that is already covered by markdownlint or existing linters.
 - Do not block delivery for quality criteria (only critical criteria block).
 - Do not re-evaluate infinitely: maximum 2 iterations, then escalate to human.
-- Do not evaluate artifacts outside the scope of the current agent (e.g., sdd.specify does not evaluate tasks).
+- Do not evaluate artifacts outside the scope of the current agent (e.g., devsquad.specify does not evaluate tasks).

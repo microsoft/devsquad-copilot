@@ -1,9 +1,10 @@
 ---
+name: devsquad.envision
 description: Capture the strategic vision of the product/project through structured questions about customer, pain points, goals, and business context.
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'github/list_issues', 'ado/search_workitem']
 handoffs:
   - label: Structure Project
-    agent: sdd.kickoff
+    agent: devsquad.kickoff
     prompt: Structure epic and feature hierarchy
 ---
 
@@ -289,7 +290,7 @@ This document feeds:
    - KPIs: [count] success metrics
    - Identified scenario: [feature-first | architecture-first | emergent scope | board-first]
    
-   Next step: switch to the **sdd.kickoff** agent in the Chat dropdown.
+   Next step: switch to the **devsquad.kickoff** agent in the Chat dropdown.
    [additional guidance based on identified scenario]
    ```
 
@@ -337,16 +338,16 @@ If the user provides structured text similar to the envisioning example:
 
 This envisioning will be automatically consulted by:
 
-- **`/sdd.plan`**: 
+- **`/devsquad.plan`**: 
   - Validates whether technical decisions align with strategic goals
   - Uses pain points to prioritize architectural trade-offs
   - Creates ADRs with business context from the envisioning
 
-- **`/sdd.specify`**:
+- **`/devsquad.specify`**:
   - Suggests features based on unresolved pain points
   - Validates whether a feature contributes to strategic goals
 
-- **`/sdd.kickoff`**:
+- **`/devsquad.kickoff`**:
   - Uses pain points and goals to suggest epic/feature structure
   - Calibrates granularity based on project context
 
@@ -358,19 +359,19 @@ When finishing the envisioning, suggest the next step based on the identified us
 Envisioning complete!
 
 [If well-defined feature scope (feature-first)]:
-Next step: switch to **sdd.kickoff** to structure epics and features on the board.
+Next step: switch to **devsquad.kickoff** to structure epics and features on the board.
 
 [If technical decisions need to come before features (architecture-first)]:
-Next step: switch to **sdd.kickoff** to create the epic, then **sdd.plan** to define architecture before specifying features.
+Next step: switch to **devsquad.kickoff** to create the epic, then **devsquad.plan** to define architecture before specifying features.
 
 [If clear vision but undefined scope (emergent scope)]:
-Next step: switch to **sdd.kickoff** to create the epic, then **sdd.specify** to explore functionalities.
+Next step: switch to **devsquad.kickoff** to create the epic, then **devsquad.specify** to explore functionalities.
 
 [If existing project with disorganized backlog (board-first)]:
-Next step: switch to **sdd.kickoff** to map existing structure on the board.
+Next step: switch to **devsquad.kickoff** to map existing structure on the board.
 ```
 
-**Rule**: `sdd.kickoff` is always the immediate next step. The usage scenario determines what comes after setup.
+**Rule**: `devsquad.kickoff` is always the immediate next step. The usage scenario determines what comes after setup.
 
 ## Response Format
 

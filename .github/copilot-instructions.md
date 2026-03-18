@@ -108,7 +108,7 @@ Official references:
 
 Rules:
 
-- Naming: `sdd.<phase>.agent.md` (e.g., `sdd.implement.agent.md`).
+- Naming: `devsquad.<phase>.agent.md` (e.g., `devsquad.implement.agent.md`).
 - Required frontmatter: `description`, `tools`. Optional: `agents`, `handoffs`, `user-invocable`.
 - Sub-agents that should not appear in the dropdown: `user-invocable: false`.
 - Use `agents: [...]` in the coordinator to restrict which sub-agents can be invoked.
@@ -166,10 +166,10 @@ Rules:
 
 ### Distributed Templates (`docs/templates/`)
 
-Templates copied to consumer repos by the `sdd.init-config` agent. When editing:
+Templates copied to consumer repos by the `devsquad.init-config` agent. When editing:
 
 - The file `docs/templates/copilot-instructions.md` is the **source of truth** for the external version of `copilot-instructions.md`.
-- The content embedded in `sdd.init-config.agent.md` must be kept **in sync** with this template.
+- The content embedded in `devsquad.init-config.agent.md` must be kept **in sync** with this template.
 - After editing the template, update the embed in the corresponding agent.
 
 ### General Conventions

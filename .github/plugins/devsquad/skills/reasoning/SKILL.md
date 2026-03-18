@@ -100,21 +100,21 @@ When performing a handoff to another agent, include a structured context block *
 
 ### Agents that produce persistent artifacts
 
-`sdd.envision`, `sdd.kickoff`, `sdd.specify`, `sdd.plan`, `sdd.decompose`, `sdd.implement`, `sdd.security`
+`devsquad.envision`, `devsquad.kickoff`, `devsquad.specify`, `devsquad.plan`, `devsquad.decompose`, `devsquad.implement`, `devsquad.security`
 
 - Present Reasoning Log **before** creating/saving artifacts.
 - The user can question decisions before they become artifacts.
 
 ### Analysis agents (read-only)
 
-`sdd.sprint`, `sdd.refine`
+`devsquad.sprint`, `devsquad.refine`
 
 - Integrate reasoning **inline** in the analysis (e.g., "Classified as 'Not ready' because [evidence]").
 - Do not use a separate section; the reasoning is the output itself.
 
 ### Conductor
 
-`sdd`
+`devsquad`
 
 - When the intent is not obvious (multiple agents could handle it), briefly document the rationale:
 

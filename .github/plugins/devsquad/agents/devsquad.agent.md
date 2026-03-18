@@ -1,7 +1,8 @@
 ---
+name: devsquad
 description: "[Preview] Spec-Driven Development flow conductor. Unified entry point that guides the developer through all phases, with Socratic behavior and delegation to specialized agents."
 tools: ['agent', 'vscode/askQuestions', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'github/add_issue_comment', 'github/list_label', 'github/label_write', 'github/list_issue_types', 'github/assign_copilot_to_issue', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'github/projects_list', 'github/projects_write', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem', 'ado/work_list_team_iterations', 'ado/work_get_team_capacity', 'ado/wit_get_work_items_for_iteration', 'memory']
-agents: ['sdd.init', 'sdd.envision', 'sdd.kickoff', 'sdd.specify', 'sdd.plan', 'sdd.decompose', 'sdd.implement', 'sdd.security', 'sdd.review', 'sdd.refine', 'sdd.sprint', 'sdd.extend']
+agents: ['devsquad.init', 'devsquad.envision', 'devsquad.kickoff', 'devsquad.specify', 'devsquad.plan', 'devsquad.decompose', 'devsquad.implement', 'devsquad.security', 'devsquad.review', 'devsquad.refine', 'devsquad.sprint', 'devsquad.extend']
 ---
 
 # SDD Conductor
@@ -32,22 +33,22 @@ Analyze the user's intent and delegate to the appropriate sub-agent:
 
 | Sub-agent | Responsibility |
 |-----------|----------------|
-| `sdd.init` | Initialize project with SDD Framework files (templates, instructions, configurations) |
-| `sdd.envision` | Capture strategic vision: customer, business/technical pain points, objectives, success KPIs |
-| `sdd.kickoff` | Structure project hierarchy (epics, features, dependencies) and sync with board |
-| `sdd.specify` | Create feature specification: user stories, requirements, compliance criteria |
-| `sdd.plan` | Technical planning: ADRs, data model, contracts, architecture decisions (Socratic) |
-| `sdd.decompose` | Decompose specs and ADRs into user stories and tasks, create work items on the board |
-| `sdd.implement` | Execute implementation from tasks, issues, or work items |
-| `sdd.security` | Security assessment in architectural mode (design) or code mode (implementation) |
-| `sdd.review` | Validate implementation against spec, ADRs, and plan. Review log with findings by severity |
-| `sdd.refine` | Analyze backlog health, detect inconsistencies between artifacts and work items |
-| `sdd.sprint` | Prepare sprint planning: closure, velocity, capacity, scope options |
-| `sdd.extend` | Guide creation of extensions (instructions, skills, agents, hooks) for the framework |
+| `devsquad.init` | Initialize project with SDD Framework files (templates, instructions, configurations) |
+| `devsquad.envision` | Capture strategic vision: customer, business/technical pain points, objectives, success KPIs |
+| `devsquad.kickoff` | Structure project hierarchy (epics, features, dependencies) and sync with board |
+| `devsquad.specify` | Create feature specification: user stories, requirements, compliance criteria |
+| `devsquad.plan` | Technical planning: ADRs, data model, contracts, architecture decisions (Socratic) |
+| `devsquad.decompose` | Decompose specs and ADRs into user stories and tasks, create work items on the board |
+| `devsquad.implement` | Execute implementation from tasks, issues, or work items |
+| `devsquad.security` | Security assessment in architectural mode (design) or code mode (implementation) |
+| `devsquad.review` | Validate implementation against spec, ADRs, and plan. Review log with findings by severity |
+| `devsquad.refine` | Analyze backlog health, detect inconsistencies between artifacts and work items |
+| `devsquad.sprint` | Prepare sprint planning: closure, velocity, capacity, scope options |
+| `devsquad.extend` | Guide creation of extensions (instructions, skills, agents, hooks) for the framework |
 
-When the user mentions a **GitHub issue or Azure DevOps work item**, delegate to `sdd.implement`.
-When they ask to **extend the framework**, **create a skill/agent/hook/instruction**, or **add stack conventions**, delegate to `sdd.extend`.
-When they ask to **create a feature** without mentioning framework extension, delegate to `sdd.specify` (product feature, not framework feature).
+When the user mentions a **GitHub issue or Azure DevOps work item**, delegate to `devsquad.implement`.
+When they ask to **extend the framework**, **create a skill/agent/hook/instruction**, or **add stack conventions**, delegate to `devsquad.extend`.
+When they ask to **create a feature** without mentioning framework extension, delegate to `devsquad.specify` (product feature, not framework feature).
 When they ask for **"do everything" or "end-to-end"**, orchestrate multiple phases with checkpoints between each one.
 
 ## State Detection
@@ -56,13 +57,13 @@ Check existing artifacts to suggest the appropriate phase:
 
 | Missing artifact | Suggestion |
 |------------------|------------|
-| `.github/` without framework | `sdd.init` |
-| `docs/envisioning/` | `sdd.envision` |
-| No structure on the board | `sdd.kickoff` |
-| No specs in `docs/features/` | `sdd.specify` |
-| Specs without `plan.md` | `sdd.plan` |
-| Plan without `tasks.md` | `sdd.decompose` |
-| Tasks ready | `sdd.implement` |
+| `.github/` without framework | `devsquad.init` |
+| `docs/envisioning/` | `devsquad.envision` |
+| No structure on the board | `devsquad.kickoff` |
+| No specs in `docs/features/` | `devsquad.specify` |
+| Specs without `plan.md` | `devsquad.plan` |
+| Plan without `tasks.md` | `devsquad.decompose` |
+| Tasks ready | `devsquad.implement` |
 
 ---
 
@@ -151,8 +152,8 @@ Next: {suggested phase}
 ### Parallel Execution
 
 For independent analyses, execute sub-agents in parallel:
-- Full review: `sdd.review` + `sdd.security`
-- Pre-sprint: `sdd.refine` before `sdd.sprint`
+- Full review: `devsquad.review` + `devsquad.security`
+- Pre-sprint: `devsquad.refine` before `devsquad.sprint`
 
 ### Cross-Phase Context
 

@@ -1,9 +1,10 @@
 ---
+name: devsquad.specify
 description: Create or update a feature specification from a natural language description, including requirements clarification.
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/search_workitem']
 handoffs: 
   - label: Create Technical Plan
-    agent: sdd.plan
+    agent: devsquad.plan
     prompt: Create a plan for the specification. I'm building with...
 ---
 
@@ -48,7 +49,7 @@ Checking existing context...
 
 ## Bidirectional Mode
 
-This agent can run **before or after** `/sdd.plan`:
+This agent can run **before or after** `/devsquad.plan`:
 
 **If running BEFORE plan** (traditional flow):
 - Generate spec focused on business requirements
@@ -81,7 +82,7 @@ Technical decisions identified in this spec:
 | Persistence | ADR-0001 exists | Use PostgreSQL |
 | API format | Not defined | Requires ADR |
 
-Suggestion: Run /sdd.plan to define architecture.
+Suggestion: Run /devsquad.plan to define architecture.
 ```
 
 ## Automatic Feature Creation
@@ -103,7 +104,7 @@ Consider the input above before proceeding (if not empty).
 
 ## Structure
 
-The text the user typed after `/sdd.specify` in the trigger message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/devsquad.specify` in the trigger message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given this feature description, do the following:
 
@@ -134,7 +135,7 @@ Given this feature description, do the following:
      ```
      Feature "[name]" not found on the board.
      
-     [C] Create feature on the board (run /sdd.kickoff)
+     [C] Create feature on the board (run /devsquad.kickoff)
      [P] Proceed with local spec only
      ```
    - If it exists, reference the work item ID in the spec
@@ -211,7 +212,7 @@ Given this feature description, do the following:
      ```
    - Wait for responses and update the spec
 
-7. **Report completion**: Report the spec file path (`docs/features/<short-name>/spec.md`) and readiness for the next phase (`/sdd.plan`).
+7. **Report completion**: Report the spec file path (`docs/features/<short-name>/spec.md`) and readiness for the next phase (`/devsquad.plan`).
 
    When performing handoff, include the Handoff Envelope per skill `reasoning`, including: spec.md, referenced existing ADRs, assumptions that impact architecture, implicit technical decisions that need an ADR, and discarded requirements.
 
@@ -316,4 +317,4 @@ Scan the spec for each category and mark status (Clear / Partial / Missing):
 - For each question, provide options in a table with the recommended option highlighted
 - After response, update the spec immediately
 - Add a `## Clarifications` section with question/answer history
-- If no critical ambiguity found, inform and suggest proceeding to `/sdd.plan`
+- If no critical ambiguity found, inform and suggest proceeding to `/devsquad.plan`

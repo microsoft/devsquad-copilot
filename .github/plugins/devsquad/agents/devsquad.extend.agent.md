@@ -1,4 +1,5 @@
 ---
+name: devsquad.extend
 description: Guide the creation of extensions for the SDD framework (instructions, skills, agents, hooks). Use when you need to add stack-specific, domain-specific, or organization-specific knowledge to the framework.
 tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---
@@ -32,7 +33,7 @@ Before scaffolding, read the corresponding example to replicate the structure:
 |-----------|---------|-----------|
 | Instruction | `.github/instructions/adrs.instructions.md` | `.github/instructions/` |
 | Skill | `.github/skills/board-config/SKILL.md` | `.github/skills/{name}/` |
-| Agent | `.github/agents/sdd.review.agent.md` | `.github/agents/` |
+| Agent | `.github/agents/devsquad.review.agent.md` | `.github/agents/` |
 | Hook | `.github/hooks/detect-repo-platform.sh` + `hooks.json` | `.github/hooks/` |
 
 ## User Input: `$ARGUMENTS`
