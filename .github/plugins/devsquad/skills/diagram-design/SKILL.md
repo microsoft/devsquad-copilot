@@ -51,6 +51,10 @@ Apply before considering a diagram done:
 
 Start with Mermaid. Switch to Draw.io when the diagram needs spatial freedom, icons, or more than ~15 elements.
 
+## Mermaid Syntax Notes
+
+- **Line breaks**: use `<br/>` inside labels and node text. Mermaid does not interpret `\n` as a line break; it renders as literal text.
+
 ## Mermaid Diagram Types
 
 | What you want to show | Mermaid type |

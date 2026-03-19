@@ -23,107 +23,82 @@
 | [0008](./decisions/0008-testing-strategy-in-decomposition.md) | Testing Strategy in Decomposition | Tests integrated as acceptance criteria, without separate tasks |
 | [0009](./decisions/0009-developer-capacity.md) | Developer Capacity | One task at a time with soft concurrency limit |
 
-## Architecture Diagram
+## Architecture Diagrams
+
+### Agent Interaction
+
+The framework follows a [conductor pattern](./decisions/0001-agent-orchestration.md): the user interacts with a central conductor that delegates to specialist agents by phase. Agents can also be invoked directly. Sub-agents are invoked autonomously by other agents for security assessment, code review, and backlog health analysis. All agents are prefixed with `devsquad.` (e.g., `init` in the diagram represents `devsquad.init`).
 
 ```mermaid
 flowchart LR
-    user["User"] --> conductor["devsquad (conductor)"]
+    user["User"] --> conductor["devsquad<br>(conductor)"]
+    user -.->|"direct invocation"| agents
 
-    conductor -->|"invokes as<br/>sub-agent"| agents
-    user -.->|"direct invocation<br/>(optional)"| agents
+    conductor -->|"delegates<br/>by phase"| agents
 
     subgraph agents["Specialist Agents"]
         subgraph agents-row1[" "]
             direction LR
-            envision["devsquad.envision"]
-            kickoff["devsquad.kickoff"]
-            specify["devsquad.specify"]
-            plan["devsquad.plan"]
+            init["init"]
+            envision["envision"]
+            kickoff["kickoff"]
+            specify["specify"]
+            plan["plan"]
         end
         subgraph agents-row2[" "]
             direction LR
-            decompose["devsquad.decompose"]
-            implement["devsquad.implement"]
-            sprint["devsquad.sprint"]
-            init["devsquad.init"]
+            decompose["decompose"]
+            implement["implement"]
+            sprint["sprint"]
+            extend["extend"]
         end
     end
 
-    agents -->|all except<br/>plan, init| github-ado-mcp
-    agents -->|plan,decompose,<br/>implement| azure-mcp
-    agents -->|plan,implement| learn-mcp
+    plan -->|"invokes"| security
+    implement -->|"invokes"| review
+    review -->|"invokes"| security
+    sprint -->|"invokes"| refine
 
-    subgraph mcpservers["MCP Servers"]
+    subgraph subagents["Sub-agents"]
         direction LR
-        github-ado-mcp["GitHub/<br/> Azure DevOps"]
-        learn-mcp["Microsoft<br/>Learn"]
-        azure-mcp["Azure"]
+        security["security"]
+        review["review"]
+        refine["refine"]
     end
 
-    agents -->|implement| review
-    agents -->|sprint| refine
-    agents -->|plan| security
+    agents -->|"work items<br/>and repos"| github-ado
+    agents -->|"Azure services<br/>and policies"| azure
+    agents -->|"documentation<br/>and guidance"| learn
 
-    security --> github-ado-mcp
-    security --> azure-mcp
-    subagents -->|refine| github-ado-mcp
-
-    subgraph subagents["Sub-agents (invoked by other agents)"]
+    subgraph mcp["MCP Servers"]
         direction LR
-        security["devsquad.security"]
-        review["devsquad.review"]
-        refine["devsquad.refine"]
-        review --> security
+        github-ado["GitHub /<br/>Azure DevOps"]
+        learn["Microsoft<br/>Learn"]
+        azure["Azure"]
     end
-
-    subgraph path["Path-specific Instructions"]
-        direction TB
-        instr-specs["specs"]
-        instr-adrs["adrs"]
-        instr-tasks["tasks"]
-        instr-envisioning["envisioning"]
-    end
-
-    subgraph skills["Skills"]
-        subgraph skills-row1[" "]
-            direction LR
-            work-item["work-item-creation"]
-            work-item-wf["work-item-workflow"]
-            platform["board-config"]
-            complexity["complexity-analysis"]
-            agentic["quality-gate"]
-        end
-        subgraph skills-row2[" "]
-            direction LR
-            gitbranch["git-branch"]
-            gitcommit["git-commit"]
-            pullrequest["pull-request"]
-            nexttask["next-task"]
-        end
-        subgraph skills-row3[" "]
-            direction LR
-            docstyle["documentation-style"]
-            reasoning["reasoning"]
-        end
-    end
-
-    subgraph hooks["Hooks"]
-        subgraph sessionStart["sessionStart"]
-            detect-platform["detect-repo-platform"]
-        end
-        subgraph postToolUse["postToolUse"]
-            direction LR
-            validate-tags["validate-work-item-tags"]
-            lint-markdown["lint-markdown"]
-        end
-    end
-
-    skills -.->|enriches<br/>context| agents
-    path -.->|enriches<br/>context| agents
-    agents -.->|deterministic<br/>guardrails| hooks
 ```
 
-### Main Components
+Solid arrows: explicit invocation or tool calls. Dashed arrows: optional path.
+
+### Extension Mechanisms
+
+Four mechanisms extend agent capabilities without modifying agent code. Each has a different [activation model](./decisions/0004-activation-model.md):
+
+```mermaid
+flowchart TD
+    instructions["Path-specific Instructions<br/>(deterministic, by file glob)"]
+    skills["Skills<br/>(semantic, by context relevance)"]
+
+    instructions -.->|"auto-injected when<br/>file glob matches"| agents["Specialist Agents"]
+    skills -.->|"auto-injected when<br/>context is relevant"| agents
+
+    agents -->|"post-action<br/>validation"| hooks["Hooks<br/>(deterministic, by lifecycle event)"]
+    agents -->|"tool calls to<br/>external systems"| mcpservers["MCP Servers<br/>(external system access)"]
+```
+
+Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows: agent-initiated.
+
+### Component Catalog
 
 - [Specialist Agents and Sub-agents](./core-components/custom-agents.md)
 - [Skills](./core-components/skills.md)
