@@ -25,7 +25,7 @@ The DevSquad Delivery Framework aims to bring structure to that speed. It embeds
 
 ## What this is not
 
-This framework is not a vibe-coding tool. It does not accept a single prompt and autonomously produce a finished system. Every phase includes human checkpoints: agents ask clarifying questions, propose plans for review, and wait for confirmation before executing high-impact changes.
+This framework is not a vibe-coding tool. It does not accept a single prompt and autonomously produce a finished system. Agents ask clarifying questions, propose plans for review, and wait for approval before acting.
 
 If you are looking for one-shot, fully autonomous code generation without review, this framework will feel like friction — and that friction is intentional.
 
