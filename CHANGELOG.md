@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.3.0] - 2026-03-19
+
+### Added
+
+- **New skill (`diagram-design`)**: Design and review guidance for architecture diagrams covering readability principles, review checklist, visual design (shapes, colors, accessibility), tool selection (Mermaid vs Draw.io), and mermaid diagram type selection
+- **`azure/wellarchitectedframework` tool** added to `devsquad.plan` and `devsquad.security` agents
+
+### Changed
+
+- **Architecture diagrams split**: Replaced the single monolithic diagram (~35 elements) in the framework README with two focused diagrams: Agent Interaction (~17 elements) and Extension Mechanisms (5 elements). Added missing `extend` agent, labeled all arrows, and added legends
+- **`documentation-style` skill**: Extracted all diagram-related content to the new `diagram-design` skill. The diagrams section now references `diagram-design` instead of inlining rules
+- **Plugin README**: Enhanced with lifecycle flow, integrations, and refined introduction
+
+### Fixed
+
+- **Mermaid line breaks**: Replaced `\n` with `<br/>` in all mermaid diagram labels (mermaid does not interpret `\n` as line breaks)
+- **Broken subgraph reference**: Fixed `subagents` subgraph being used as a node source in the architecture diagram
+
+## [v0.2.0] - 2026-03-17
+
+### Changed
+
+- **Agent namespace**: Renamed all `sdd.*` agents to `devsquad.*` namespace
+- **Plugin restructure**: Restructured as self-contained plugin for VS Code compatibility
+- **README**: Improved storytelling, added audience guide, consolidated usage section
+
+### Fixed
+
+- **Duplicate agents**: Removed symlinks causing duplicate agents in VS Code
+- **Plugin install**: Restored root-level `plugin.json` for direct install, added marketplace manifest
+- **Mermaid format**: Converted Mermaid blocks to GitHub format
+- **Cleanup**: Removed redundant root `.mcp.json` and workspace hooks config
+
 ## [v0.1.0] - 2026-03-13
 
 Initial release of the DevSquad Delivery Framework.
