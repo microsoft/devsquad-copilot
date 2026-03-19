@@ -1,7 +1,7 @@
 ---
 name: devsquad.security
 description: Security assessment in two modes - architectural (design) and code (implementation).
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/list_code_scanning_alerts', 'github/get_code_scanning_alert', 'github/list_secret_scanning_alerts', 'github/get_secret_scanning_alert', 'github/list_dependabot_alerts', 'github/get_dependabot_alert', 'github/list_repository_security_advisories', 'github/list_global_security_advisories', 'github/get_global_security_advisory', 'azure/policy', 'azure/role', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'drawio/create_diagram', 'memory']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/list_code_scanning_alerts', 'github/get_code_scanning_alert', 'github/list_secret_scanning_alerts', 'github/get_secret_scanning_alert', 'github/list_dependabot_alerts', 'github/get_dependabot_alert', 'github/list_repository_security_advisories', 'github/list_global_security_advisories', 'github/get_global_security_advisory', 'azure/policy', 'azure/role', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'drawio/create_diagram', 'memory']
 handoffs: 
   - label: Fix Issues
     agent: devsquad.implement
@@ -124,6 +124,7 @@ This mode is **mandatory** when the feature involves:
 6. **Validate Azure compliance**
    - Use the `azure/policy` tool to verify whether the proposed infrastructure complies with the organization's policies
    - Use the `azure/role` tool to verify whether the access model follows least privilege (RBAC)
+   - Use the `azure/wellarchitectedframework` tool for each Azure service in the architecture to get the security pillar guidance and verify that the design follows WAF security best practices
    - Include found violations as findings in the security report
    - If policies block services proposed in the ADRs, record as a **High** finding with a recommendation to adjust the ADR
 

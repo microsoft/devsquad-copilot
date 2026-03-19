@@ -41,6 +41,7 @@
 |----------|-------|--------|
 | Architecture | `cloudarchitect`, `deploy` | `plan`, `decompose` |
 | Pricing | `pricing` | `plan` |
+| Well-Architected | `wellarchitectedframework` | `plan`, `security` |
 | Best Practices | `get_bestpractices`, `bicepschema`, `azureterraformbestpractices` | `implement` |
 | Compliance | `policy`, `role` | `security` |
 

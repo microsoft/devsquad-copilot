@@ -1,7 +1,7 @@
 ---
 name: devsquad.plan
 description: Execute the implementation planning flow using the plan template to generate design artifacts.
-tools: ['agent', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory']
+tools: ['agent', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory']
 agents: ['devsquad.security']
 handoffs: 
   - label: Create Tasks
@@ -178,6 +178,7 @@ I recommend creating a "DevSecOps" feature or "Infrastructure" epic.
 **If the project deploys to Azure** and the Azure MCP Server is available:
 - Use the `azure/deploy` tool (pipeline guidance) to obtain CI/CD pipeline guidance by app type
 - Use the `azure/deploy` tool (IaC guidance) to obtain IaC best practices (Bicep or Terraform) per the team's decision
+- Use the `azure/wellarchitectedframework` tool with each Azure service in the architecture to get pillar-specific best practices (e.g., reliability patterns, performance recommendations)
 - Incorporate the obtained guidance into the engineering practices suggestions
 
 #### 2.2 Systemic Impact Analysis
@@ -368,6 +369,7 @@ After receiving the sub-agent's result, present the verdict to the user:
 
 When creating ADRs that involve infrastructure services (compute, data, messaging, networking):
 
+- **Well-Architected**: Use the `azure/wellarchitectedframework` tool to get service-specific guidance across the five pillars (reliability, security, cost optimization, operational excellence, performance efficiency). Include relevant recommendations in the ADR's option evaluation.
 - **Cost**: Estimate monthly cost per environment (dev/staging/prod) and include in the ADR.
 - **IaC**: Record the provisioning approach (IaC vs manual) in the ADR.
 - **Observability**: If the ADR defines a service, consider whether it needs monitoring and alerts — if so, record as a requirement in the ADR.
