@@ -5,7 +5,7 @@ GitHub Copilot agents that bring structure to iterative delivery: from business 
 Every phase includes human checkpoints: agents ask clarifying questions, propose plans for review, and wait for confirmation before executing high-impact changes.
 
 > [!WARNING]
-> This project is experimental and under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
+> This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
 
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
