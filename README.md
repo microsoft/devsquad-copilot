@@ -63,6 +63,13 @@ An extension agent guides creation of new skills, agents, hooks, and instruction
 * **If using VS Code**: enable in extension settings:
   * `github.copilot.advanced.experimental.memory` (optional, for cross-session memory)
 
+#### Authentication
+
+Sign in to GitHub before first use so the framework can manage issues, pull requests, and board operations.
+
+* **VS Code**: Follow the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup) to install the extension and sign in to your GitHub account.
+* **Copilot CLI**: Follow the [CLI authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli) to authenticate via the GitHub CLI.
+
 ### Installation
 
 #### Option 1: Via Copilot CLI

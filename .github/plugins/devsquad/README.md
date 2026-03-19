@@ -55,7 +55,7 @@ Extensions live in the project repository and are picked up automatically. See t
 ## Prerequisites
 
 - Node.js 18+ (for lint hooks and MCP servers)
-- VS Code 1.111.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+- VS Code 1.111.0+ with GitHub Copilot set up and signed in. Follow the [official setup guide](https://code.visualstudio.com/docs/copilot/setup) if needed.
 
 For the full documentation, troubleshooting, and contributing guidelines, visit the [repository](https://github.com/microsoft/devsquad-copilot).
 

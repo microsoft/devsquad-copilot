@@ -49,6 +49,15 @@ If using the plugin in a **consumer project** (not this repo), verify that `hook
 
 3. **Stale cache**: Clear the plugin cache as described in [Plugin not found after update](#plugin-not-found-after-update).
 
+## GitHub authentication errors
+
+**Symptom**: Work item creation, pull requests, or board operations fail with permission or authentication errors (e.g., `HTTP 401` or `could not determine current user`).
+
+**Possible causes and fixes**:
+
+1. **VS Code users**: The Copilot extension handles authentication via the built-in MCP server. If you see auth errors, sign out and sign back in to GitHub from VS Code (`Ctrl+Shift+P` / `Cmd+Shift+P` then "GitHub: Sign Out", followed by "GitHub: Sign In"). See the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup) for detailed steps.
+2. **Copilot CLI users**: The GitHub CLI (`gh`) must be installed and authenticated. Run `gh auth login` and verify with `gh auth status`. If already logged in but still failing, try `gh auth refresh` to renew the token.
+
 ## MCP servers not connecting
 
 **Symptom**: Skills that depend on MCP servers (Microsoft Learn, Azure) show connection errors.
