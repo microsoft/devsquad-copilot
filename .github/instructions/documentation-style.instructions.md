@@ -13,7 +13,4 @@ When editing markdown documentation, follow these formatting rules:
 - Do not use promotional language: "it's not just X, it's Y", "goes beyond...", "more than just...". Describe directly.
 - Do not use rhetorical questions followed by obvious answers. State the assertion directly.
 - Prefer lists and tables over long paragraphs.
-- Mermaid: detect the platform via the remote (`git config --get remote.origin.url`).
-  - Azure DevOps (`dev.azure.com` or `visualstudio.com`): use `:::mermaid` and `:::`
-  - GitHub (`github.com`): use code block with ` ```mermaid ` and ` ``` `
-  - Convert existing blocks to the correct format for the platform.
+- For diagrams (design, review, Mermaid platform rendering, tool selection), follow the `diagram-design` skill.

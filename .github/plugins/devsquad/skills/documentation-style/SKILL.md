@@ -31,17 +31,7 @@ This guide defines standards for all documentation generated in the project.
 
 ## Diagrams
 
-- **Mermaid**: use for simple inline diagrams in markdown (flows, sequences, relationships).
-  - **GitHub**: use code block with ` ```mermaid ` and close with ` ``` `
-  - **Azure DevOps**: use `:::mermaid` and close with `:::`
-  - Detect the repository by remote: `git config --get remote.origin.url`
-    - If it contains `dev.azure.com` or `visualstudio.com` → Azure DevOps
-    - If it contains `github.com` → GitHub
-  - **Mandatory conversion**: When creating or editing markdown files, check and convert all Mermaid code blocks to the correct platform format:
-    - Azure DevOps: convert ` ```mermaid ` → `:::mermaid` and ` ``` ` → `:::`
-    - GitHub: convert `:::mermaid` → ` ```mermaid ` and `:::` → ` ``` `
-- **Draw.io**: use for system architecture diagrams or more complex diagrams. Read `references/drawio-guide.md` for creation, export, and recommended workflow instructions.
-- Keep diagrams simple: avoid colors, custom styles, icons, and excessive formatting. The focus should be on structure and relationships, not aesthetics.
+For diagram design, review, tool selection (Mermaid vs Draw.io), and platform rendering rules, use the `diagram-design` skill.
 
 ## Document Structure
 
