@@ -2,6 +2,8 @@
 
 **Location**: `.vscode/mcp.json`
 
+Adding an MCP server to `.vscode/mcp.json` makes its tools available to the CLI, but plugin agents will only use tools listed in their `tools:` frontmatter. To inject consumer MCP server tools into existing plugin agents, use [Tool Extensions](../extensibility.md#tool-extensions).
+
 ## GitHub
 
 [github/github-mcp-server](https://github.com/github/github-mcp-server) — Issue, PR, project, label, security, and CI/CD management.

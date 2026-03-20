@@ -51,10 +51,6 @@ Specs decompose into prioritized tasks by user story, synced to GitHub Issues or
 * **Microsoft Learn and Azure**: architecture and infra as code best practices, documentation lookup, code samples, and retail pricing estimates
 * **Git**: branch strategy enforcement, conventional commits, and pull requests with automated review
 
-### Extensibility
-
-An extension agent guides creation of new skills, agents, hooks, and instructions for specific stacks, domains, or conventions tailored to the project needs.
-
 ## Getting Started
 
 ### Prerequisites
@@ -132,6 +128,25 @@ Invoke a specific agent based on your current state:
 | An existing backlog that needs organization | `devsquad.refine` to detect inconsistencies and classify readiness |
 
 For the full list of agents, see the [agent catalog](docs/framework/core-components/custom-agents.md).
+
+## Extensibility
+
+The `devsquad.extend` agent guides creation of new components tailored to the project. It recommends the right mechanism, scaffolds files, and validates the result.
+
+**Examples of what can be extended:**
+
+| Need | Mechanism | Example prompt |
+|------|-----------|----------------|
+| Code conventions for a file type | Instruction | `Add a rule that all Python files use Google-style docstrings` |
+| Reusable checklist or domain knowledge | Skill | `Create a skill for our API error handling patterns` |
+| External tools in existing agents | Tool Extension | `I want the agents to use Confluence and Jira tools` |
+| Specialist for complex multi-step tasks | Agent | `Create an agent that handles database migrations` |
+| Automated validation after edits | Hook | `Add a hook that validates OpenAPI specs after editing` |
+
+> [!NOTE]
+The **Tool Extensions** capability is currently in preview: inject tools from any MCP server into existing plugin agents. The `devsquad.extend` agent handles the full setup: MCP server config, extension YAML, and sync.
+
+For the full technical reference, see the [Extensibility guide](docs/framework/extensibility.md).
 
 ## Tips for Effective Sessions
 

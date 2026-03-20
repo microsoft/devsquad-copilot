@@ -13,6 +13,7 @@ This documentation guides **when and how** to extend the framework, focusing on 
 | [Agents](#agents) | Explicit (invocation) or delegation (sub-agent) | Isolated context | Isolated |
 | [Hooks](#hooks) | Automatic (lifecycle event) | Post-action, deterministic | Zero (external script) |
 | [MCP Servers](#mcp-servers) | Per tool call | Tools available to agents | On demand |
+| [Tool Extensions](#tool-extensions) | Per sync | Inject any MCP tools into existing agents | Same as base agent |
 
 ### When to use each mechanism
 
@@ -31,7 +32,9 @@ flowchart TD
     q2 -->|No| q4{"Is it a deterministic<br>post-action<br>validation?"}
     q4 -->|Yes| hook["**Hook**<br>lifecycle script"]
     q4 -->|No| q5{"Does it need access<br>to an external system<br>via API?"}
-    q5 -->|Yes| mcp["**MCP Server**<br>tools for agents"]
+    q5 -->|Yes| q6{"Should existing plugin agents<br>use these tools?"}
+    q6 -->|Yes| toolext["**Tool Extension**<br>overlay generation"]
+    q6 -->|No| mcp["**MCP Server**<br>standalone config"]
     q5 -->|No| agent2["**Agent or Skill**<br>depends on volume"]
 ```
 
@@ -356,6 +359,187 @@ MCP Servers expose tools from external systems to agents. They allow agents to i
 
 ---
 
+## Tool Extensions [Preview]
+
+**Location**: `.github/devsquad/tool-extensions/*.yaml`
+
+Tool Extensions solve a fundamental limitation: when the framework is installed as a plugin, agent `tools:` arrays are read-only. Consumers cannot add MCP server tools to plugin agents without duplicating the entire agent file. Tool Extensions automate the generation of workspace agent overrides with merged tools.
+
+### How it works
+
+1. Consumer adds an MCP server to `.vscode/mcp.json` (standard Copilot config)
+2. Consumer creates a tool-extension YAML declaring which tools to add to which agent
+3. A sync script reads the plugin agent, merges the tools, and generates a workspace override in `.github/agents/`
+4. The workspace override has the original agent's full content plus the consumer's tools and instructions
+5. First-found-wins: the workspace override takes precedence over the plugin agent
+
+### Tool-extension YAML format
+
+```yaml
+# .github/devsquad/tool-extensions/<agent-id>.yaml
+tools:
+  - <namespace>/<tool_name>
+  - <namespace>/<tool_name>
+instructions: |
+  ## <Integration Name>
+
+  When to use: [describe scenarios where the agent should use these tools]
+
+  - `<namespace>/<tool_name>`: [description and expected parameters]
+```
+
+### Example: adding Confluence and Jira tools to the implement agent
+
+#### 1. Configure MCP servers
+
+```json
+// .vscode/mcp.json
+{
+  "servers": {
+    "confluence": {
+      "type": "http",
+      "url": "https://myteam.atlassian.net/wiki/mcp",
+      "headers": { "Authorization": "Bearer ${CONFLUENCE_TOKEN}" }
+    },
+    "jira": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@anthropic/jira-mcp-server"],
+      "env": { "JIRA_URL": "https://myteam.atlassian.net", "JIRA_TOKEN": "${JIRA_TOKEN}" }
+    }
+  }
+}
+```
+
+#### 2. Create tool-extension YAML
+
+```yaml
+# .github/devsquad/tool-extensions/devsquad.implement.yaml
+tools:
+  - confluence/search_pages
+  - confluence/get_page
+  - jira/get_issue
+  - jira/transition_issue
+  - jira/add_comment
+instructions: |
+  ## Confluence Integration
+
+  When the task, spec, or plan references external documentation (Confluence
+  pages, architecture docs, wiki links), use Confluence tools for context:
+
+  - `confluence/search_pages`: Search by keyword.
+  - `confluence/get_page`: Retrieve full page content by ID after search.
+
+  ## Jira Integration
+
+  When the task references a Jira ticket (pattern: PROJ-1234):
+
+  - `jira/get_issue`: Read full ticket context before implementation.
+  - `jira/transition_issue`: After PR creation, transition to "In Review".
+  - `jira/add_comment`: Add implementation notes with PR link.
+```
+
+#### 3. Run sync
+
+```bash
+.github/devsquad/sync-tool-extensions.sh
+```
+
+The `devsquad.extend` agent copies this script from the plugin to the consumer project during scaffolding. If running manually, copy it first from the plugin install directory (see [Plugin discovery](#plugin-discovery-across-clients-and-operating-systems)).
+
+This generates `.github/agents/devsquad.implement.agent.md` with:
+- All original tools (35) plus the consumer's tools (5) in the `tools:` array
+- The original agent body (500+ lines) preserved
+- Consumer instructions appended at the end
+
+#### 4. Optionally create a config skill
+
+```yaml
+# .github/skills/team-config/SKILL.md
+---
+name: team-config
+description: Team tool configuration for Confluence and Jira. Use when tools
+  from confluence/* or jira/* are invoked. Do not use for GitHub or ADO.
+---
+## Confluence Spaces
+- Architecture: space key "ARCH"
+- API docs: space key "API"
+
+## Jira
+- Ticket prefix: PROJ
+- After PR: transition to "In Review"
+```
+
+### Consumer directory structure
+
+```
+consumer-project/
+├── .github/
+│   ├── agents/
+│   │   └── devsquad.implement.agent.md    # GENERATED (do not edit)
+│   └── devsquad/
+│       ├── sync-tool-extensions.sh        # Copied from plugin
+│       ├── tool-extensions/
+│       │   ├── devsquad.implement.yaml    # Consumer-authored
+│       │   └── devsquad.plan.yaml         # Consumer-authored
+│       └── tool-extensions.lock           # Generated by sync
+├── .vscode/
+│   └── mcp.json                           # MCP server config
+```
+
+### Re-syncing after plugin updates
+
+When the devsquad plugin is updated (`copilot plugin update devsquad`), the base agent may have new tools or instructions. Re-run the sync script to regenerate overrides from the updated plugin:
+
+```bash
+.github/devsquad/sync-tool-extensions.sh
+```
+
+A `sessionStart` hook automatically warns when overrides are out of sync.
+
+### Plugin discovery across clients and operating systems
+
+The sync script locates plugin agents automatically regardless of how the plugin was installed. The plugin name defaults to `devsquad` but forks can override it via `DEVSQUAD_PLUGIN_NAME`.
+
+| Client | Path pattern |
+|--------|-------------|
+| In-repo (development) | `.github/plugins/<plugin-name>/agents/` |
+| Copilot CLI | `~/.copilot/installed-plugins/**/*<plugin-name>*/agents/` |
+| VS Code (macOS) | `~/Library/Application Support/Code/agentPlugins/**/*<plugin-name>*/agents/` |
+| VS Code (Linux) | `~/.config/Code/agentPlugins/**/*<plugin-name>*/agents/` |
+| VS Code (Windows) | `%APPDATA%/Code/agentPlugins/**/*<plugin-name>*/agents/` |
+
+**Environment variables**:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `DEVSQUAD_PLUGIN_NAME` | `devsquad` | Plugin directory name used in discovery and file paths |
+| `DEVSQUAD_PLUGIN_DIR` | (auto-discovered) | Explicit path to the plugin agents directory, skips discovery |
+
+```bash
+# Standard usage
+.github/plugins/devsquad/hooks/sync-tool-extensions.sh
+
+# Fork with renamed plugin directory
+DEVSQUAD_PLUGIN_NAME=acme-sdd .github/plugins/acme-sdd/hooks/sync-tool-extensions.sh
+
+# Explicit path override
+DEVSQUAD_PLUGIN_DIR=/path/to/agents .github/plugins/devsquad/hooks/sync-tool-extensions.sh
+```
+
+### Advantages and disadvantages
+
+| Advantage | Disadvantage |
+|-----------|--------------|
+| Agnostic: inject any MCP server tools into any agent | Generated overrides must be re-synced after plugin updates |
+| Full agent body preserved (not just tools) | Generated file is large (full agent copy + extensions) |
+| Consumer only maintains small YAML files | Workspace agent override must be committed to the repo |
+| Staleness detection via sessionStart hook | First-found-wins means the override fully replaces the plugin agent |
+| Works with any MCP server (Confluence, Jira, Slack, Datadog, etc.) | |
+| `devsquad.extend` agent can scaffold the setup | |
+
+---
+
 ## Common Extension Scenarios
 
 ### Project with specific stack
@@ -433,7 +617,8 @@ MCP Servers expose tools from external systems to agents. They allow agents to i
 | 50-200 lines | When implementing (not for typos) | **Skill** (semantic) |
 | > 200 lines or conditional logic | Specific scenarios | **Agent** (sub-agent) |
 | Deterministic validation | After every edit | **Hook** (script) |
-| External system access | When agent needs data | **MCP Server** |
+| External system access (standalone) | When agent needs data | **MCP Server** |
+| External system access (in existing agents) | After sync | **Tool Extension** |
 
 ---
 
@@ -449,6 +634,7 @@ When the framework is installed as a plugin (`copilot plugin install`), consumer
 | Skill | Yes | Create in the project's `.github/skills/`. Enriches plugin agents automatically via semantic relevance |
 | Agent direct | Yes | Create in the project's `.github/agents/`. Explicitly invoked by the user |
 | Hook | Yes | Create `hooks.json` in the project. Complements plugin hooks |
+| Tool Extension | Yes | Create tool-extension YAMLs and run sync script. Generates workspace agent overrides with consumer MCP tools injected |
 | Integrated sub-agent | No | Requires editing the parent agent's `agents:` frontmatter, which is in the plugin (read-only) |
 | Component override | With caution | Creating a component with the same name overrides the plugin's (first-found-wins) |
 

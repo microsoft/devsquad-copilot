@@ -22,6 +22,7 @@
 | [0007](./decisions/0007-work-decomposition.md) | Work Decomposition | Mandatory phases (Setup, Foundational, Stories, Polish) with grouping by user story |
 | [0008](./decisions/0008-testing-strategy-in-decomposition.md) | Testing Strategy in Decomposition | Tests integrated as acceptance criteria, without separate tasks |
 | [0009](./decisions/0009-developer-capacity.md) | Developer Capacity | One task at a time with soft concurrency limit |
+| [0010](./decisions/0010-agent-tool-extension.md) | Agent Tool Extension | Agent overlay generation for consumer tool injection [Preview] |
 
 ## Architecture Diagrams
 
