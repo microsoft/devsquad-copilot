@@ -366,7 +366,6 @@ main() {
     {
       echo "{"
       echo "  \"synced_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\","
-      echo "  \"plugin_agents_dir\": \"${plugin_agents_dir}\","
       echo "  \"agents\": {"
       # Remove trailing comma from last entry and empty lines
       printf '%b' "$lock_entries" | grep -v '^$' | sed '$ s/,$//'
