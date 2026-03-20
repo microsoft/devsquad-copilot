@@ -379,7 +379,8 @@ main() {
     if [ $synced -gt 0 ]; then
       echo ""
       echo "Generated agent overrides will take effect on next Copilot session."
-      echo "Remember to also configure the MCP servers in .vscode/mcp.json."
+      echo "Ensure MCP servers are configured in .vscode/mcp.json (required even"
+      echo "for plugin-provided servers). See: docs/framework/extensibility.md"
     fi
   fi
 }
