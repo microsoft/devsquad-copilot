@@ -35,6 +35,7 @@ Before scaffolding, read the corresponding example to replicate the structure:
 | Skill | `.github/skills/board-config/SKILL.md` | `.github/skills/{name}/` |
 | Agent | `.github/agents/devsquad.review.agent.md` | `.github/agents/` |
 | Hook | `.github/hooks/detect-repo-platform.sh` + `hooks.json` | `.github/hooks/` |
+| Tool Extension | `docs/framework/extensibility.md` section "Tool Extensions" | `.github/devsquad/tool-extensions/` |
 
 ## User Input: `$ARGUMENTS`
 
@@ -56,7 +57,10 @@ Otherwise, ask what kind of knowledge the user wants to add: code conventions, d
 | Reusable by multiple agents, 50-200 lines | **Skill** (semantic activation) |
 | Volume > 200 lines or requires its own tools | **Agent** |
 | Deterministic post-action validation | **Hook** (script) |
-| Access to external system via API | **MCP Server** (out of scope, direct to `docs/framework/core-components/mcp-servers.md`) |
+| Inject MCP server tools into existing agents | **Tool Extension** (overlay generation) [Preview] |
+| Access to external system via API (standalone) | **MCP Server** (direct to `docs/framework/core-components/mcp-servers.md`) |
+
+**Tool Extension vs. direct MCP Server**: If the consumer wants tools from an MCP server to be usable by existing plugin agents (e.g., `devsquad.implement`), they need a Tool Extension. Adding the MCP server to `.vscode/mcp.json` alone is not enough because the agent's `tools:` array does not include the new tools. The Tool Extension mechanism generates workspace agent overrides with the merged tools list.
 
 For agents, check whether the parent is editable (see "Editability Detection" section).
 
@@ -90,6 +94,47 @@ description: Python implementation patterns for the project. Use when
 
 **Hook**: idempotent script with `set -euo pipefail`. Verify tools with `command -v`. Register in `hooks.json` (append to array if it already exists).
 
+**Tool Extension**: When the user wants to inject MCP server tools into existing plugin agents, scaffold the following:
+
+1. **MCP server configuration** (`.vscode/mcp.json`): Add the server entry with environment variable placeholders for credentials. Verify the server is accessible.
+
+2. **Tool extension YAML** (`.github/devsquad/tool-extensions/<agent-id>.yaml`): Declare which tools to add and optionally append usage instructions to the agent body.
+
+   ```yaml
+   # .github/devsquad/tool-extensions/devsquad.implement.yaml
+   tools:
+     - <namespace>/<tool_name>
+     - <namespace>/<tool_name>
+   instructions: |
+     ## <Tool Name> Integration
+
+     When to use: [describe scenarios]
+
+     - `<namespace>/<tool_name>`: [description and parameters]
+   ```
+
+3. **Copy sync scripts** to the consumer project for easy access:
+
+   ```bash
+   mkdir -p .github/devsquad
+   cp "$(find .github/plugins/devsquad/hooks/sync-tool-extensions.sh 2>/dev/null || \
+         find ~/.copilot/installed-plugins -name sync-tool-extensions.sh -path "*/devsquad/*" 2>/dev/null | head -1 || \
+         find "${HOME}/Library/Application Support/Code/agentPlugins" ~/.config/Code/agentPlugins "${APPDATA:-/dev/null}/Code/agentPlugins" \
+              -name sync-tool-extensions.sh -path "*/devsquad/*" 2>/dev/null | head -1)" \
+       .github/devsquad/sync-tool-extensions.sh
+   chmod +x .github/devsquad/sync-tool-extensions.sh
+   ```
+
+   If the automatic copy fails, locate the plugin install directory and copy manually:
+   - Copilot CLI: `~/.copilot/installed-plugins/.../*devsquad*/hooks/sync-tool-extensions.sh`
+   - VS Code (macOS): `~/Library/Application Support/Code/agentPlugins/.../*devsquad*/hooks/sync-tool-extensions.sh`
+
+4. **Run sync**: Execute `.github/devsquad/sync-tool-extensions.sh` to generate the workspace agent override in `.github/agents/`. The generated file merges the plugin agent's full content with the consumer's additional tools and instructions.
+
+5. **Optional config skill** (`.github/skills/<name>/SKILL.md`): If the tools need project-specific context (which spaces to search, which project prefixes to use), create a companion skill.
+
+Multiple extension files can target different agents. Each generates an independent workspace override.
+
 ### 5. Validate quality
 
 | Mechanism | Checklist |
@@ -98,6 +143,7 @@ description: Python implementation patterns for the project. Use when
 | Skill | Keywords in description? "Use when" + "Do not use for"? 50-200 lines? |
 | Agent | Specific description? Minimal tools? Conductor Mode? |
 | Hook | Idempotent? `command -v`? Reasonable timeout? |
+| Tool Extension | MCP server in `.vscode/mcp.json`? Tool names match server namespace? Instructions explain when/how to use? Sync script copied to `.github/devsquad/`? Sync ran successfully? |
 
 ### 6. Test activation
 
@@ -120,11 +166,12 @@ test -f .github/agents/{parent}.agent.md && echo "EDITABLE" || echo "READ_ONLY"
 **Editable**: create sub-agent, edit parent's frontmatter (`agents:`, `handoffs:`), add delegation logic, update docs.
 
 **Read-only** (comes from an installed plugin): it is not possible to create integrated sub-agents. Suggest alternatives:
-1. **Skill**: enriches any plugin agent automatically via semantic relevance
-2. **Direct agent**: explicitly invoked by the user
-3. **Parent override**: create `.github/agents/{parent}.agent.md` in the project (first-found-wins, completely replaces the original)
+1. **Tool Extension**: if the goal is to add MCP server tools to an existing agent, create a tool-extension YAML and run the sync script. This generates a workspace override with merged tools.
+2. **Skill**: enriches any plugin agent automatically via semantic relevance
+3. **Direct agent**: explicitly invoked by the user
+4. **Parent override**: create `.github/agents/{parent}.agent.md` in the project (first-found-wins, completely replaces the original)
 
-Instructions, skills, hooks, and direct agents can **always** be created in the project, regardless of plugin editability.
+Instructions, skills, hooks, tool extensions, and direct agents can **always** be created in the project, regardless of plugin editability.
 
 ---
 
