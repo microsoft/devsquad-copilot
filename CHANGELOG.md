@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.4.0] - 2026-03-20
+
+### Added
+
+- **Tool Extensions [Preview]**: Consumers can inject any MCP server tools (Confluence, Jira, Slack, Datadog, SonarQube, custom APIs) into existing plugin agents via YAML patches and a sync script
+  - `sync-tool-extensions.sh`: Generates workspace agent overrides by merging plugin agents with consumer tool-extension YAML files. Multi-platform plugin discovery (Copilot CLI, VS Code) across macOS, Linux, and Windows
+  - `detect-tool-extensions.sh`: sessionStart hook that warns when extensions are unsynced, stale, or the plugin version changed
+  - Configurable plugin name via `DEVSQUAD_PLUGIN_NAME` for forks, and explicit path override via `DEVSQUAD_PLUGIN_DIR`
+  - Tool name validation, atomic writes, overwrite protection for manually-created agent overrides, and empty YAML fail-fast
+- **ADR-0010 (Agent Tool Extension)**: Documents the decision to use agent overlay generation over skill bridge, fixed extension port, and native extend YAML approaches
+- **`devsquad.extend` agent**: Updated with Tool Extension as a mechanism option, scaffolding steps (MCP config, YAML template, script copy, sync), and quality checklist
+
+### Changed
+
+- **README**: Expanded Extensibility section with prompt examples for all extension mechanisms (instructions, skills, agents, hooks, tool extensions). Moved to its own top-level section after Usage
+- **`extensibility.md`**: Added Tool Extensions section with YAML contract, consumer walkthrough, multi-platform plugin discovery table, environment variables reference, and decision guide updates
+- **`mcp-servers.md`**: Added cross-reference to Tool Extensions for injecting tools into plugin agents
+- **Framework README**: Added ADR-0010 to the ADR table
+
 ## [v0.3.0] - 2026-03-19
 
 ### Added
