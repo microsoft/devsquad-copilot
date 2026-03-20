@@ -11,6 +11,11 @@
         "type": "command",
         "bash": ".github/plugins/devsquad/hooks/detect-branching-strategy.sh",
         "timeoutSec": 10
+      },
+      {
+        "type": "command",
+        "bash": ".github/plugins/devsquad/hooks/detect-tool-extensions.sh",
+        "timeoutSec": 10
       }
     ],
     "postToolUse": [
