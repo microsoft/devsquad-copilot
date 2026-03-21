@@ -28,6 +28,24 @@ Without `[CONDUCTOR]` → normal interactive flow.
 - Skill `reasoning` (reasoning log and handoff envelope)
 - Skill `work-item-creation` (if creating feature on the board)
 
+## Spec Type Detection
+
+Before any context loading, determine the spec type. Analyze the user's description for migration signals:
+
+**Migration signals**: "migrate", "migration", "lift-and-shift", "rehost", "replatform", "move to Azure/AWS/GCP", "cutover", "on-prem to cloud", "datacenter", "environment migration".
+
+```
+What type of specification is this?
+
+[F] Feature (new functionality, user behavior) [Recommended if no migration signals detected]
+[M] Migration (lift-and-shift, rehost, replatform)
+```
+
+If migration signals are detected in the description, recommend Migration as the default choice.
+
+**If Feature**: continue with the feature flow below (current behavior).
+**If Migration**: switch to the Migration Flow section at the end of this document.
+
 ## Context Detection
 
 On startup, check what already exists:
@@ -37,8 +55,9 @@ Checking existing context...
 
 - docs/envisioning/README.md: [exists/does not exist]
 - docs/architecture/decisions/*.md: [N ADRs found]
-- docs/features/<feature>/plan.md: [exists/does not exist]
-- Board: [feature exists/does not exist]
+- docs/features/<feature>/plan.md: [exists/does not exist] (feature spec)
+- docs/migrations/<migration>/plan.md: [exists/does not exist] (migration spec)
+- Board: [feature/migration exists/does not exist]
 ```
 
 **Adaptive behavior**:
@@ -318,3 +337,149 @@ Scan the spec for each category and mark status (Clear / Partial / Missing):
 - After response, update the spec immediately
 - Add a `## Clarifications` section with question/answer history
 - If no critical ambiguity found, inform and suggest proceeding to `/devsquad.plan`
+
+---
+
+## Migration Flow
+
+This flow activates when the user selects **Migration** during Spec Type Detection.
+
+### Migration Short Name
+
+1. **Generate a concise short name** (2-4 words) identifying the migration:
+   - Analyze the description and extract the system being migrated and target
+   - Use kebab-case format (e.g., "api-azure-migration", "db-cloud-rehost")
+   - Preserve technical terms and platform names
+   - Examples:
+     - "Migrate our API from on-prem VMs to Azure" -> "api-azure-migration"
+     - "Move SQL Server to Azure SQL Managed Instance" -> "sqlserver-azure-rehost"
+     - "Lift and shift the payment service to AKS" -> "payment-aks-migration"
+
+### Migration Board Check
+
+2. **Check migration on the board** (same as feature flow):
+   - Read `.memory/board-config.md` to identify the configured platform
+   - Search for existing migration work item
+   - If not found, offer to create it
+
+### Migration Directory
+
+3. **Check existing migrations**:
+   - Check if a directory already exists at `docs/migrations/<short-name>/`
+   - If it exists, ask if the user wants to update or create a new version
+   - If it doesn't exist, create the directory
+
+### Migration Template
+
+4. **Load template**: Read `docs/migrations/TEMPLATE.md` to understand the required sections.
+
+### Migration Execution Flow
+
+5. **Follow this execution flow**:
+
+    1. Analyze user description from the Input
+       If empty: ERROR "No migration description provided"
+    2. Extract key migration concepts from the description
+       Identify: source systems, target platforms, data stores, integrations, constraints
+    3. For unclear aspects:
+       - Make informed assumptions based on context and infrastructure standards
+       - Only mark with [NEEDS CLARIFICATION: specific question] if:
+         - The choice significantly impacts migration strategy or risk
+         - Multiple valid approaches exist with different downtime/cost trade-offs
+         - No reasonable default exists
+       - **LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total**
+       - Prioritize clarifications by impact: data safety > downtime > parity > operational
+    4. Fill in System Mapping section
+       Every in-scope component must have source and target
+       If source systems are unclear: ERROR "Unable to determine system mapping"
+    5. Fill in Environment Parity section
+       List specific version constraints for runtime, OS, DB, dependencies
+    6. Fill in Migration Scenarios & Tests section
+       Each scenario represents a migration phase with Given/When/Then acceptance
+       Minimum 2 risk scenarios: one data-related, one infrastructure-related
+    7. Fill in Migration Strategy section
+       Define approach, deployment model, traffic switch, sync strategy
+    8. Fill in Data Migration section
+       Include volume estimate, sync strategy, validation rules, data freeze plan
+    9. Fill in Cutover Plan and Rollback Plan sections
+       Cutover: ordered steps from pre-validation to success declaration
+       Rollback: trigger conditions, revert steps, maximum rollback time
+    10. Generate Functional Requirements (parity-focused)
+        Each requirement asserts post-migration behavioral equivalence
+    11. Generate Non-Functional Requirements (required for migrations)
+        Quantified thresholds for latency, throughput, availability, error rate
+    12. Define Success Criteria
+        Must include: data integrity, downtime, parity, rollback test metrics
+    13. **Generate Conformance Criteria**
+        For each critical scenario, create a conformance case with:
+        - Specific input/condition
+        - Expected output (verifiable result)
+        - Tabular format: ID | Scenario | Input/Condition | Expected Output
+        Minimum 3 cases: parity validation, failure/rollback, edge case
+    14. **Generate Executive Summary**
+        Condense into 6 key points:
+        - Objective (one sentence)
+        - Source environment
+        - Target environment
+        - Scope
+        - Downtime target
+        - Primary success criterion
+    15. Return: SUCCESS (migration spec ready for planning)
+
+### Migration Spec Write
+
+6. **Write migration specification**:
+
+   **Before creating the file**, present the Reasoning Log in the format from skill `reasoning`. Wait for confirmation before saving.
+
+   Create `docs/migrations/<short-name>/spec.md` using the migration template structure.
+
+### Migration Validation
+
+7. **Basic validation**: Before finalizing, verify:
+   - Is the system mapping complete (every in-scope component has source and target)?
+   - Are all NFRs quantified with specific thresholds?
+   - Does the cutover plan have ordered steps with completion criteria?
+   - Is the rollback plan actionable (trigger, steps, time)?
+   - Are data validation rules specific (not just "validate data")?
+   - Are conformance criteria covering parity, failure, and edge cases?
+
+   **If issues found**: list and ask the user for resolution.
+
+### Migration Report
+
+8. **Report completion**: Report the spec file path (`docs/migrations/<short-name>/spec.md`) and readiness for the next phase (`/devsquad.plan`).
+
+   When performing handoff, include the Handoff Envelope per skill `reasoning`, including: spec.md, referenced existing ADRs, assumptions that impact infrastructure, implicit technical decisions that need an ADR (e.g., target platform choice, data sync mechanism), and risk scenarios identified.
+
+### Migration-Specific Guidelines
+
+- Focus on **WHAT** must be migrated and **WHERE** it goes, never on implementation-level HOW (IaC code, scripts).
+- Written for infrastructure leads and stakeholders, not solely for developers.
+- Out of Scope is critical: explicitly prevent accidental modernization (no schema changes, no API refactoring, no performance optimization unless in scope).
+- Migration phases are typically sequential, not independently deployable. Phase dependencies must be explicit.
+- Data migration is the core risk. Incomplete data specs are the primary cause of migration failures.
+- Rollback must be testable before the actual cutover.
+
+### Migration Success Criteria Guidelines
+
+Success criteria should be:
+
+1. **Measurable**: Include specific thresholds (percentages, durations, counts)
+2. **Technology-independent**: No mention of specific IaC tools, cloud CLI commands, or implementation
+3. **Operations-focused**: Describe outcomes from the infrastructure/operations perspective
+4. **Verifiable**: Can be validated by automated checks or monitoring
+
+**Good examples**:
+
+- "Zero data loss: 100% row count and checksum match"
+- "Total downtime during cutover is less than 5 minutes"
+- "API response parity: identical status codes and response bodies for all endpoints"
+- "Rollback completes within 10 minutes in pre-cutover test"
+
+**Bad examples** (implementation-focused):
+
+- "Terraform apply succeeds" (tool-specific)
+- "Azure SQL MI provisioned in West US 2" (implementation detail)
+- "CDC pipeline latency below 100ms" (technology-specific)
+- "Kubernetes pods healthy" (platform-specific)

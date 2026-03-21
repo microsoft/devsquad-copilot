@@ -39,23 +39,30 @@ Consider the input above before proceeding (if not empty).
 
 ## Main Flow
 
-1. **Configuration**: Identify the current feature by checking the `docs/features/` directory. If the user specified a feature, use it. Otherwise, list available features and ask the user to choose.
+1. **Configuration**: Identify the current spec by checking both `docs/features/` and `docs/migrations/` directories. If the user specified a feature or migration, use it. Otherwise, list available specs from both directories and ask the user to choose.
+
+   **Spec type detection**: If the spec is under `docs/migrations/`, this is a migration decomposition. If under `docs/features/`, this is a feature decomposition. The spec type determines the task organization strategy (see Task Generation Rules below).
 
 2. **Detect work environment**: Invoke the `board-config` skill.
 
 3. **Sync board state**: Invoke the `work-item-workflow` skill.
 
-4. **Load design documents**: Read from the feature and project directories:
+4. **Load design documents**: Read from the spec directory and project directories:
    
    **Required**:
-   - `docs/features/<feature>/plan.md` - tech stack, libraries, structure
-   - `docs/features/<feature>/spec.md` - user stories with priorities
+   - `docs/features/<feature>/plan.md` or `docs/migrations/<migration>/plan.md` - tech stack, libraries, structure
+   - `docs/features/<feature>/spec.md` or `docs/migrations/<migration>/spec.md` - user stories (feature) or migration scenarios (migration) with priorities/phases
    - `docs/architecture/decisions/*.md` - ADRs with technical decisions (versions, frameworks, patterns)
    
-   **Optional**:
+   **Optional (feature specs)**:
    - `docs/features/<feature>/data-model.md` - entities
    - `docs/features/<feature>/contracts/` - API endpoints
    - `docs/features/<feature>/research.md` - feature-specific decisions
+   
+   **Optional (migration specs)**:
+   - `docs/migrations/<migration>/infra-mapping.md` - infrastructure architecture
+   - `docs/migrations/<migration>/migration-plan.md` - migration execution plan
+   - `docs/migrations/<migration>/research.md` - migration-specific decisions
    
    **CRITICAL**: ADRs are the source of truth for technical decisions. If an ADR defines .NET 10, use .NET 10 in tasks, even if plan.md mentions a different version. In case of conflict, ADR takes precedence.
 
@@ -64,23 +71,27 @@ Consider the input above before proceeding (if not empty).
 6. **Execute task generation flow**:
    - Load ADRs and extract technical decisions (versions, frameworks, libraries, patterns)
    - Load plan.md and extract project structure (validating against ADRs)
-   - Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.)
+   - **Feature specs**: Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.)
+   - **Migration specs**: Load spec.md and extract migration scenarios with their phases (P1, P2, P3, etc.)
    - If data-model.md exists: Extract entities and map to user stories
    - If contracts/ exists: Map endpoints to user stories
+   - If infra-mapping.md exists (migration): Extract target infrastructure and map to migration phases
+   - If migration-plan.md exists (migration): Extract data sync, cutover, and rollback steps as task sources
    - If research.md exists: Extract decisions for setup tasks
-   - **If the feature involves Azure deployment** and Azure MCP Server is available: Use the `azure/deploy` tool (deployment plan) to generate a deployment plan with recommended services. Incorporate the provisioning steps as tasks in the Setup or Infrastructure phase.
-   - **DevSecOps Tasks**: When decomposing features with ADRs that involve infrastructure, generate categorized tasks:
+   - **If the feature/migration involves Azure deployment** and Azure MCP Server is available: Use the `azure/deploy` tool (deployment plan) to generate a deployment plan with recommended services. Incorporate the provisioning steps as tasks in the Setup or Infrastructure phase.
+   - **DevSecOps Tasks**: When decomposing features/migrations with ADRs that involve infrastructure, generate categorized tasks:
      - `[IaC]` — Provisioning of resources defined in ADRs → Setup phase (tag: `infra`)
      - `[CI/CD]` — Build pipelines, IaC validation, deployment per environment → Setup phase (tag: `ci-cd`)
-     - `[Monitoring]` — Observability, alerts, dashboards → parallel with User Stories, marked `[P]` (tag: `monitoring`)
+     - `[Monitoring]` — Observability, alerts, dashboards → parallel with User Stories/Migration Phases, marked `[P]` (tag: `monitoring`)
      - `[Runbook]` — Operational documentation (rollback, troubleshooting) → Polish phase (tag: `docs`)
    - IaC tasks are **parallel** with code tasks; pipeline depends on both
-   - **For each user story**: Execute complexity analysis per the `complexity-analysis` skill
-   - Generate tasks organized by user story (see Task Generation Rules below)
+   - **For feature specs — for each user story**: Execute complexity analysis per the `complexity-analysis` skill
+   - **For migration specs — for each migration phase**: Execute complexity analysis per the `complexity-analysis` skill, focusing on risk and data safety
+   - Generate tasks organized by user story (feature) or migration phase (migration) — see Task Generation Rules below
    - **Validate consistency**: Tasks must reflect ADR decisions
-   - Validate task completeness (each user story has all necessary tasks)
+   - Validate task completeness (each user story/migration scenario has all necessary tasks)
 
-7. **Save local draft**: Save `docs/features/<feature-name>/tasks.md` as a record of what was planned.
+7. **Save local draft**: Save `docs/features/<feature-name>/tasks.md` or `docs/migrations/<migration-name>/tasks.md` as a record of what was planned.
 
    **Before saving and creating work items**, present the Reasoning Log in the format from the `reasoning` skill. Wait for confirmation before creating work items.
 
@@ -88,12 +99,26 @@ Consider the input above before proceeding (if not empty).
 
 9. **Consistency Validation**:
    
+   **Feature specs**:
+   
    | Check | Action if failed |
    |-------|-----------------|
    | Every user story in the spec has an issue? | List US without issue |
    | Every user story has at least 1 task? | List US without coverage |
    | Every task is linked to a US? | List orphan tasks |
    | Dependencies between tasks are consistent? | List ordering conflicts |
+   | Every missing ADR has an associated task? | List decisions without task |
+   
+   **Migration specs**:
+   
+   | Check | Action if failed |
+   |-------|-----------------|
+   | Every migration scenario in the spec has an issue? | List scenarios without issue |
+   | Every migration scenario has at least 1 task? | List scenarios without coverage |
+   | Every task is linked to a migration scenario? | List orphan tasks |
+   | Phase dependencies between tasks are consistent? | List ordering conflicts |
+   | Data validation tasks exist? | Flag missing validation coverage |
+   | Cutover and rollback tasks exist? | Flag missing cutover/rollback tasks |
    | Every missing ADR has an associated task? | List decisions without task |
    
    **If there are CRITICAL problems**: List and ask before creating issues.
@@ -218,7 +243,7 @@ Apply the `work-item-creation` skill checklist before creating.
 
 ## Task Generation Rules
 
-**CRITICAL**: Tasks MUST be organized by user story to allow independent implementation and testing.
+**CRITICAL**: For feature specs, tasks MUST be organized by user story. For migration specs, tasks MUST be organized by migration phase. Both approaches enable independent implementation and testing within their respective units.
 
 **Do not generate separate test tasks.** Tests are part of the acceptance of each task — `devsquad.implement` verifies test coverage when completing the implementation of each task.
 
@@ -238,7 +263,7 @@ Apply the `work-item-creation` skill checklist before creating.
 - CORRECT: `- [ ] [P] Implement authentication middleware in src/middleware/auth.py`
 - WRONG: `- [ ] Create User model` (missing file path)
 
-### Task Organization
+### Feature Task Organization
 
 1. **From User Stories (spec.md)** - PRIMARY ORGANIZATION:
    - Each user story (P1, P2, P3...) gets its own phase
@@ -258,7 +283,7 @@ Apply the `work-item-creation` skill checklist before creating.
    - Feature-scoped ADRs → Feature foundational phase
    - ADR tasks block tasks that depend on the decision
 
-### Phase Structure
+### Feature Phase Structure
 
 - **Phase 1**: Setup (project initialization)
 - **Phase 2**: Foundational (blocking prerequisites, including cross-cutting ADRs)
@@ -266,3 +291,42 @@ Apply the `work-item-creation` skill checklist before creating.
   - Within each story: Models → Services → Endpoints → Integration
   - Each phase should be a complete increment, independently testable
 - **Final Phase**: Polish and Cross-Cutting Concerns
+
+### Migration Task Organization
+
+1. **From Migration Scenarios (spec.md)** - PRIMARY ORGANIZATION:
+   - Each migration scenario/phase gets its own task group
+   - Phases are typically sequential (not independently deployable)
+   - Phase dependencies must be explicit
+
+2. **From Infrastructure Mapping (infra-mapping.md)**:
+   - Target environment provisioning tasks (IaC)
+   - Network configuration tasks
+   - Identity and access setup tasks
+
+3. **From Migration Plan (migration-plan.md)**:
+   - Data sync pipeline setup tasks
+   - Validation job implementation tasks
+   - Cutover automation tasks
+   - Rollback automation tasks
+
+4. **From Setup/Infrastructure**:
+   - Shared infrastructure → Setup phase (Phase 1)
+   - Foundational/blocking tasks (ADRs, tooling) → Foundational phase (Phase 2)
+
+5. **From Missing ADRs**:
+   - Same rules as feature decomposition
+
+### Migration Phase Structure
+
+- **Phase 1**: Setup (project initialization, IaC tooling, CI/CD for infra)
+- **Phase 2**: Foundational (blocking prerequisites, cross-cutting ADRs, environment provisioning)
+- **Phase 3**: Infrastructure Provisioning (target environment setup per infra-mapping.md)
+  - Compute → Networking → Storage → Identity → Configuration
+- **Phase 4**: Data Migration Setup (sync pipelines, validation jobs)
+  - Initial sync mechanism → Delta capture → Validation pipeline
+- **Phase 5**: Cutover Automation (traffic switching, monitoring)
+  - Health checks → Traffic switch automation → Post-cutover monitoring
+- **Phase 6**: Rollback and Validation (rollback automation, parity testing)
+  - Rollback automation → Rollback testing → Full parity validation suite
+- **Final Phase**: Polish (runbooks, documentation, operational handover)

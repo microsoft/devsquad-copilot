@@ -166,3 +166,14 @@
   These criteria serve as a contract between spec and implementation.
   The agent must verify the implementation against these cases.
 -->
+
+## Related Specs
+
+<!--
+  Bidirectional links to related specifications.
+  Migration specs that affect or depend on this feature.
+  Other feature specs with shared dependencies.
+-->
+
+- [MS-001: Migration name](../migrations/<short-name>/spec.md) - [Relationship description]
+- [FS-001: Feature name](../features/<short-name>/spec.md) - [Relationship description]

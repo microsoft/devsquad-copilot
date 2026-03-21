@@ -48,10 +48,13 @@ Each artifact type has a dedicated rubric. Read **only** the rubric for the arti
 
 | Artifact | Rubric |
 |----------|--------|
-| spec.md | Read `references/rubrica-spec.md` |
+| spec.md (feature) | Read `references/rubrica-spec.md` |
+| spec.md (migration) | Read `references/rubrica-migration-spec.md` |
 | ADR | Read `references/rubrica-adr.md` |
 | tasks.md / work items | Read `references/rubrica-tasks.md` |
 | Code (implementation) | Read `references/rubrica-code.md` |
+
+To determine spec type: if the spec is under `docs/migrations/`, use the migration rubric. If under `docs/features/`, use the feature rubric.
 
 ---
 

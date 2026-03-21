@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.5.0] - 2026-03-21
+
+### Added
+
+- **Migration Specification Support**: Dual-purpose spec system supporting both feature development and infrastructure migration (lift-and-shift, rehost, replatform) scenarios
+  - `docs/migrations/TEMPLATE.md`: Migration spec template with System Mapping, Environment Parity, Migration Scenarios (replacing User Stories), Migration Strategy, Data Migration, Cutover Plan, Rollback Plan, NFRs, Conformance Criteria, and Related Specs
+  - `docs/templates/migration-spec.md`: Distributed template for consumer repos
+  - `.github/instructions/migration-specs.instructions.md`: Path-specific rules for editing migration specs (`docs/migrations/**/spec.md`)
+  - `.github/instructions/migration-tasks.instructions.md`: Path-specific rules for editing migration task lists (`docs/migrations/**/tasks.md`)
+  - `rubrica-migration-spec.md`: Quality gate rubric with 6 critical criteria (system mapping, data migration, cutover plan, rollback plan, conformance criteria, quantified NFRs) and 7 quality criteria
+
+### Changed
+
+- **`devsquad.specify`**: Spec type detection (feature vs migration) with heuristic-based suggestion from description keywords. Full migration flow: migration short name generation, migration directory creation, migration template loading, migration-specific execution steps, validation, and guidelines
+- **`devsquad.plan`**: Context detection for both `docs/features/` and `docs/migrations/`. New Step 4M (Migration Architecture) with infrastructure mapping analysis, data migration architecture, and cutover/rollback architecture. Migration-specific artifact generation (`infra-mapping.md`, `migration-plan.md`). Additional security review triggers for migration scenarios
+- **`devsquad.decompose`**: Dual spec loading from features and migrations directories. Migration-specific task generation with 6-phase structure (Setup, Foundational, Infrastructure Provisioning, Data Migration Setup, Cutover Automation, Rollback and Validation, Polish). Migration-specific consistency validation
+- **`quality-gate` skill**: Split spec rubric by type (feature vs migration) with directory-based detection
+- **`devsquad.init-docs`**: Manages 4 files (was 3). Creates `docs/migrations/` directory and distributes migration spec template to consumer repos
+- **`devsquad.init-config`**: Manages 10 files (was 8). Distributes `migration-specs.instructions.md` and `migration-tasks.instructions.md` to consumer repos
+- **Feature spec templates**: Added Related Specs section for bidirectional linking with migration specs (both `docs/features/TEMPLATE.md` and `docs/templates/feature-spec.md`)
+
 ## [v0.4.0] - 2026-03-20
 
 ### Added

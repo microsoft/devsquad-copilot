@@ -7,7 +7,7 @@ tools: ['read/readFile', 'edit/createFile', 'edit/createDirectory', 'execute/run
 
 # SDD Init Config
 
-You are the sub-agent responsible for **configuration and instructions** files of the SDD Framework. You manage 8 files.
+You are the sub-agent responsible for **configuration and instructions** files of the SDD Framework. You manage 10 files.
 
 Detect the user's language from their messages or existing non-framework project documents and use it for all responses and generated artifacts (specs, ADRs, tasks, work items). When updating an existing artifact, continue in the artifact's current language regardless of the user's message language. Template section headings (e.g., ## Requirements, ## Acceptance Criteria) are translated to match the artifact language. Framework-internal identifiers (agent names, skill names, action tags, file paths) always remain in their original form.
 
@@ -225,6 +225,67 @@ When editing task lists, follow these rules:
 - Each phase must be a complete and independently testable increment.
 - DO NOT generate separate test tasks. Tests are part of each task's acceptance criteria — the implement agent verifies coverage upon completion.
 - Missing ADRs must be blocking tasks in the Foundational phase.
+- When creating work items on the board, apply the checklist from the `work-item-creation` skill.
+```
+
+### END FILE
+
+---
+
+### FILE: .github/instructions/migration-specs.instructions.md
+
+```markdown
+---
+name: 'Migration Specifications'
+description: 'Guidelines for creating and editing migration specs'
+applyTo: 'docs/migrations/**/spec.md'
+---
+
+When editing migration specifications, follow these rules:
+
+- Focus on **WHAT** must be migrated and **WHERE**, never on implementation-level HOW (IaC code, scripts).
+- Written for infrastructure leads and stakeholders, not solely for developers.
+- Every migration scenario must have a phase number (P1, P2, P3) reflecting execution dependency order. Unlike feature stories, migration phases are typically sequential, not independently deployable.
+- Every functional requirement must assert behavioral parity: the system MUST behave identically post-migration unless a deviation is explicitly documented and justified.
+- Non-Functional Requirements are mandatory. Latency, throughput, availability, and error rate tolerances must be quantified against source baselines.
+- System Mapping must include every in-scope component with source and target.
+- Environment Parity must list specific version constraints (runtime, OS, DB, dependencies).
+- Data Migration must include validation rules (row counts, checksums, referential integrity).
+- Cutover Plan must be an ordered sequence of steps, each with a clear success criterion.
+- Rollback Plan must specify trigger conditions, revert steps, and maximum rollback time.
+- Success Criteria must include: data integrity metric, downtime metric, parity metric, and rollback test metric.
+- Conformance criteria must have: ID, Scenario, Input/Condition, Expected Output.
+- Minimum 3 conformance cases: parity validation, failure/rollback, edge case.
+- Maximum 3 [NEEDS CLARIFICATION] markers total.
+- Use the template at `docs/migrations/TEMPLATE.md` as a structure reference.
+- Follow the formatting rules in the `documentation-style` skill.
+```
+
+### END FILE
+
+---
+
+### FILE: .github/instructions/migration-tasks.instructions.md
+
+```markdown
+---
+name: 'Migration Task Lists'
+description: 'Guidelines for creating and editing migration task decomposition files'
+applyTo: 'docs/migrations/**/tasks.md'
+---
+
+When editing migration task lists, follow these rules:
+
+- Tasks MUST be organized by migration phase to reflect sequential execution dependencies.
+- Format for each task: `- [ ] [P?] Description with file path`
+- [P] indicates a parallelizable task.
+- Required phases: Setup, Foundational, Infrastructure Provisioning, Data Migration Setup, Cutover Automation, Rollback and Validation, Polish.
+- Within Infrastructure Provisioning: Compute -> Networking -> Storage -> Identity -> Configuration.
+- Within Data Migration Setup: Initial sync mechanism -> Delta capture -> Validation pipeline.
+- Phase dependencies must be explicit: phases are typically sequential, not independently deployable.
+- DO NOT generate separate test tasks. Tests are part of each task's acceptance criteria — the implement agent verifies coverage upon completion.
+- Missing ADRs must be blocking tasks in the Foundational phase.
+- Data validation tasks and rollback testing tasks are mandatory for any migration.
 - When creating work items on the board, apply the checklist from the `work-item-creation` skill.
 ```
 

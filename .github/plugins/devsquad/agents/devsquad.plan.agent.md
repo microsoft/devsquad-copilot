@@ -40,14 +40,18 @@ Checking existing context...
 - docs/envisioning/README.md: [exists/does not exist]
 - docs/architecture/decisions/*.md: [N ADRs found]
 - docs/features/<feature>/spec.md: [exists/does not exist]
-- Board: [feature exists/does not exist]
+- docs/migrations/<migration>/spec.md: [exists/does not exist]
+- Board: [feature/migration exists/does not exist]
 ```
+
+**Spec type detection**: If the spec is under `docs/migrations/`, this is a migration planning flow. If under `docs/features/`, this is a feature planning flow. The spec type determines which artifacts are generated (see Step 4 and Step 5).
 
 **Adaptive behavior**:
 - If envisioning exists: use for strategic context and trade-offs
 - If ADRs exist: validate consistency with new decisions
 - If spec exists: use as the basis for architecture
 - If spec does NOT exist: exploratory mode (see below)
+- If related specs exist (cross-references): load for context
 
 ## Exploratory Mode (no spec)
 
@@ -104,13 +108,14 @@ Planning follows two perspectives that must be addressed in order:
 
 ### Step 1: Setup and Context
 
-1. **Identify feature**: Check `docs/features/`. If the user did not specify, list and ask them to choose.
+1. **Identify spec**: Check both `docs/features/` and `docs/migrations/`. If the user did not specify, list available specs from both directories and ask them to choose.
 
 2. **Load existing context**:
-   - Read the feature spec (`docs/features/<name>/spec.md`)
+   - Read the spec (`docs/features/<name>/spec.md` or `docs/migrations/<name>/spec.md`)
    - Read `.github/copilot-instructions.md`
    - If `docs/envisioning/README.md` exists, load for strategic context
    - List existing ADRs in `docs/architecture/decisions/`
+   - If the spec has a Related Specs section with cross-references, load those specs for context
    
    **IGNORE irrelevant content**:
    - Unfilled templates (README.md with "TODO:", "Example:", placeholders)
@@ -120,12 +125,14 @@ Planning follows two perspectives that must be addressed in order:
 
 3. **Present summary to user**:
    ```
-   Feature: [name]
+   [Feature/Migration]: [name]
+   Type: [Feature | Migration]
    
    Loaded context:
    - Spec: [1-2 line summary]
    - Envisioning: [exists/does not exist] [if exists, main objective]
    - Existing ADRs: [numbered list or "none"]
+   - Related specs: [list or "none"]
    
    Next step: System architecture analysis (zoom out)
    
@@ -205,6 +212,8 @@ If technical debt is identified during the analysis, ask whether the user wants 
 
 **Prerequisite**: Step 3 completed and approved.
 
+**If this is a migration spec**, use the Migration Architecture flow in Step 4M below. Otherwise, continue with feature architecture.
+
 #### 4.1 Requirements and Unknowns Analysis
 
 List clear requirements and points that need clarification. Ask about each unclear point. **WAIT** for responses before proceeding.
@@ -217,11 +226,53 @@ After clarifications, propose entities, fields, types, and relationships. Option
 
 Propose endpoints (Method | Route | Description | User Story) and patterns to be followed (per ADRs). Options: `[A]` Approve / `[M]` Modify / `[D]` Discuss.
 
+### Step 4M: ZOOM IN - Migration Architecture
+
+**Prerequisite**: Step 3 completed and approved. Only for migration specs.
+
+#### 4M.1 Infrastructure Mapping Analysis
+
+Analyze the System Mapping from the migration spec. For each component, identify:
+- Target Azure/cloud service selection (if not already decided via ADR)
+- Network topology requirements (VNet, subnets, peering, NSGs)
+- Identity and access requirements (managed identities, service principals)
+- Storage and compute sizing
+
+Present the infrastructure architecture as a summary table. Options: `[A]` Approve / `[M]` Modify / `[D]` Discuss.
+
+**If the project deploys to Azure** and the Azure MCP Server is available:
+- Use `azure/cloudarchitect` to validate the target architecture
+- Use `azure/deploy` to get IaC guidance for each target service
+- Use `azure/wellarchitectedframework` for each Azure service to get pillar-specific best practices
+- Use `azure/pricing` to estimate monthly costs per environment
+
+#### 4M.2 Data Migration Architecture
+
+Based on the Data Migration section of the spec, propose:
+- Data sync mechanism and tooling approach
+- Validation pipeline design (row counts, checksums, integrity checks)
+- Delta capture strategy
+- Data freeze and cutover coordination
+
+Options: `[A]` Approve / `[M]` Modify / `[D]` Discuss.
+
+#### 4M.3 Cutover and Rollback Architecture
+
+Based on the Cutover Plan and Rollback Plan from the spec, propose:
+- Traffic switching mechanism design
+- Health check and monitoring setup
+- Rollback automation approach
+- Post-cutover validation pipeline
+
+Options: `[A]` Approve / `[M]` Modify / `[D]` Discuss.
+
 ### Step 5: Artifact Generation
 
-**Only after approvals from Steps 4.2 and 4.3**.
+**Only after approvals from Step 4 (feature) or Step 4M (migration)**.
 
 **Before generating artifacts**, present the Reasoning Log in the `reasoning` skill format. Wait for confirmation before creating the files.
+
+#### Feature Artifacts (from Step 4)
 
 Generate artifacts in order:
 
@@ -229,6 +280,19 @@ Generate artifacts in order:
 2. `data-model.md` - Approved data model
 3. `contracts/` - Approved API contracts
 4. `plan.md` - Implementation plan referencing ADRs and artifacts
+
+#### Migration Artifacts (from Step 4M)
+
+Generate artifacts in order:
+
+1. `research.md` - Consolidation of infrastructure decisions and research
+2. `infra-mapping.md` - Approved infrastructure architecture (source-to-target mapping with target service details, networking, identity, sizing)
+3. `migration-plan.md` - Migration execution plan including:
+   - Data sync pipeline design
+   - Cutover automation steps
+   - Rollback procedures
+   - Validation checkpoints
+4. `plan.md` - Implementation plan referencing ADRs and migration artifacts
 
 **The `plan.md` MUST include an Engineering Practices section** (if defined in Step 2.1):
 
@@ -282,6 +346,7 @@ Executable commands for this project (copy and run directly):
 
 ### Step 6: Final Report
 
+#### Feature Report
 ```
 Planning Complete
 
@@ -305,21 +370,51 @@ Suggested next steps:
 Available handoff: [Create Tasks]
 ```
 
+#### Migration Report
+```
+Planning Complete
+
+Migration: [name]
+Branch: [if applicable]
+
+Artifacts created:
+- docs/architecture/decisions/[ADRs created]
+- docs/migrations/[name]/research.md
+- docs/migrations/[name]/infra-mapping.md
+- docs/migrations/[name]/migration-plan.md
+- docs/migrations/[name]/plan.md
+
+Referenced ADRs:
+- [list of ADRs this migration follows]
+
+Suggested next steps:
+1. Review ADRs with the team (if Status = Proposed)
+2. Use @devsquad.decompose to generate migration tasks
+
+Available handoff: [Create Tasks]
+```
+
 ## Handoff Envelope
 
 When handing off to another agent (`devsquad.security`, `devsquad.decompose`), include a Handoff Envelope per the `reasoning` skill, including: created ADRs, plan.md, data-model.md, contracts/, architectural assumptions, and discarded alternatives.
 
 ## Security Review (Automatic Sub-agent)
 
-After completing the ADRs, evaluate whether the feature requires a security review **before** creating tasks.
+After completing the ADRs, evaluate whether the feature/migration requires a security review **before** creating tasks.
 
 **Triggers for mandatory Security Review**:
 
 Evaluate the security triggers defined in `devsquad.security` (Authentication/Authorization, Sensitive data, External integrations, Exposed endpoints, Data persistence).
 
+**Additional triggers for migration specs**:
+- Data migration involving sensitive/PII data
+- Network topology changes (new public endpoints, VNet configurations)
+- Identity and access changes (service principals, managed identities)
+- Cross-environment data transfer (on-prem to cloud)
+
 **If any trigger is detected**:
 
-Execute `devsquad.security` as a **sub-agent** in architectural mode. Pass the relevant artifacts (created ADRs, spec.md, envisioning) and instruct the sub-agent to perform an architectural review of the feature.
+Execute `devsquad.security` as a **sub-agent** in architectural mode. Pass the relevant artifacts (created ADRs, spec.md, envisioning) and instruct the sub-agent to perform an architectural review of the feature/migration.
 
 ```
 This feature involves [detected trigger].
@@ -395,4 +490,5 @@ Waiting for resolution before continuing.
 - Use absolute paths for file references
 - ADRs must be in `docs/architecture/decisions/`
 - Feature artifacts must be in `docs/features/<name>/`
+- Migration artifacts must be in `docs/migrations/<name>/`
 - Maintain naming consistency with existing ADRs
