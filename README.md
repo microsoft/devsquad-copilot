@@ -15,7 +15,7 @@ Following an **Intent-Driven Development** approach, it is designed to be:
 
 * **Intent-first**: every initiative (feature, migration, infrastructure change) traces back to a business need captured in the envisioning document
 * **Spec-driven**: specifications act as formal contracts between what stakeholders need and what developers build
-* **Human-in-the-loop**: agents ask before assuming and require approval for high-impact changes (see [Intentional AI](#intentional-ai))
+* **Human-in-the-loop**: agents ask before assuming and require approval for high-impact changes.
 
 ## Core Concepts
 
@@ -59,8 +59,6 @@ The framework connects these concepts into a continuous pipeline:
 * **Before coding**: intents and specs are defined, validated, and decomposed into prioritized tasks
 * **During coding**: specs and ADRs act as contractual guidance; implementation follows the plan
 * **After changes**: review verifies alignment between code and the original spec
-
-Solid arrows: phase transitions with human review. Dashed arrows: feedback loops. Specs and ADRs are living artifacts refined throughout delivery.
 
 Each phase produces persistent artifacts, so a new developer can reconstruct the full reasoning chain by reading the repository.
 
