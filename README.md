@@ -1,55 +1,122 @@
 # DevSquad GitHub Copilot
 
-GitHub Copilot agents that bring structure to iterative delivery: from business vision through specs, backlog, and implementation.
-
-Every phase includes human checkpoints: agents ask clarifying questions, propose plans for review, and wait for confirmation before executing high-impact changes.
+A delivery framework for GitHub Copilot that helps teams start from *why* they are building something, derive *what* must be built through explicit specifications and architecture decisions, and continuously verify that the *how* (the code) stays aligned with the original intent.
 
 > [!WARNING]
 > This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
 
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
-## Structured Delivery at AI Speed
+AI accelerates code generation, but also accelerates decisions, artifacts, and assumptions. In fast-moving projects, requirements evolve, architecture gets revisited, and parallel work starts from incomplete or stale context. Staying aligned as the system grows is the real challenge.
 
-Shipping reliable enterprise software is a team activity. AI accelerates code generation, but also accelerates decisions, artifacts, and assumptions. Requirements evolve, architecture gets revisited, and parallel work often starts from incomplete or stale context. In fast-moving projects, staying aligned as the system evolves can be challenging.
+This framework embeds delivery guardrails directly into the development workflow. AI agents guide each phase, from vision through implementation and review, while every decision is captured in persistent artifacts that any team member can read, question, and build upon.
 
-The DevSquad Delivery Framework aims to bring structure to that speed. It embeds delivery guardrails directly into the development workflow through AI agents that guide each phase, from vision and specification through implementation and review, so teams move fast without losing traceability, consistency, or control.
+Following an **Intent-Driven Development** approach, it is designed to be:
+
+* **Intent-first**: every initiative (feature, migration, infrastructure change) traces back to a business need captured in the envisioning document
+* **Spec-driven**: specifications act as formal contracts between what stakeholders need and what developers build
+* **Human-in-the-loop**: agents ask before assuming, propose before executing, and require approval for high-impact changes
+
+## Core Concepts
+
+### Intent
+
+An **Intent** captures the business vision, pain points, and strategic objectives behind an initiative. It answers the question:
+
+> *Why are we building this?*
+
+Intents are technology-agnostic. They describe the problem space, affected users, and success criteria without prescribing APIs, UI, or implementation details. In the framework, the envisioning document is the intent artifact.
+
+### Specification
+
+A **Specification** is a formal, verifiable description derived from the intent. It answers the question:
+
+> *What must the system do to satisfy the intent?*
+
+* For features, specs define user stories with priority and acceptance scenarios.
+* For technical initiatives such as migrations or infrastructure changes, they describe the target state and constraints.
+
+In both cases, specs include test cases that can be independently tested, decomposed into tasks, and validated against the final implementation.
+
+### Architecture Decision Record (ADR)
+
+An **ADR** captures the technical choices that shape implementation. It answers the question:
+
+> *Why did we choose this approach over the alternatives?*
+
+ADRs document ranked priorities, evaluated options, and the reasoning behind each choice. They provide the architectural context that connects what the spec requires to how the code delivers it.
+
+### Delivery Lifecycle
+
+The framework connects these concepts into a continuous pipeline:
+
+* **Before coding**: intents and specs are defined, validated, and decomposed into prioritized tasks
+* **During coding**: specs and ADRs act as contractual guidance; implementation follows the plan
+* **After changes**: review verifies alignment between code and the original spec
+
+```mermaid
+flowchart LR
+    subgraph intent["Intent (Why)"]
+        E["Envisioning"]
+    end
+
+    subgraph contract["Contract (What)"]
+        direction LR
+        S["Specification<br/>(Feature/Migration)"]
+        ADR["Architecture<br/>Decisions"]
+    end
+
+    subgraph delivery["Delivery (How)"]
+        P["Plan & Backlog"]
+        B["Project<br/> Management Board"]
+        SP["Sprint"]
+        I["Implement"]
+        R["Quality <br/>Review"]
+    end
+
+    E --> contract
+    contract --> delivery
+    P -->|"syncs"| B
+    B --> SP
+    SP --> I
+    I --> R
+    R -->|"next task"| B
+    R -.->|"revisit / refine"| contract
+```
+
+Solid arrows: phase transitions with human review. Dashed arrows: feedback loops. Specs and ADRs are living artifacts refined throughout delivery.
+
+Each phase produces persistent artifacts, so a new developer can reconstruct the full reasoning chain by reading the repository.
 
 ## Who is this for?
 
 * Multiple developers working on the same product, where handoffs, shared decisions, and backlog coordination are constant.
-* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow team members who miss some sessions to catch up through the repository, and reduce onboarding time for new contributors.
-
-> [!NOTE]
-> For smaller scopes (solo projects, prototypes, well-defined tasks), the full lifecycle may not be necessary. The framework is modular: you can invoke any agent directly (e.g., `devsquad.implement` or `devsquad.plan`) without going through the complete flow.
+* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow the project context resist over time, and reduce onboarding time for new contributors.
 
 ## What this is not
 
 This framework is not a vibe-coding tool. It does not accept a single prompt and autonomously produce a finished system. Agents ask clarifying questions, propose plans for review, and wait for approval before acting.
 
-If you are looking for one-shot, fully autonomous code generation without review, this framework will feel like friction — and that friction is intentional.
+If you are looking for one-shot, fully autonomous code generation without review, this framework will feel like friction, and that friction is intentional.
 
-## Core Features
-
-### Delivery Lifecycle
-
-A conductor agent guides the workflow from vision through implementation and review; each specialized agent can also be invoked directly. Agents ask before assuming and scale ceremony to change impact.
+## Capabilities
 
 ### Backlog and Sprint Management
 
-Specs decompose into prioritized tasks by user story, synced to GitHub Issues or Azure Boards. Sprint planning covers velocity, capacity, and committed versus stretch scope. Refinement detects inconsistencies and classifies item readiness.
+Specs decompose into prioritized tasks by user story and sync to GitHub Issues or Azure Boards. Sprint planning covers velocity, capacity, and committed versus stretch scope. Refinement detects inconsistencies between specs and work items and classifies item readiness.
 
 ### Security
 
-* **Architectural**: STRIDE threat modeling, trust boundary mapping, attack surface analysis, ADR security implications, and Azure compliance checks. Produces a verdict with a security requirements checklist before implementation begins.
-
-* **Code**: OWASP-categorized vulnerability analysis, credential detection, dependency CVE audit, and GitHub Advanced Security integration. Each finding includes severity, affected code, and remediation examples.
+* **Architectural**: STRIDE threat modeling, trust boundary mapping, attack surface analysis, and Azure compliance checks. Produces a security requirements checklist before implementation begins.
+* **Code**: OWASP-categorized vulnerability analysis, credential detection, dependency CVE audit, and GitHub Advanced Security integration. Each finding includes severity, affected code, and remediation guidance.
 
 ### Integrations
 
-* **GitHub Issues and Azure Boards**: bidirectional sync for work items, iterations, and capacity
-* **Microsoft Learn and Azure**: architecture and infra as code best practices, documentation lookup, code samples, and retail pricing estimates
-* **Git**: branch strategy enforcement, conventional commits, and pull requests with automated review
+| System | What the framework does |
+|--------|------------------------|
+| GitHub Issues and Azure Boards | Bidirectional sync for work items, iterations, and capacity |
+| Microsoft Learn and Azure | Up-to-date documentation lookup, code samples, architecture and infrastructure as code best practices, deployment strategies, and retail pricing estimates |
+| Git | Branch strategy enforcement, conventional commits, and pull requests with automated review |
 
 ## Getting Started
 
