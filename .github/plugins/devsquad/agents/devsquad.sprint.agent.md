@@ -1,8 +1,7 @@
 ---
 name: devsquad.sprint
 description: Prepare sprint planning with previous sprint closure, velocity analysis, adaptive capacity, and scope options with committed vs stretch. Does not pre-assign work items.
-tools: ['agent', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'github/issue_read', 'github/list_issues', 'github/projects_get', 'github/projects_list', 'github/projects_write', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/work_list_team_iterations', 'ado/work_get_team_capacity', 'ado/wit_get_work_items_for_iteration']
-agents: ['devsquad.refine']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_get', 'github/projects_list', 'github/projects_write', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'github/search_code', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/work_list_team_iterations', 'ado/work_get_team_capacity', 'ado/wit_get_work_items_for_iteration']
 handoffs:
   - label: Create Technical Plan
     agent: devsquad.plan
@@ -26,7 +25,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conduc
 
 **Structured actions** (instead of interacting directly with the user): `[ASK] "question"` · `[CREATE path]` content · `[EDIT path]` edit · `[BOARD action] Title | Description | Type` · `[CHECKPOINT]` summary · `[DONE]` summary + next step.
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retains access to the `agent` tool to invoke `devsquad.refine` as sub-agent.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -214,21 +213,88 @@ Before planning the next sprint, analyze what happened in the previous one.
 - `docs/features/*/tasks.md` (local decomposition)
 - `docs/architecture/decisions/*.md` (ADRs and their status)
 
-### Step 2.5: Backlog Health Pre-analysis (Sub-agent)
+### Step 2.5: Backlog Health Pre-analysis (Inline)
 
-After collecting data, run `devsquad.refine` as a **sub-agent** to obtain a backlog health analysis. Instruct the sub-agent to analyze the full scope (or the scope defined by the user in Step 1) and return findings grouped by severity.
+After collecting data, perform a backlog health analysis. Run the checks below against the collected data. For each problem found, classify the severity:
+
+- **High**: Active blocker or inconsistency that causes rework risk
+- **Medium**: Gap that should be resolved before the next sprint
+- **Low**: Backlog hygiene, can be resolved when convenient
 
 ```
 Running backlog health analysis...
 ```
 
-Use the sub-agent findings to:
+#### Spec and Board Consistency
 
-1. **Enrich readiness classification** (Step 3): Items with inconsistencies detected by refine should be downgraded (e.g., "Ready" item with outdated spec → "Almost ready").
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| Feature on board without local spec | High | Feature-type work item exists, but `docs/features/<name>/spec.md` does not |
+| Local spec without feature on board | Medium | Directory in `docs/features/` with spec.md, but no corresponding work item |
+| Spec updated after tasks | High | spec.md modification date is later than task creation date on the board |
+
+#### ADRs and Decisions
+
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| Proposed ADR blocking tasks | High | ADR with Status "Proposed" referenced in tasks or plan.md |
+| Superseded ADR with active tasks | High | ADR with Status "Superseded" but tasks that depend on it are still open |
+| Feature with integrations/persistence without ADR | Medium | Spec mentions database, external API, authentication, but no corresponding ADR exists |
+
+#### Hierarchy and Structure
+
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| Task without parent (user story/feature) | Medium | Task-type work item without hierarchical link |
+| Feature without epic | Low | Feature-type work item without parent epic |
+| Spec without tasks | Medium | `spec.md` exists and is complete, but `tasks.md` does not exist and there are no tasks on the board |
+
+#### Staleness
+
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| Item "In Progress" for more than 14 days | Medium | Active state without recent update |
+| Item without update for more than 30 days | Low | Any open item without activity |
+| Blocked item without documented reason | Medium | "Blocked" state without comment or description of the blocker |
+
+#### Design Artifact Consistency
+
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| Plan references technology different from ADR | High | plan.md mentions framework/version that contradicts accepted ADR |
+| Data-model with entity not mentioned in spec | Medium | Entity in data-model.md not mapped to any functional requirement in the spec |
+| Contract without mapped requirement | Medium | Endpoint in contracts/ not traceable to any user story in the spec |
+| Spec with requirement without plan coverage | Medium | FR-XXX in the spec not addressed in any plan artifact |
+| Superseded ADR but plan still references old decision | High | plan.md cites ADR that was superseded |
+
+#### Pull Request Health (GitHub)
+
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| PR open without review for more than 3 days | Medium | PR without any assigned reviewer or without review activity |
+| PR with failing CI | High | PR with check runs in failure state |
+| PR without linked issue | Medium | PR body does not contain issue reference |
+| PR stale (no activity for 7+ days) | Low | Open PR without recent commits or comments |
+
+#### Security Health (GitHub)
+
+Query active security alerts:
+- `github/list_dependabot_alerts` for vulnerable dependencies
+- `github/list_code_scanning_alerts` for code vulnerabilities (CodeQL)
+
+| Check | Severity | Condition |
+|-------|----------|-----------|
+| Open critical/high Dependabot alerts | High | Alerts with critical or high severity without resolution |
+| Open code scanning alerts | High | CodeQL alerts in open state |
+| Open medium Dependabot alerts for 30+ days | Medium | Old alerts without treatment |
+
+Use the findings to:
+
+1. **Enrich readiness classification** (Step 3): Items with inconsistencies should be downgraded (e.g., "Ready" item with outdated spec becomes "Almost ready").
 2. **Feed alerts** (Step 6): Incorporate high/medium severity findings directly into the alerts section.
 3. **Flag silent blockers**: Pending ADRs, specs outdated after tasks, stale items.
 
-If the sub-agent finds no issues, inform: "Healthy backlog — no inconsistencies detected by refine."
+If no issues are found, inform: "Healthy backlog — no inconsistencies detected."
 
 ### Step 3: Readiness Classification
 
@@ -346,7 +412,7 @@ Planning Alerts
 
 [1] [Feature X] has spec updated after tasks were created
     Risk: Tasks may not reflect current requirements
-    Suggestion: Run /devsquad.refine before committing
+    Suggestion: Run /devsquad.refine for detailed analysis before committing
 
 [2] [Task Y] depends on [Task Z] which is with another dev
     Risk: Blocked if Z is delayed
@@ -478,7 +544,7 @@ Decisions the team needs to make:
 3. **No false alerts**: Only flag gaps with concrete evidence.
 4. **Respect priorities**: Present P1 before P2, P2 before P3. Within the same priority, group by feature.
 5. **Cross-feature dependencies first**: They are the easiest to forget and the most expensive when forgotten.
-6. **Backlog health**: The pre-analysis via sub-agent `devsquad.refine` (Step 2.5) runs automatically. If the sub-agent reports high-severity issues in significant volume, alert the team before proceeding with planning.
+6. **Backlog health**: The inline backlog health analysis (Step 2.5) runs automatically. If the analysis reports high-severity issues in significant volume, alert the team before proceeding with planning.
 7. **No pre-assignment**: Do not suggest or distribute items to specific devs. The team uses a pull model (via `devsquad.implement` + skill `next-task`).
 8. **Graceful degradation**: The agent works with whatever is available. No information is a blocking prerequisite — without velocity, without capacity, without iterations, planning continues. Data enriches the analysis, it does not block it.
 

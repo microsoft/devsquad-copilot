@@ -1,8 +1,7 @@
 ---
 name: devsquad.plan
 description: Execute the implementation planning flow using the plan template to generate design artifacts.
-tools: ['agent', 'read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory']
-agents: ['devsquad.security']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory']
 handoffs: 
   - label: Create Tasks
     agent: devsquad.decompose
@@ -18,7 +17,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conduc
 
 **Structured actions** (instead of interacting directly with the user): `[ASK] "question"` · `[CREATE path]` content · `[EDIT path]` edit · `[BOARD action] Title | Description | Type` · `[CHECKPOINT]` summary · `[DONE]` summary + next step.
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retain access to the `agent` tool to invoke `devsquad.security` as a sub-agent.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -396,15 +395,15 @@ Available handoff: [Create Tasks]
 
 ## Handoff Envelope
 
-When handing off to another agent (`devsquad.security`, `devsquad.decompose`), include a Handoff Envelope per the `reasoning` skill, including: created ADRs, plan.md, data-model.md, contracts/, architectural assumptions, and discarded alternatives.
+When handing off to another agent (`devsquad.decompose`), include a Handoff Envelope per the `reasoning` skill, including: created ADRs, plan.md, data-model.md, contracts/, architectural assumptions, and discarded alternatives.
 
-## Security Review (Automatic Sub-agent)
+## Security Review (Skill)
 
 After completing the ADRs, evaluate whether the feature/migration requires a security review **before** creating tasks.
 
 **Triggers for mandatory Security Review**:
 
-Evaluate the security triggers defined in `devsquad.security` (Authentication/Authorization, Sensitive data, External integrations, Exposed endpoints, Data persistence).
+Evaluate the security triggers defined in the `security-review` skill (Authentication/Authorization, Sensitive data, External integrations, Exposed endpoints, Data persistence).
 
 **Additional triggers for migration specs**:
 - Data migration involving sensitive/PII data
@@ -414,7 +413,7 @@ Evaluate the security triggers defined in `devsquad.security` (Authentication/Au
 
 **If any trigger is detected**:
 
-Execute `devsquad.security` as a **sub-agent** in architectural mode. Pass the relevant artifacts (created ADRs, spec.md, envisioning) and instruct the sub-agent to perform an architectural review of the feature/migration.
+Execute the security review following the `security-review` skill workflow in architectural mode. Pass the relevant artifacts (created ADRs, spec.md, envisioning) and perform an architectural review of the feature/migration.
 
 ```
 This feature involves [detected trigger].
@@ -468,7 +467,7 @@ When creating ADRs that involve infrastructure services (compute, data, messagin
 - **Cost**: Estimate monthly cost per environment (dev/staging/prod) and include in the ADR.
 - **IaC**: Record the provisioning approach (IaC vs manual) in the ADR.
 - **Observability**: If the ADR defines a service, consider whether it needs monitoring and alerts — if so, record as a requirement in the ADR.
-- **Security**: Secrets must be managed by a vault service, never as direct values. This is validated by `devsquad.security`.
+- **Security**: Secrets must be managed by a vault service, never as direct values. This is validated by the `security-review` skill.
 
 Do not create a separate artifact for infrastructure — infrastructure decisions are ADRs like any other architectural decision.
 

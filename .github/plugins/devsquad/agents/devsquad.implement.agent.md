@@ -2,7 +2,7 @@
 name: devsquad.implement
 description: Execute implementation from tasks.md, GitHub issue, or Azure DevOps work item
 tools: ['agent', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/add_issue_comment', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/wit_update_work_item', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'memory']
-agents: ['devsquad.security', 'devsquad.review']
+agents: ['devsquad.review']
 handoffs:
   - label: Review Implementation
     agent: devsquad.review
@@ -18,7 +18,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conduc
 
 **Structured actions** (instead of interacting directly with the user): `[ASK] "question"` · `[CREATE path]` content · `[EDIT path]` edit · `[BOARD action] Title | Description | Type` · `[CHECKPOINT]` summary · `[DONE]` summary + next step.
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retains access to the `agent` tool to invoke `devsquad.security` and `devsquad.review` as sub-agents.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retains access to the `agent` tool to invoke `devsquad.review` as sub-agent.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -406,7 +406,7 @@ If the pattern repeats (3+ modifications to the same code), suggest pausing impl
 - For Azure DevOps work items, the agent requires Azure DevOps MCP configured.
 - This agent does NOT close issues/work items automatically. The PR uses `Closes #N` to close on merge (GitHub) or the developer manually updates the state (Azure DevOps).
 - Automatic developer assignment when starting work prevents conflicts when multiple devs look at the same board.
-- Security review is executed as a **sub-agent** (not handoff). The verdict returns to this agent, which decides the next step.
+- Security review is executed following the `security-review` skill workflow. The verdict is used by this agent to decide the next step.
 
 ## Status Comments (GitHub)
 

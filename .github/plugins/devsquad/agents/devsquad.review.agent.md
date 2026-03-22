@@ -1,8 +1,7 @@
 ---
 name: devsquad.review
 description: Validate implementation against spec, ADRs, and plan with independent context. Produces a review log with findings by severity.
-tools: ['read/readFile', 'search/changes', 'read/problems', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'agent', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/pull_request_read', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'memory']
-agents: ['devsquad.security']
+tools: ['read/readFile', 'search/changes', 'read/problems', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/pull_request_read', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'memory']
 handoffs:
   - label: Fix Issues
     agent: devsquad.implement
@@ -26,7 +25,7 @@ If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the conductor `s
 
 **Structured actions** (instead of interacting directly with the user): `[ASK] "question"` · `[CREATE path]` content · `[EDIT path]` edit · `[BOARD action] Title | Description | Type` · `[CHECKPOINT]` summary · `[DONE]` summary + next step.
 
-**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints. (5) Retains access to the `agent` tool to invoke `devsquad.security` as a sub-agent.
+**Rules**: (1) Never interact directly with the user — use the actions above. (2) Use read tools to load context. (3) Do not re-ask what was already provided in the `[CONDUCTOR]` prompt. (4) Maintain Socratic checkpoints.
 
 Without `[CONDUCTOR]` → normal interactive flow.
 
@@ -252,7 +251,7 @@ Assess whether the implementation requires a security review:
 | Persistence | Queries or storage operations |
 | Integrations | Communication with external systems |
 
-**If trigger detected**: Execute `devsquad.security` as a sub-agent in code mode.
+**If trigger detected**: Execute the security review following the `security-review` skill workflow in code mode.
 
 ### Phase 3: Finding Classification
 
@@ -422,7 +421,7 @@ When handing off to another agent, include the Handoff Envelope per the `reasoni
 4. **Proportionality**: A review of a simple task does not need 50 checklist items. Scale proportionally.
 5. **Honest severity**: Do not inflate severity. Minor is minor, even if it is "ugly".
 6. **Do not modify code**: This agent is read-only. It finds problems, it does not fix them.
-7. **Security as sub-agent**: If a security trigger is detected, delegate to `devsquad.security`. Do not perform security reviews manually.
+7. **Security review**: If a security trigger is detected, follow the `security-review` skill workflow. Do not perform security reviews manually.
 
 ## Sub-agent Execution
 

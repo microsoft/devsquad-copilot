@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.6.0] - 2026-03-22
+
+### Changed
+
+- **Subagent nesting resolution (ADR 0011)**: Converted L2 sub-agents to skills to comply with GitHub Copilot's 1-level subagent nesting limit, enabling the conductor guided mode to work correctly
+  - `devsquad.security` workflow extracted to `security-review` skill (consumed by plan, implement, review agents)
+  - `devsquad.refine` backlog health checks flattened into `devsquad.sprint` agent
+  - `devsquad.init-config` converted to `init-config` skill with `references/templates.md`
+  - `devsquad.init-docs` converted to `init-docs` skill with `references/templates.md`
+  - `devsquad.init-scaffold` converted to `init-scaffold` skill
+  - `devsquad.init` rewritten to use skills instead of sub-agents
+  - `devsquad.plan`, `devsquad.review`: removed `agents:` field and `agent` tool, security review now via skill
+  - `devsquad.implement`: removed `devsquad.security` from `agents:` (kept `devsquad.review`), security review now via skill
+  - `devsquad.sprint`: removed `agents:` field and `agent` tool, backlog health analysis inlined from refine
+
+### Added
+
+- `security-review` skill: STRIDE, OWASP, Azure compliance, GitHub security alerts workflow
+- `init-config` skill: SDD Framework configuration file verification and creation
+- `init-docs` skill: SDD Framework documentation template verification and creation
+- `init-scaffold` skill: Community and governance file creation (SECURITY.md, CONTRIBUTING.md, LICENSE, CODE_OF_CONDUCT.md)
+- ADR 0011: Subagent Nesting Resolution documenting the architectural decision
+
+### Removed
+
+- `devsquad.init-config` agent (replaced by `init-config` skill)
+- `devsquad.init-docs` agent (replaced by `init-docs` skill)
+- `devsquad.init-scaffold` agent (replaced by `init-scaffold` skill)
+
 ## [v0.5.0] - 2026-03-21
 
 ### Added
