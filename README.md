@@ -1,6 +1,6 @@
 # DevSquad GitHub Copilot
 
-A delivery framework for GitHub Copilot that helps teams start from *why* they are building something, derive *what* must be built through explicit specifications and architecture decisions, and continuously verify that the *how* (the code) stays aligned with the original intent.
+A delivery framework for GitHub Copilot that guides teams from **intent** to **implementation**: starting with a clearly defined business purpose and expected outcomes (**why**), translating it into explicit specifications and architecture decisions (**what**), and continuously ensuring the **how** (the code) remains aligned with that intent through ongoing validation.
 
 > [!WARNING]
 > This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
@@ -15,7 +15,7 @@ Following an **Intent-Driven Development** approach, it is designed to be:
 
 * **Intent-first**: every initiative (feature, migration, infrastructure change) traces back to a business need captured in the envisioning document
 * **Spec-driven**: specifications act as formal contracts between what stakeholders need and what developers build
-* **Human-in-the-loop**: agents ask before assuming, propose before executing, and require approval for high-impact changes
+* **Human-in-the-loop**: agents ask before assuming and require approval for high-impact changes (see [Intentional AI](#intentional-ai))
 
 ## Core Concepts
 
@@ -46,6 +46,12 @@ An **ADR** captures the technical choices that shape implementation. It answers 
 
 ADRs document ranked priorities, evaluated options, and the reasoning behind each choice. They provide the architectural context that connects what the spec requires to how the code delivers it.
 
+### Intentional AI
+
+Agents follow a Socratic approach: they ask clarifying questions, propose plans for review, and adjust rigor to the scope of the change. A typo fix executes directly. A new function requires a plan and confirmation. A new service requires an ADR and explicit approval.
+
+AI accelerates each step, but humans make the decisions.
+
 ### Delivery Lifecycle
 
 The framework connects these concepts into a continuous pipeline:
@@ -53,36 +59,6 @@ The framework connects these concepts into a continuous pipeline:
 * **Before coding**: intents and specs are defined, validated, and decomposed into prioritized tasks
 * **During coding**: specs and ADRs act as contractual guidance; implementation follows the plan
 * **After changes**: review verifies alignment between code and the original spec
-
-```mermaid
-flowchart LR
-    subgraph intent["Intent (Why)"]
-        E["Envisioning"]
-    end
-
-    subgraph contract["Contract (What)"]
-        direction LR
-        S["Specification<br/>(Feature/Migration)"]
-        ADR["Architecture<br/>Decisions"]
-    end
-
-    subgraph delivery["Delivery (How)"]
-        P["Plan & Backlog"]
-        B["Project<br/> Management Board"]
-        SP["Sprint"]
-        I["Implement"]
-        R["Quality <br/>Review"]
-    end
-
-    E --> contract
-    contract --> delivery
-    P -->|"syncs"| B
-    B --> SP
-    SP --> I
-    I --> R
-    R -->|"next task"| B
-    R -.->|"revisit / refine"| contract
-```
 
 Solid arrows: phase transitions with human review. Dashed arrows: feedback loops. Specs and ADRs are living artifacts refined throughout delivery.
 
