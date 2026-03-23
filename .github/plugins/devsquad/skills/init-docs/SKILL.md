@@ -16,9 +16,13 @@ Manage 4 SDD Framework documentation templates.
 | `docs/envisioning/TEMPLATE.md` | Envisioning document template |
 | `docs/architecture/decisions/ADR-TEMPLATE.md` | Architecture Decision Record template |
 
+## Important Constraints
+
+> NEVER create, copy, or recreate files under `.github/plugins/`. The plugin folder is managed externally. If `sdd-init.sh` does not exist, inform the user to install/update the plugin.
+
 ## Verification Mode
 
-Run the init script:
+First verify the script exists, then run it:
 
 ```bash
 .github/plugins/devsquad/hooks/sdd-init.sh verify

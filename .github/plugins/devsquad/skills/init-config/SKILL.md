@@ -22,9 +22,13 @@ Manage 10 SDD Framework configuration and instruction files.
 | `.github/docs/coding-guidelines.md` | Fundamental values, mandatory rules, code style |
 | `.markdownlint.yaml` | Markdown linting configuration |
 
+## Important Constraints
+
+> NEVER create, copy, or recreate files under `.github/plugins/`. The plugin folder is managed externally. If `sdd-init.sh` does not exist, inform the user to install/update the plugin.
+
 ## Verification Mode
 
-Run the init script:
+First verify the script exists, then run it:
 
 ```bash
 .github/plugins/devsquad/hooks/sdd-init.sh verify

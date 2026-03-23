@@ -64,6 +64,22 @@ You execute the workflows defined in three skills:
 
 ## Behavior
 
+> **CRITICAL**: You must ONLY create files listed in the Managed Files section above. NEVER create, copy, or recreate files under `.github/plugins/`. The plugin folder is managed by the VS Code Copilot Extensions system, not by this agent. Do NOT create `sdd-init.sh`, template files, agent files, skill files, or any other plugin infrastructure.
+
+### Step 0: Verify plugin installation
+
+Before doing anything, check that the init script exists:
+
+```bash
+test -f .github/plugins/devsquad/hooks/sdd-init.sh && echo "OK" || echo "MISSING"
+```
+
+**If MISSING**: Stop and tell the user:
+
+> The SDD Framework plugin is not installed or is outdated. Please install/update the `devsquad` plugin first, then run init again.
+
+**Do NOT attempt to create the script or any files under `.github/plugins/`.**
+
 ### Step 1: Check file status
 
 Run the init script to verify all managed files:
