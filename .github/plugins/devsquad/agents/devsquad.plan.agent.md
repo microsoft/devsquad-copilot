@@ -225,6 +225,14 @@ After clarifications, propose entities, fields, types, and relationships. Option
 
 Propose endpoints (Method | Route | Description | User Story) and patterns to be followed (per ADRs). Options: `[A]` Approve / `[M]` Modify / `[D]` Discuss.
 
+When generating contracts in Step 5, prefer machine-readable formats over prose:
+- **REST APIs**: OpenAPI / Swagger specification
+- **Event-driven**: AsyncAPI specification
+- **Data models**: JSON Schema or equivalent typed definitions
+- **Fallback**: Structured markdown tables when no standard format applies or the project has no API tooling
+
+If an ADR already defines a contract format standard, follow it. If no standard exists and the feature exposes a public API, suggest creating an ADR for API contract format.
+
 ### Step 4M: ZOOM IN - Migration Architecture
 
 **Prerequisite**: Step 3 completed and approved. Only for migration specs.

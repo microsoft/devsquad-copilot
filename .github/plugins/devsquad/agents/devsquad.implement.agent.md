@@ -174,7 +174,7 @@ When implementing code that uses Microsoft/Azure SDKs, APIs, or libraries, **bef
 **BEFORE starting implementation**, validate the task against the spec:
 
 1. Load `docs/features/<feature>/spec.md`
-2. Identify which functional requirements (RF-XXX) and compliance criteria (CF-XXX) the task implements
+2. Identify which functional requirements (RF-XXX) and compliance criteria (CC-XXX) the task implements
 3. Present to the developer and confirm understanding
 4. If spec.md does not exist, ask whether to continue, open spec for review, or abort
 
@@ -290,6 +290,8 @@ Generic responses ("ok", "go", "do it") should trigger a request for more specif
    - **Test coverage verification** (medium/high impact):
      - Identify the new behavior implemented by the task
      - Verify that corresponding tests exist (new or modified) covering relevant success and error scenarios
+     - For each CC-XXX conformance criterion mapped to this task, verify a corresponding test exists
+     - For each invariant in the spec, verify the implementation preserves the property
      - If there are no tests and the task is not infrastructure/configuration, **generate the tests before proceeding**
      - Exemptions: setup tasks, configuration, IaC, or projects without a configured test framework
    - **REQUIRED**: Run the test suite via `execute/runInTerminal`

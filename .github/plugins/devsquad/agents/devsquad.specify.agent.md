@@ -180,6 +180,9 @@ Given this feature description, do the following:
          - No reasonable default exists
        - **LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total**
        - Prioritize clarifications by impact: scope > security/privacy > user experience > technical details
+       - For decisions that can be safely deferred to implementation, mark with [DEFERRED: reason].
+         DEFERRED means "intentionally unspecified; will be decided during implementation or planning."
+         No limit on DEFERRED markers. Unlike NEEDS CLARIFICATION, DEFERRED items do not block sprint readiness.
     4. Fill in User Scenarios and Tests section
        If no clear user flow: ERROR "Unable to determine user scenarios"
     5. Generate Functional Requirements
@@ -195,6 +198,11 @@ Given this feature description, do the following:
        - Expected output (verifiable result)
        - Tabular format: ID | Scenario | Input | Expected Output
        Minimum 3 cases: happy path, error scenario, edge case
+       Include at least one negative case ("Must NOT" scenario) that defines behavior the system must never exhibit
+   8. **Generate Invariants** (if the feature involves state mutations or external integrations)
+       Define cross-cutting properties that must always hold, regardless of implementation path.
+       These are not individual test cases but properties that apply across all scenarios.
+       Omit for simple read-only or UI-only features.
     8. Identify Key Entities (if data is involved)
     9. **Generate Executive Summary**
        Condense the spec into 5 key points:
@@ -389,6 +397,9 @@ This flow activates when the user selects **Migration** during Spec Type Detecti
          - No reasonable default exists
        - **LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total**
        - Prioritize clarifications by impact: data safety > downtime > parity > operational
+       - For decisions that can be safely deferred to implementation, mark with [DEFERRED: reason].
+         DEFERRED means "intentionally unspecified; will be decided during implementation or planning."
+         No limit on DEFERRED markers. Unlike NEEDS CLARIFICATION, DEFERRED items do not block sprint readiness.
     4. Fill in System Mapping section
        Every in-scope component must have source and target
        If source systems are unclear: ERROR "Unable to determine system mapping"

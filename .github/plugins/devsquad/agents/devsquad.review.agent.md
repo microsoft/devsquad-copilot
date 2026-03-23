@@ -106,7 +106,7 @@ When the user mentions a task/issue:
 ```
 Validation scopes for Task #[ID]:
 
-1. Compliance with spec (RF-XXX and CF-XXX mapped to the task)
+1. Compliance with spec (RF-XXX and CC-XXX mapped to the task)
 2. Compliance with referenced ADRs
 3. Consistency with codebase patterns
 4. Tests passing
@@ -122,7 +122,7 @@ Feature review: [name]
 
 Scope:
 1. All feature tasks and their requirements
-2. Conformance criteria coverage (CF-XXX)
+2. Conformance criteria coverage (CC-XXX)
 3. Consistency between feature components
 4. Integration between user stories
 ```
@@ -151,8 +151,9 @@ Build the validation checklist from the artifacts:
 
 **From spec.md**:
 - Which functional requirements (RF-XXX) does the task implement?
-- Which conformance criteria (CF-XXX) must be met?
+- Which conformance criteria (CC-XXX) must be met?
 - Which error scenarios are documented?
+- Which invariants apply to this feature?
 
 **From plan.md**:
 - Which architectural decisions apply?
@@ -173,8 +174,8 @@ Review Checklist: [task/feature]
 
 From Spec:
 - [ ] RF-001: [brief description]
-- [ ] CF-001: [scenario] → [expected output]
-- [ ] CF-002: [scenario] → [expected output]
+- [ ] CC-001: [scenario] → [expected output]
+- [ ] CC-002: [scenario] → [expected output]
 
 From ADRs:
 - [ ] ADR-0001: [relevant constraint]
@@ -197,11 +198,17 @@ For each checklist item, validate with evidence:
 
 #### 2.1 Spec Compliance
 
-For each mapped RF-XXX and CF-XXX:
+For each mapped RF-XXX and CC-XXX:
 
 - Locate the code that implements the requirement
 - Verify that the behavior meets the conformance criterion
 - Document evidence (file:line) or gap found
+- **Test traceability**: For each CC-XXX, identify the corresponding test case by name. If no test maps to a conformance criterion, flag as a finding.
+
+For each invariant documented in the spec:
+
+- Verify the invariant holds across all relevant code paths (not just a single scenario)
+- Check that tests exercise the invariant under multiple conditions
 
 #### 2.2 ADR Compliance
 
@@ -309,7 +316,14 @@ The Learning Insights section connects findings to **reusable fundamentals** —
 | ID | Requirement | Status | Evidence |
 |----|-------------|--------|----------|
 | RF-001 | [description] | ✅ PASS | [file:line] |
-| CF-001 | [scenario] | ❌ FAIL | [what is wrong] |
+| CC-001 | [scenario] | ❌ FAIL | [what is wrong] |
+
+### Conformance Test Mapping
+
+| CC-ID | Scenario | Test Case | Status |
+|-------|----------|-----------|--------|
+| CC-001 | [scenario] | [test name or file:line] | ✅ Mapped |
+| CC-002 | [scenario] | [none found] | ❌ Missing |
 
 ### ADR Compliance
 

@@ -20,6 +20,6 @@
 
 ## Cross-Verification (deep level)
 
-- Do tasks cover all conformance criteria (CF-XXX) from the spec?
+- Do tasks cover all conformance criteria (CC-XXX) from the spec?
 - Are complexity estimates aligned with the volume of tasks?
 - Do external dependencies identified in the complexity analysis have corresponding tasks?
