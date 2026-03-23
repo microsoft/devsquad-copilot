@@ -1,4 +1,3 @@
-
 # Feature Specification: [FEATURE_NAME]
 
 **Created on**: [DATE]  
@@ -8,21 +7,21 @@
 
 <!--
   Condensation of the spec into 3-5 key points.
-  Serves as a quick reference for agents and developers.
+  Serves as a quick reference for the agent and developers.
   Update whenever the spec changes significantly.
 -->
 
 - **Objective**: [One sentence describing what the feature does]
 - **Primary user**: [Who uses it]
-- **Value delivered**: [Why this matters]
+- **Value delivered**: [Why it matters]
 - **Scope**: [What is included / excluded]
 - **Primary success criterion**: [Most important metric]
 
-## Out of Scope *(required)*
+## Non-Scope *(required)*
 
 <!--
   Explicitly declare what is NOT part of this feature.
-  Protects scope against implicit expansion and aligns expectations.
+  Protects the scope against implicit expansion and aligns expectations.
   Minimum 1 item.
 -->
 
@@ -35,14 +34,14 @@
   Example: "Session-based authentication (web standard, no explicit requirement)"
 -->
 
-- [Assumption and basis for assuming it]
+- [Assumption and basis for making it]
 
 ## User Scenarios & Tests *(required)*
 
 <!--
   IMPORTANT: User stories must be PRIORITIZED as user journeys ordered by importance.
   Each user story/journey must be INDEPENDENTLY TESTABLE - meaning that if you implement only ONE of them,
-  you still have an MVP (Minimum Viable Product) that delivers value.
+  you will still have an MVP (Minimum Viable Product) that delivers value.
   
   Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
   Think of each story as an independent slice of functionality that can be:
@@ -54,7 +53,7 @@
 
 ### User Story 1 - [Brief Title] (Priority: P1)
 
-[Describe this user journey in plain language]
+[Describe this user journey in simple language]
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
@@ -69,7 +68,7 @@
 
 ### User Story 2 - [Brief Title] (Priority: P2)
 
-[Describe this user journey in plain language]
+[Describe this user journey in simple language]
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
@@ -83,7 +82,7 @@
 
 ### User Story 3 - [Brief Title] (Priority: P3)
 
-[Describe this user journey in plain language]
+[Describe this user journey in simple language]
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
@@ -150,7 +149,7 @@
 
 <!--
   ACTION REQUIRED: Define measurable success criteria.
-  These should be technology-independent and measurable.
+  These must be technology-independent and measurable.
 -->
 
 ### Measurable Outcomes
@@ -172,7 +171,7 @@
 
 | ID | Scenario | Input | Expected Output |
 |----|----------|-------|-----------------|
-| CC-001 | [Main happy path] | [Valid input data] | [Expected result] |
+| CC-001 | [Main happy path scenario] | [Valid input data] | [Expected result] |
 | CC-002 | [Error scenario] | [Invalid or incomplete data] | [Error message or behavior] |
 | CC-003 | [Edge case] | [Boundary or extreme condition] | [Expected behavior] |
 | CC-004 | [Must NOT happen] | [Input that could trigger wrong behavior] | [Behavior that must not occur, e.g.: "Must NOT create duplicate records"] |

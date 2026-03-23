@@ -2,7 +2,7 @@
 
 <!--
   File name: NNNN-domain.md
-  Use the domain/area of the decision, not the choice made.
+  Use the decision domain/area, not the choice made.
   Examples: data-persistence, authentication, inter-service-communication
 -->
 
@@ -63,4 +63,4 @@ Describe the chosen option and link the justification to the ranked priorities a
 
 ## References
 
-- ...
+* 

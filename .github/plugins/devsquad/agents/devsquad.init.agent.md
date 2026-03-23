@@ -51,6 +51,7 @@ You execute the workflows defined in three skills:
 ### Docs Group (skill: init-docs)
 
 - `docs/features/TEMPLATE.md`
+- `docs/migrations/TEMPLATE.md`
 - `docs/envisioning/TEMPLATE.md`
 - `docs/architecture/decisions/ADR-TEMPLATE.md`
 
@@ -65,9 +66,13 @@ You execute the workflows defined in three skills:
 
 ### Step 1: Check file status
 
-Follow the `init-config` and `init-docs` skill workflows in **verification mode**:
+Run the init script to verify all managed files:
 
-For each file listed in both skills, read the existing file in the project (if any), compare it with the template from the skill's `references/templates.md`, and report: Up to date (identical to the template), Outdated (exists but different — include a summary of the differences), Missing.
+```bash
+.github/plugins/devsquad/hooks/sdd-init.sh verify
+```
+
+The script returns JSON with `config` and `docs` arrays. Each entry has `file`, `status` (`up-to-date`, `outdated`, `missing`), and optionally `summary` (e.g., `+3-1` for outdated files).
 
 ### Step 2: Report status and ask the user
 
@@ -86,15 +91,17 @@ Consolidate the results and present them to the user, grouped by category. For *
 > - **[D]** View diff of outdated before deciding
 > - **[E]** Choose individually
 
-If the user chooses **[D]**, show the full diff output.
+If the user chooses **[D]**, run `sdd-init.sh diff <target-path>` for each outdated file and show the output.
 
 If the user passed `--force` as an argument, treat it as option **[A]** without asking.
 
 ### Step 3: Create/update files
 
-Based on the user's choice, follow the `init-config` and `init-docs` skill workflows in **creation mode** for the specific list of files to create/update.
+Based on the user's choice, run the appropriate script command:
 
-Ensure directories exist and create files with the correct template content from the skill references.
+- **[C]** Create missing only: `.github/plugins/devsquad/hooks/sdd-init.sh create-missing`
+- **[A]** Create missing + update outdated: `.github/plugins/devsquad/hooks/sdd-init.sh update-all`
+- **[E]** Choose individually: `.github/plugins/devsquad/hooks/sdd-init.sh create <target-path>` for each selected file
 
 ### Step 4: Summarize SDD files
 

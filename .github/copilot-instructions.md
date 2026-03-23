@@ -164,13 +164,16 @@ Rules:
 - Default timeout: 30 seconds. Adjust `timeoutSec` for slow scripts.
 - Handle errors with descriptive messages on stderr so the agent knows how to self-correct.
 
-### Distributed Templates (`docs/templates/`)
+### Distributed Templates
 
-Templates copied to consumer repos by the `devsquad.init-config` agent. When editing:
+Config and documentation templates are managed deterministically by `sdd-init.sh` from `.github/plugins/devsquad/hooks/templates/`.
+Community files (`SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`) are sourced from `docs/templates/` by the `init-scaffold` skill.
 
-- The file `docs/templates/copilot-instructions.md` is the **source of truth** for the external version of `copilot-instructions.md`.
-- The content embedded in `devsquad.init-config.agent.md` must be kept **in sync** with this template.
-- After editing the template, update the embed in the corresponding agent.
+When editing templates:
+
+- Update the file in `.github/plugins/devsquad/hooks/templates/` (the source of truth for config and docs templates).
+- Update the file in `docs/templates/` for community file templates.
+- Run `sdd-init.sh verify` to confirm the manifest is consistent.
 
 ### General Conventions
 

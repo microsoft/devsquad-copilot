@@ -1,4 +1,3 @@
-
 # Migration Specification: [SYSTEM_NAME]
 
 **Created on**: [DATE]

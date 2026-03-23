@@ -24,21 +24,34 @@ Manage 10 SDD Framework configuration and instruction files.
 
 ## Verification Mode
 
-When verifying status, for each file:
+Run the init script:
 
-1. Read the existing file in the project
-2. Compare with the template in `references/templates.md`
-3. To compare, write the template to `/tmp/sdd-init-<name>` and run `diff --unified <existing> /tmp/sdd-init-<name>`
-4. Return the status:
-   - **Up to date**: file exists and is identical to the template
-   - **Outdated**: file exists but has differences (include summary: "X lines added, Y removed")
-   - **Missing**: file does not exist
+```bash
+.github/plugins/devsquad/hooks/sdd-init.sh verify
+```
+
+Parse the JSON output. Each entry in `config` has `file`, `status` (`up-to-date`, `outdated`, `missing`), and optionally `summary`.
 
 ## Creation Mode
 
-When creating or updating files:
+To create or update specific files:
 
-1. Ensure directories exist: `mkdir -p .github/instructions .github/docs`
-2. For each requested file, create with the exact content from the templates in `references/templates.md`
-3. To update: delete the existing file (`rm <file>`) and recreate
-4. Clean up temporary files: `rm -f /tmp/sdd-init-*`
+```bash
+.github/plugins/devsquad/hooks/sdd-init.sh create <target-path>
+```
+
+For bulk operations:
+
+```bash
+# Create only missing files
+.github/plugins/devsquad/hooks/sdd-init.sh create-missing
+
+# Create missing + overwrite outdated
+.github/plugins/devsquad/hooks/sdd-init.sh update-all
+```
+
+To show a diff for an outdated file:
+
+```bash
+.github/plugins/devsquad/hooks/sdd-init.sh diff <target-path>
+```
