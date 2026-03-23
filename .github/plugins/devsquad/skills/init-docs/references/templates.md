@@ -112,6 +112,20 @@
 - What happens when [boundary condition]?
 - How does the system handle [error scenario]?
 
+### Failure Modes *(include if the feature has external dependencies or shared state)*
+
+<!--
+  Document how the system should behave under real-world failure conditions.
+  Required when the feature involves: external APIs, databases, message queues,
+  concurrent users, or distributed state.
+  Omit for purely local, single-user, stateless features.
+-->
+
+- What happens when [external dependency] is unavailable or times out?
+- What happens when two users perform [action] concurrently on the same resource?
+- What happens when [operation] partially fails (e.g., payment charged but confirmation not sent)?
+- What consistency model is required? (immediate, eventual, or best-effort)
+
 ## Requirements *(required)*
 
 <!--
@@ -166,11 +180,28 @@
 | CC-001 | [Main happy path scenario] | [Valid input data] | [Expected result] |
 | CC-002 | [Error scenario] | [Invalid or incomplete data] | [Error message or behavior] |
 | CC-003 | [Edge case] | [Boundary or extreme condition] | [Expected behavior] |
+| CC-004 | [Must NOT happen] | [Input that could trigger wrong behavior] | [Behavior that must not occur, e.g.: "Must NOT create duplicate records"] |
 
 <!--
   These criteria serve as a contract between spec and implementation.
   The agent must verify the implementation against these cases.
+  Include at least one negative case (CC-XXX with "Must NOT" scenario)
+  to define what the system must never do.
 -->
+
+## Invariants
+
+<!--
+  Cross-cutting properties that must ALWAYS hold, regardless of implementation path.
+  Invariants describe the PROPERTY, not a specific test case.
+  Include this section when the feature involves state mutations, financial transactions,
+  concurrent access, or external integrations.
+  Omit for simple read-only or UI-only features.
+-->
+
+- [Property that must always hold, e.g.: "Each idempotency key maps to at most one transaction"]
+- [Safety constraint, e.g.: "Account balance must never go negative"]
+- [Consistency rule, e.g.: "Sum of line items must equal order total"]
 
 ## Related Specs
 
