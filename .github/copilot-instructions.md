@@ -175,6 +175,13 @@ When editing templates:
 - Update the file in `docs/templates/` for community file templates.
 - Run `sdd-init.sh verify` to confirm the manifest is consistent.
 
+### Versioning
+
+- Both `plugin.json` files must always have the same `version` value:
+  - `.github/plugin/plugin.json` (root manifest, full paths)
+  - `.github/plugins/devsquad/.github/plugin/plugin.json` (self-contained plugin, relative paths)
+- When releasing, bump `version` in both files, update `CHANGELOG.md`, commit, and create a git tag (`vX.Y.Z`).
+
 ### General Conventions
 
 - All documentation and instructions in **English**.

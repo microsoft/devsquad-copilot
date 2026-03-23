@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.6.1] - 2026-03-23
+
+### Changed
+
+- **Init deterministic operations**: Replaced ~45K chars of embedded template content in `init-config` and `init-docs` skill references with `sdd-init.sh` shell script that performs file verification, diff, creation, and updates deterministically
+  - 14 template files extracted to `hooks/templates/` with directory-based layout mirroring target paths
+  - `init-config` and `init-docs` skills rewritten to delegate all file operations to the script
+  - `devsquad.init` agent Steps 1-3 updated to use script commands (verify, create, create-missing, update-all, diff)
+
+### Fixed
+
+- **Init plugin recreation bug**: Added Step 0 plugin existence guard and explicit prohibition against creating files under `.github/plugins/` to prevent the LLM agent from recreating the entire plugin structure when `sdd-init.sh` is missing in consumer repos
+
+### Removed
+
+- `init-config/references/templates.md` (548 lines of embedded template content)
+- `init-docs/references/templates.md` (822 lines of embedded template content)
+- Duplicate template files from `docs/templates/` that overlapped with `hooks/templates/`
+- Consumer-facing TEMPLATE files from `docs/` directories (framework repo doesn't need them)
+
 ## [v0.6.0] - 2026-03-22
 
 ### Changed
