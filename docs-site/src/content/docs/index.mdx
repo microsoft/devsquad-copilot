@@ -1,0 +1,85 @@
+---
+title: DevSquad Copilot
+description: A GitHub Copilot delivery framework with guardrails for Spec-Driven Development.
+template: splash
+hero:
+  tagline: 13 agents, 18 skills, and lifecycle hooks orchestrating structured software delivery through GitHub Copilot. Intentional AI with human-in-the-loop decisions.
+  image:
+    file: ../../assets/overview.png
+  actions:
+    - text: Get Started
+      link: /devsquad-copilot/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/microsoft/devsquad-copilot
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, Steps, LinkCard } from '@astrojs/starlight/components';
+
+## What is DevSquad?
+
+DevSquad implements **Intent-Driven Development (IDD)**, a methodology built on three pillars:
+
+<CardGrid>
+  <Card title="Intent (Why)" icon="rocket">
+    The strategic motivation behind the project, captured through structured envisioning with Socratic questions about customer, pain points, and goals.
+  </Card>
+  <Card title="Specification (What)" icon="document">
+    Precise feature and migration specs that define scope, acceptance criteria, and constraints. Written for stakeholders, not developers.
+  </Card>
+  <Card title="Architecture Decisions (How)" icon="setting">
+    ADRs that record how and why specific technical approaches were selected. Evaluated against ranked priorities, not generic pros/cons.
+  </Card>
+  <Card title="Socratic AI" icon="approve-check">
+    Agents ask clarifying questions, surface trade-offs, and present options. Every workflow is human-in-the-loop by design.
+  </Card>
+</CardGrid>
+
+## Delivery Flow
+
+<Steps>
+1. **Envision** - Capture strategic vision and business context
+2. **Kickoff** - Structure project hierarchy and sync with the board
+3. **Specify** - Produce detailed feature or migration specifications
+4. **Plan** - Generate technical design artifacts and architecture decisions
+5. **Decompose** - Break specifications into user stories and tasks
+6. **Implement** - Execute implementation with guardrails and quality gates
+7. **Review** - Validate implementation against specs, ADRs, and the plan
+</Steps>
+
+Each stage can be revisited as new information emerges. The framework supports iterative refinement without losing traceability.
+
+## Capabilities
+
+<CardGrid>
+  <Card title="Envisioning and Planning" icon="star">
+    Capture strategic vision through structured questions. Structure project hierarchy with epics, features, and dependencies.
+  </Card>
+  <Card title="Specification" icon="pencil">
+    Feature and migration specs with compliance criteria. Requirements clarification through Socratic dialogue.
+  </Card>
+  <Card title="Architecture" icon="puzzle">
+    ADRs with duplicate checking and status management. Technical planning and security assessment using STRIDE and OWASP.
+  </Card>
+  <Card title="Sprint Delivery" icon="rocket">
+    Sprint planning with velocity analysis and adaptive capacity. Implementation with guardrails, quality gates, and automated review.
+  </Card>
+  <Card title="Integration" icon="github">
+    GitHub Issues, Azure DevOps (Agile/Scrum/CMMI/Basic), Microsoft Learn documentation, and Azure service cost estimates.
+  </Card>
+  <Card title="Extensibility" icon="add-document">
+    Custom instructions, skills, agents, hooks, and tool extensions. Stack-specific, domain-specific, or organization-specific knowledge.
+  </Card>
+</CardGrid>
+
+## Quick Links
+
+<CardGrid>
+  <LinkCard title="Getting Started" href="/devsquad-copilot/getting-started/" description="Install, initialize your project, and run your first workflow." />
+  <LinkCard title="Framework Architecture" href="/devsquad-copilot/framework/" description="Design principles, architecture patterns, and usage scenarios." />
+  <LinkCard title="Agents Reference" href="/devsquad-copilot/agents/overview/" description="All 13 agents with descriptions, capabilities, and flow." />
+  <LinkCard title="Skills Reference" href="/devsquad-copilot/skills/" description="All 18 skills with activation model and usage." />
+</CardGrid>

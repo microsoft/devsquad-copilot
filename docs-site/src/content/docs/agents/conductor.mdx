@@ -1,0 +1,43 @@
+---
+title: "Conductor (devsquad)"
+description: The central orchestrator that detects user intent and delegates to specialist agents.
+---
+
+import { Aside, Card, CardGrid } from '@astrojs/starlight/components';
+
+The `devsquad` agent is the **unified entry point** for the framework. It does not contain domain logic — instead, it detects user intent and delegates to the appropriate specialist agent.
+
+## How It Works
+
+| Capability | Description |
+|-----------|-------------|
+| **Intent Detection** | Analyzes what the user wants and routes to the right phase agent |
+| **Cross-Phase Context** | Maintains context as work moves between phases |
+| **Language Detection** | Auto-detects user language, translates all output, keeps identifiers in English |
+| **Structured Actions** | Relays sub-agent actions: `[ASK]`, `[CREATE]`, `[EDIT]`, `[BOARD]`, `[CHECKPOINT]`, `[DONE]` |
+
+## Phase Routing
+
+| User Intent | Delegated To |
+|------------|-------------|
+| "Set up my project" | `devsquad.init` |
+| "Let's define the vision" | `devsquad.envision` |
+| "Structure the project" | `devsquad.kickoff` |
+| "Write a spec for feature X" | `devsquad.specify` |
+| "Plan the architecture" | `devsquad.plan` |
+| "Break this into tasks" | `devsquad.decompose` |
+| "Implement task X" | `devsquad.implement` |
+| "Review the implementation" | `devsquad.review` |
+| "Run a security assessment" | `devsquad.security` |
+| "Plan the sprint" | `devsquad.sprint` |
+| "Check backlog health" | `devsquad.refine` |
+| "Add a custom skill" | `devsquad.extend` |
+
+## Skills Used
+
+- **reasoning** — Decision recording and handoff envelope
+- **board-config** — Platform detection (GitHub Issues vs Azure DevOps)
+
+<Aside type="tip">
+  You can always bypass the conductor and invoke any agent directly with `@devsquad.<agent>`. The conductor adds orchestration; direct mode gives immediate access.
+</Aside>

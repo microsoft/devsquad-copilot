@@ -1,0 +1,65 @@
+---
+title: Delivery Guardrails
+description: Why DevSquad structures thought before and after code generation, and the Socratic AI approach.
+---
+
+import { Card, CardGrid, Aside } from '@astrojs/starlight/components';
+
+## Before Code Generation
+
+Phase structuring (vision → spec → plan → decompose → implement) ensures developers articulate WHAT, WHY, and HOW before any code is written. This is not bureaucracy — it is the difference between generating code as a **consequence of decisions** versus generating code as a surprise.
+
+<CardGrid>
+  <Card title="Impact Classification" icon="warning">
+    **Low** (typo) → direct action. **Medium** (function change) → plan + confirm. **High** (service/API) → ADR + explicit approval.
+  </Card>
+  <Card title="Comprehension Checkpoint" icon="approve-check">
+    Before executing medium/high impact tasks, the agent requests confirmation of understanding.
+  </Card>
+  <Card title="Trade-off Explanation" icon="information">
+    Mandatory for non-trivial decisions: what is gained, what is lost, why this choice.
+  </Card>
+</CardGrid>
+
+## After Code Generation
+
+Research shows developers who delegate without cognitive engagement retain **17% less knowledge**. The greatest skill loss from passive AI assistance is **debugging capability**.
+
+> **Sustainable velocity = code generation × comprehension**
+
+<CardGrid>
+  <Card title="Knowledge Transfer" icon="open-book">
+    Post-implementation questions verify the developer understands what was generated and why.
+  </Card>
+  <Card title="Anti-pattern Detection" icon="error">
+    Flag "it works but I don't know why" situations that indicate passive delegation.
+  </Card>
+  <Card title="Socratic Guidance" icon="approve-check">
+    Questions, not answers. Guide developers to find solutions rather than handing them out.
+  </Card>
+  <Card title="Reasoning Log" icon="document">
+    Every decision recorded with principle, alternatives, justification, and confidence level.
+  </Card>
+</CardGrid>
+
+## Socratic AI Approach
+
+Based on ADR 0005, the framework uses adaptive Socratic methods:
+
+| Impact Level | Behavior |
+|-------------|----------|
+| **Low** (typo, log message) | Fast-track: direct action, minimal questions |
+| **High** (new service, schema, API) | Checkpoint: comprehension verification, Socratic questions, reasoning log |
+
+## Core Operating Principles
+
+1. Assess context before writing code
+2. Choose the simplest solution that solves the real problem
+3. Document assumptions when uncertain
+4. No non-trivial decisions without explicit approval
+5. Neutrality over agreement — honest evaluation over accommodating suggestions
+6. Resist confirmation bias — evaluate objectively regardless of framing
+7. Permission to not act — unnecessary code generation is worse than nothing
+8. Refuse to debug blindly — require sufficient context
+9. Classify changes by impact before acting
+10. Mandatory trade-off explanation for non-trivial decisions

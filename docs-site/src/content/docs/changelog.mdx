@@ -1,0 +1,50 @@
+---
+title: Changelog
+description: Version history for DevSquad Copilot.
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+## v0.6.1 <Badge text="Latest" variant="success" />
+
+- Replaced ~45K embedded template content with `sdd-init.sh` shell script for deterministic file operations
+- Reduced agent file sizes significantly
+
+## v0.6.0
+
+- Converted L2 sub-agents to skills to comply with GitHub Copilot's 1-level sub-agent nesting limit (ADR 0011)
+- Affected: security-review, init-config, init-docs, init-scaffold
+- Standalone agent files preserved for direct invocation
+
+## v0.5.0
+
+- Added migration specification support for infrastructure migrations
+- Migration types: lift-and-shift, rehost, replatform
+- `devsquad.specify` now handles both feature and migration specs
+- New instructions: `migration-specs.instructions.md`, `migration-tasks.instructions.md`
+
+## v0.4.0
+
+- Introduced Tool Extensions (preview) for injecting MCP server tools into plugin agents via YAML patches
+- ADR 0010 documents the overlay generation approach
+- sessionStart hook detects unsynced extensions
+
+## v0.3.0
+
+- Added `diagram-design` skill for architecture diagram guidance
+- Split monolithic architecture diagram into focused diagrams
+- Mermaid and Draw.io tool selection guidance
+
+## v0.2.0
+
+- Renamed all `sdd.*` agents to `devsquad.*`
+- Restructured as self-contained plugin for VS Code
+- Plugin marketplace registration
+
+## v0.1.0
+
+- Initial release
+- 16 agents, 13 skills, 5 MCP servers, 7 templates
+- Core framework: Conductor pattern, Socratic AI, Spec-Driven Development
+- GitHub Issues and Azure DevOps integration
+- Lifecycle hooks for auto-detection

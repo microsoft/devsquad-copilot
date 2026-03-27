@@ -1,0 +1,63 @@
+---
+title: Troubleshooting
+description: Common issues and solutions for DevSquad Copilot.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Plugin not found after update
+
+Clear VS Code cache and restart:
+- **macOS**: `~/Library/Application Support/Code/agentPlugins/`
+- **Windows**: `%APPDATA%\Code\agentPlugins\`
+- **Linux**: `~/.config/Code/agentPlugins/`
+
+## Hooks fail with "command not found"
+
+- Verify paths in `hooks.json` are relative to the plugin root directory
+- Ensure bash scripts have executable permissions (`chmod +x`)
+- Check shebang line: `#!/bin/bash` or `#!/usr/bin/env bash`
+
+## Agents not visible in VS Code
+
+- Requires **VS Code 1.111.0** or later
+- Enable `chat.plugins.enabled` in VS Code settings
+- Verify plugin installation via the Extensions panel
+
+## GitHub authentication errors
+
+- **VS Code**: Sign out and sign back in via the Copilot extension
+- **CLI**: Run `gh auth login` and ensure the Copilot scope is included
+- Verify your token has required permissions (repo, read:org)
+
+## MCP servers not connecting
+
+<Aside type="caution">
+  MCP servers require **Node.js 18+**. Verify with `node --version`.
+</Aside>
+
+- Verify `.mcp.json` exists at the plugin root
+- Restart VS Code to reload MCP configuration
+- Check network connectivity to MCP endpoints
+- For Azure DevOps MCP: ensure `npx @azure-devops/mcp@next` resolves
+
+## Tool extensions not syncing
+
+- Ensure `.github/devsquad/tool-extensions/` YAML files exist
+- Run the sync script manually
+- Check sessionStart hook output for warnings
+- Verify plugin version matches the extensions
+
+## Work items not creating
+
+- Verify board configuration in `.memory/board-config.md`
+- Check GitHub or Azure DevOps permissions
+- **GitHub**: Labels are created automatically if they do not exist
+- **Azure DevOps**: Verify process template detection (Scrum, Agile, Basic, CMMI)
+
+## Markdown lint warnings
+
+Some rules are intentionally disabled in `.markdownlint.yaml`:
+- **MD013**: Line length (tables and links frequently exceed 80 chars)
+- **MD033**: Inline HTML (Azure DevOps mermaid uses `:::mermaid`)
+- **MD041**: First-line heading (agent files start with YAML frontmatter)

@@ -1,0 +1,114 @@
+---
+title: Architecture Decisions
+description: All 11 Architecture Decision Records documenting significant technical decisions.
+---
+
+import { Badge, Aside } from '@astrojs/starlight/components';
+
+Architecture Decision Records (ADRs) document significant technical decisions made during the development of DevSquad Copilot. Each records the context, priorities, options evaluated, and the chosen decision with trade-offs.
+
+---
+
+## ADR 0001: Agent Orchestration <Badge text="Accepted" variant="success" />
+
+**Problem**: Coordinate 10+ specialized agents across distinct delivery phases.
+
+**Priorities**: (1) Failure resilience, (2) Low maintenance, (3) Usage flexibility, (4) Cross-phase context.
+
+**Decision**: Conductor (Mediated Coordinator-Worker) with dual-mode. Central conductor has no domain logic, delegates to specialists. If conductor fails, agents remain accessible directly.
+
+**Trade-off**: Higher token overhead and latency vs simpler patterns. Gains failure resilience and independent agent accessibility.
+
+---
+
+## ADR 0002: Communication Protocol <Badge text="Accepted" variant="success" />
+
+**Problem**: Sub-agents must function in two modes (via conductor and direct) without code duplication.
+
+**Decision**: Prefix protocol with structured actions. `[CONDUCTOR]` prefix detection triggers structured output (`[ASK]`, `[CREATE]`, `[BOARD]`, `[CHECKPOINT]`, `[DONE]`). Single codebase handles both.
+
+**Trade-off**: Sub-agents need dual output format handling.
+
+---
+
+## ADR 0003: Context Management <Badge text="Accepted" variant="success" />
+
+**Problem**: Assumptions from one phase contaminate subsequent phases.
+
+**Decision**: Disk artifacts + Handoff Envelope. Each phase starts with clean context, reads from disk. Explicit transfer via envelope with inherited assumptions, pending decisions, discarded info.
+
+**Trade-off**: Token cost to re-read files. Gains isolation, persistence (git), and auditability.
+
+---
+
+## ADR 0004: Activation Model <Badge text="Accepted" variant="success" />
+
+**Problem**: Distribute knowledge without overloading agent context.
+
+**Decision**: Differentiated model — Instructions (deterministic glob, fewer than 50 lines), Skills (semantic, 50–200 lines), Agents (explicit, more than 200 lines), Hooks (event-triggered, zero LLM cost), MCP Servers (tool calls).
+
+**Trade-off**: Greater cognitive complexity for extension authors. Mitigated by decision tree and `devsquad.extend`.
+
+---
+
+## ADR 0005: Socratic AI <Badge text="Accepted" variant="success" />
+
+**Problem**: AI-assisted development risks passive automation and knowledge debt.
+
+**Priorities**: (1) Knowledge transfer, (2) Speed for experienced, (3) Decision quality, (4) Traceability.
+
+**Decision**: Adaptive Socratic approach. Low-impact → fast-track. High-impact → comprehension checkpoints with Socratic questions.
+
+**Trade-off**: Lower initial speed perception. Better long-term velocity through reduced rework and knowledge retention.
+
+---
+
+## ADR 0006: Estimation and Risk Management <Badge text="Accepted" variant="success" />
+
+**Problem**: Numerical estimates (story points, hours) don't reveal uncertainty or generate actions.
+
+**Decision**: Complexity analysis by unknown work. Separate known work from risks. 2-3 scenarios with trade-offs. High/Medium/Low risk classification.
+
+**Anti-patterns**: Number without justification, ignoring risks, single scenario as "the solution", false confidence.
+
+---
+
+## ADR 0007: Work Decomposition <Badge text="Accepted" variant="success" />
+
+**Problem**: Without defined structure, decompositions follow inconsistent criteria.
+
+**Decision**: Mandatory phases — Setup, Foundational, User Stories (P1/P2/P3), Polish. Within each story: Models → Services → Endpoints → Integration. Tasks marked `[P]` when parallelizable.
+
+---
+
+## ADR 0008: Testing Strategy <Badge text="Accepted" variant="success" />
+
+**Problem**: Separate test tasks create board bloat and postpone testing to the end.
+
+**Decision**: Tests integrated as acceptance criteria. No separate test tasks. Task only "Done" when code + tests are ready.
+
+---
+
+## ADR 0009: Developer Capacity <Badge text="Accepted" variant="success" />
+
+**Problem**: Developers accumulate in-progress tasks. AI lowers the perceived cost of starting new work.
+
+**Decision**: One task at a time with soft limit of 3 in-progress. Warning signal, not a hard block.
+
+---
+
+## ADR 0010: Agent Tool Extension <Badge text="Proposed" variant="caution" />
+
+**Problem**: Consumers need to inject MCP tools into plugin agents. Plugin `tools:` is static after install.
+
+**Decision**: Agent overlay generation via sync script. Consumer YAML patches merged with plugin agents. sessionStart hook detects staleness.
+
+---
+
+## ADR 0011: Sub-Agent Nesting Resolution <Badge text="Accepted" variant="success" />
+
+**Problem**: GitHub Copilot limits sub-agent nesting to 1 level. Conductor → L1 → L2 chains violate this.
+
+**Decision**: Convert L2 sub-agents to skills (security-review, init-config, init-docs, init-scaffold). Standalone agent files kept for direct invocation.
+
+**Affected chains**: init → (init-config, init-docs, init-scaffold), implement → security, plan → security, review → security, sprint → refine.
