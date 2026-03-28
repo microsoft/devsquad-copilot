@@ -1,7 +1,7 @@
 ---
 name: 'Documentation Style'
 description: 'Formatting and style rules for markdown documentation'
-applyTo: 'docs/**/*.md'
+applyTo: '**/*.md'
 ---
 
 When editing markdown documentation, follow these formatting rules:

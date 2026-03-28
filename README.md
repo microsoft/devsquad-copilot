@@ -2,8 +2,8 @@
 
 A delivery framework for GitHub Copilot that guides teams from **intent** to **implementation**: starting with a clearly defined business purpose and expected outcomes (**why**), translating it into explicit specifications and architecture decisions (**what**), and continuously ensuring the **how** (the code) remains aligned with that intent through ongoing validation.
 
-> [!WARNING]
-> This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
+> [!TIP]
+> Install in [VS Code](vscode://chat-plugin/install?source=microsoft/devsquad-copilot) or [GitHub Copilot CLI](#copilot-cli) in under 30 seconds.
 
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
@@ -16,6 +16,9 @@ Following an **Intent-Driven Development** approach, it is designed to be:
 * **Intent-first**: every initiative (feature, migration, infrastructure change) traces back to a business need captured in the envisioning document
 * **Spec-driven**: specifications act as formal contracts between what stakeholders need and what developers build
 * **Human-in-the-loop**: agents ask before assuming and require approval for high-impact changes.
+
+> [!WARNING]
+> This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
 
 ## Core Concepts
 
@@ -97,67 +100,72 @@ Specs decompose into prioritized tasks by user story and sync to GitHub Issues o
 ### Prerequisites
 
 * Node.js 18+ (for lint hooks and MCP servers)
-* Development tools (at least one)
-  * [VS Code](https://code.visualstudio.com/download) 1.111.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+* At least one development tool:
   * [Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
-* **If using VS Code**: enable in extension settings:
-  * `github.copilot.advanced.experimental.memory` (optional, for cross-session memory)
+  * [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+
+Use `devsquad` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across the delivery lifecycle. See [Choosing an Agent](#choosing-an-agent) for direct invocation.
+
+### Copilot CLI
 
 #### Authentication
 
-Sign in to GitHub before first use so the framework can manage issues, pull requests, and board operations.
+Follow the [CLI authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli) to sign in to GitHub via the GitHub CLI.
 
-* **VS Code**: Follow the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup) to install the extension and sign in to your GitHub account.
-* **Copilot CLI**: Follow the [CLI authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli) to authenticate via the GitHub CLI.
-
-### Installation
-
-#### Option 1: Via Copilot CLI
-
-Install the plugin:
+#### Installation
 
    ```bash
    copilot plugin install microsoft/devsquad-copilot
    ```
 
-To update:
+> [!NOTE]
+> Use `copilot plugin update devsquad` to update and `copilot plugin uninstall devsquad` to remove.
+
+#### Usage
+
+Start a new chat with the conductor agent:
 
    ```bash
-   copilot plugin update devsquad
+   copilot --agent devsquad:devsquad
    ```
 
-To uninstall:
+To invoke a specific agent directly:
 
    ```bash
-   copilot plugin uninstall devsquad
+   copilot --agent devsquad:devsquad.implement
    ```
 
-#### Option 2: Via VS Code
+> [!WARNING]
+> The `--yolo` flag allows the agent to operate autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation. Use with caution.
+>
+> ```bash
+> copilot --agent devsquad:devsquad --yolo
+> ```
 
-1. Add the following to your VS Code user settings (`Ctrl+Shift+P` / `Cmd+Shift+P` then "Open User Settings (JSON)"):
+### VS Code
 
-   ```jsonc
-   {
-     "chat.plugins.enabled": true,
-     "chat.plugins.marketplaces": [
-         "microsoft/devsquad-copilot"
-     ]
-   }
-   ```
+#### Prerequisites
 
-2. Open the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`), search for `@agentPlugins devsquad`, and install.
+Enable in extension settings (optional):
 
-3. To manage installed plugins, open the **Agent Plugins - Installed** view in the Extensions sidebar, or select the **gear icon** in the Chat view and choose **Plugins**.
+* `github.copilot.advanced.experimental.memory` for cross-session memory
 
-### Usage
+#### Authentication
 
-#### Option 1: Guided (Recommended)
+Follow the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup) to install the extension and sign in to your GitHub account.
 
-Use `devsquad` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
+#### Installation
 
-#### Option 2: Direct
+[Install in VS Code](vscode://chat-plugin/install?source=microsoft/devsquad-copilot)
 
-Invoke a specific agent based on your current state:
+> [!NOTE]
+> For VS Code Insiders, use [this link](vscode-insiders://chat-plugin/install?source=microsoft/devsquad-copilot) instead.
+
+#### Usage
+
+Use `devsquad` as the entry point in the chat panel. To invoke a specific agent directly, use `devsquad.<agent>` (for example, `devsquad.implement`).
+
+### Choosing an Agent
 
 | You have... | Start with |
 |-------------|-----------|
