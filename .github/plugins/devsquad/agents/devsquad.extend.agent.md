@@ -92,7 +92,85 @@ description: Python implementation patterns for the project. Use when
 
 **Agent**: minimal tools (do not use `["*"]`). Include "Conductor Mode" section if applicable. If parent is editable, edit the parent's frontmatter and update `docs/framework/core-components/custom-agents.md`. If parent is read-only, create as a direct agent.
 
-**Hook**: idempotent script with `set -euo pipefail`. Verify tools with `command -v`. Register in `hooks.json` (append to array if it already exists).
+**Hook**: Hooks execute shell scripts at specific points in the agent lifecycle. Choose the right event for the use case:
+
+| Event | When it fires | Common use cases |
+|-------|---------------|------------------|
+| `sessionStart` | First prompt of a new session | Detect project config, inject context, validate project state |
+| `preToolUse` | Before agent invokes any tool | Block dangerous operations, require approval, guard sensitive files |
+| `postToolUse` | After tool completes successfully | Run formatters/linters, validate output, log tool usage |
+| `stop` | Agent session ends | Validate completion (e.g., ensure tests pass), generate reports |
+| `subagentStart` | Subagent is spawned | Inject project context into subagent |
+| `subagentStop` | Subagent completes | Validate subagent results before accepting |
+| `userPromptSubmit` | User submits a prompt | Audit, inject system context |
+| `preCompact` | Before context is compacted | Save important state before truncation |
+
+Script rules:
+- Start with `set -euo pipefail`. Verify external tools with `command -v`.
+- Read JSON input from stdin. Return JSON output to stdout. Errors to stderr.
+- Must be idempotent and complete within the `timeoutSec` (default: 30s, use 5s for preToolUse).
+- Use exit code 0 for success, exit code 2 to block processing.
+
+**`set -euo pipefail` caveats**: `-e` exits on unhandled non-zero, but has edge cases. `grep -q` returns 1 on no match, which under `-e` kills the script outside a conditional. Always wrap match checks in `if`: `if grep -q pattern file; then ...`. Similarly, `|| true` masks all failures; prefer capturing exit codes explicitly when the command can fail for different reasons.
+
+**JSON output must be machine-built, never string-interpolated**: Variables containing quotes or newlines break hand-built JSON. Always use `jq` or a fallback:
+
+```bash
+# Safe JSON — always use this pattern
+if command -v jq >/dev/null 2>&1; then
+  jq -cn --arg reason "$REASON" '{"hookSpecificOutput":{"permissionDecision":"deny","permissionDecisionReason":$reason}}'
+else
+  python3 -c 'import json,sys; print(json.dumps({"hookSpecificOutput":{"permissionDecision":"deny","permissionDecisionReason":sys.argv[1]}}))' "$REASON"
+fi
+```
+
+**Temp file cleanup**: If the script creates temporary files, always register a cleanup trap:
+
+```bash
+tmp_file=$(mktemp "/tmp/hook-XXXXXX")
+trap 'rm -f "$tmp_file"' EXIT INT TERM
+# ... use $tmp_file ...
+```
+
+**Optional environment variables**: Even with `set -u`, use `${VAR:-default}` for vars that may not be set (e.g., `${DEVSQUAD_PLUGIN_NAME:-devsquad}`).
+
+**preToolUse permission pattern** (most common for security hooks):
+
+```bash
+#!/bin/bash
+set -euo pipefail
+INPUT=$(cat)
+TOOL_NAME=$(echo "$INPUT" | jq -r '.toolName // .tool_name // empty' 2>/dev/null)
+
+# deny = block, ask = require confirmation, allow = auto-approve
+REASON="Destructive command blocked by policy"
+jq -cn --arg r "$REASON" '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":$r}}'
+```
+
+When multiple hooks target the same preToolUse event, the most restrictive decision wins: deny > ask > allow.
+
+**sessionStart context injection pattern**:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+CONTEXT="Project: $(cat package.json 2>/dev/null | jq -r '.name' || echo 'unknown')"
+jq -cn --arg ctx "$CONTEXT" '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":$ctx}}'
+```
+
+**stop validation pattern** (block agent from finishing until a condition is met):
+
+```bash
+#!/bin/bash
+set -euo pipefail
+INPUT=$(cat)
+# Prevent infinite loops: check if already continuing from a previous stop hook
+ACTIVE=$(echo "$INPUT" | jq -r '.stop_hook_active // false' 2>/dev/null)
+if [ "$ACTIVE" = "true" ]; then exit 0; fi
+jq -cn '{"hookSpecificOutput":{"hookEventName":"Stop","decision":"block","reason":"Run the test suite before finishing."}}'
+```
+
+Register hooks in `.github/hooks/hooks.json` (or create a new `.json` file in `.github/hooks/` if grouping by concern, e.g., `security.json`, `formatting.json`). Use camelCase event names (`preToolUse`, not `PreToolUse`). Reference the existing hooks in `.github/plugins/devsquad/hooks/` for complete examples.
 
 **Tool Extension**: When the user wants to inject MCP server tools into existing plugin agents, scaffold the following:
 
@@ -152,7 +230,7 @@ Multiple extension files can target different agents. Each generates an independ
 | Instruction | Specific glob? < 50 lines? Does not duplicate a skill? |
 | Skill | Keywords in description? "Use when" + "Do not use for"? 50-200 lines? |
 | Agent | Specific description? Minimal tools? Conductor Mode? |
-| Hook | Idempotent? `command -v`? Reasonable timeout? |
+| Hook | Idempotent? `set -euo pipefail`? `command -v` for external tools? JSON built with `jq` (not string interpolation)? Temp files cleaned with `trap`? Timeout ≤ 30s (5s for preToolUse)? Correct event name (camelCase)? |
 | Tool Extension | MCP server in `.vscode/mcp.json`? Tool names match server namespace? Instructions explain when/how to use? Sync script copied to `.github/devsquad/`? Sync ran successfully? |
 
 ### 6. Test activation

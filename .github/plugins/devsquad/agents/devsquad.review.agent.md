@@ -260,6 +260,27 @@ Assess whether the implementation requires a security review:
 
 **If trigger detected**: Execute the security review following the `security-review` skill workflow in code mode.
 
+#### 2.7 AI Code Smell Detection
+
+AI-generated code produces specific anti-patterns that are hard to catch in large diffs. For each changed file, check:
+
+| Check | What to look for | Severity if found |
+|-------|------------------|-------------------|
+| **Duplicate blocks** | Two or more code blocks (>15 lines) across files with substantially similar logic that could be a shared utility or base class. Use `search/textSearch` to find similar patterns. | Major |
+| **Missing abstractions** | Repeated inline patterns (e.g., the same error handling, parsing, or transformation logic) appearing 3+ times without extraction into a reusable function. | Major |
+| **Unnecessary complexity** | Implementation that uses advanced patterns (generics chains, deep nesting, metaprogramming) where a straightforward approach would work. Apply the "would a new team member understand this in 5 minutes?" test. | Minor |
+| **Unguarded external calls** | HTTP requests, database queries, file I/O, or third-party SDK calls without error handling (try/catch, `.catch()`, error return check). Every external boundary must have explicit error handling. | Major |
+| **Unjustified dependencies** | New packages/libraries added without clear necessity — check if the functionality could be achieved with existing dependencies or standard library. Verify no security advisories exist for the added dependency. | Major |
+
+**How to execute:**
+
+1. From the list of changed files (`read/changes`), identify all new or substantially modified functions/methods.
+2. For each function >15 lines, use `search/textSearch` with a distinctive snippet (3-5 lines) to detect duplicate logic elsewhere in the codebase.
+3. For new dependencies, verify they are referenced in the spec/plan or have clear technical justification.
+4. For external calls, verify error handling exists at each call site.
+
+**Proportionality:** Scale this check to the size of the change. For a 1-file, 20-line change, a quick scan suffices. For a multi-file feature implementation, systematic search is warranted.
+
 ### Phase 3: Finding Classification
 
 Classify each finding by severity:
