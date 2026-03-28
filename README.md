@@ -3,7 +3,7 @@
 A delivery framework for GitHub Copilot that guides teams from **intent** to **implementation**: starting with a clearly defined business purpose and expected outcomes (**why**), translating it into explicit specifications and architecture decisions (**what**), and continuously ensuring the **how** (the code) remains aligned with that intent through ongoing validation.
 
 > [!TIP]
-> Install in [VS Code](vscode://chat-plugin/install?source=microsoft/devsquad-copilot) or [GitHub Copilot CLI](#copilot-cli) in under 30 seconds.
+> Install in [VS Code](#vs-code) or [GitHub Copilot CLI](#copilot-cli) in under 30 seconds.
 
 The framework is composed of 12 specialized agents, 18 skills, and 5 hooks that enable the following delivery flow:
 
