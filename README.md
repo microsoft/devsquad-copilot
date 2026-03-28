@@ -5,6 +5,8 @@ A delivery framework for GitHub Copilot that guides teams from **intent** to **i
 > [!TIP]
 > Install in [VS Code](vscode://chat-plugin/install?source=microsoft/devsquad-copilot) or [GitHub Copilot CLI](#copilot-cli) in under 30 seconds.
 
+The framework is composed of 12 specialized agents, 18 skills, and 5 hooks that enable the following delivery flow:
+
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
 AI accelerates code generation, but also accelerates decisions, artifacts, and assumptions. In fast-moving projects, requirements evolve, architecture gets revisited, and parallel work starts from incomplete or stale context. Staying aligned as the system grows is the real challenge.
