@@ -102,17 +102,15 @@ Specs decompose into prioritized tasks by user story and sync to GitHub Issues o
 ### Prerequisites
 
 * Node.js 18+ (for lint hooks and MCP servers)
-* At least one development tool:
-  * [Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
-  * [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
 
 Use `devsquad` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across the delivery lifecycle. See [Choosing an Agent](#choosing-an-agent) for direct invocation.
 
 ### Copilot CLI
 
-#### Authentication
+#### Prerequisites
 
-Follow the [CLI authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli) to sign in to GitHub via the GitHub CLI.
+* [Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
+* Sign in to GitHub via the GitHub CLI ([authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli))
 
 #### Installation
 
@@ -148,20 +146,20 @@ To invoke a specific agent directly:
 
 #### Prerequisites
 
-Enable in extension settings (optional):
-
-* `github.copilot.advanced.experimental.memory` for cross-session memory
-
-#### Authentication
-
-Follow the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup) to install the extension and sign in to your GitHub account.
+* [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+* Sign in to your GitHub account ([setup guide](https://code.visualstudio.com/docs/copilot/setup))
+* `github.copilot.advanced.experimental.memory` enabled in extension settings (optional, for cross-session memory)
 
 #### Installation
 
-[Install in VS Code](vscode://chat-plugin/install?source=microsoft/devsquad-copilot)
+Open the following URL in your browser to install the plugin:
+
+```
+vscode://chat-plugin/install?source=microsoft/devsquad-copilot
+```
 
 > [!NOTE]
-> For VS Code Insiders, use [this link](vscode-insiders://chat-plugin/install?source=microsoft/devsquad-copilot) instead.
+> For VS Code Insiders, use `vscode-insiders://chat-plugin/install?source=microsoft/devsquad-copilot` instead.
 
 #### Usage
 
