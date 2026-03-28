@@ -211,3 +211,4 @@ For the full technical reference, see the [Extensibility guide](docs/framework/e
 | Understand the framework architecture, decisions and use cases | [Framework Architecture](docs/framework/README.md) |
 | Understand the approach used by the `extend` agent to guide the creation of skills, agents, instructions or hooks | [Extensibility](docs/framework/extensibility.md) |
 | See what changed | [Changelog](CHANGELOG.md) |
+| See who and what inspired us | [Acknowledgments](ACKNOWLEDGMENTS.md) |
