@@ -1,6 +1,6 @@
 # Sub-agent Nesting Resolution
 
-* **Status**: Accepted
+* **Status**: Superseded by 0012
 * **Date**: 2026-03-22
 
 ## Context

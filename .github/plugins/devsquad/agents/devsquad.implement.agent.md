@@ -2,7 +2,7 @@
 name: devsquad.implement
 description: Execute implementation from tasks.md, GitHub issue, or Azure DevOps work item
 tools: ['agent', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/add_issue_comment', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/wit_update_work_item', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'memory']
-agents: ['devsquad.review']
+agents: ['devsquad.review', 'devsquad.implement.validate', 'devsquad.implement.execute', 'devsquad.implement.verify', 'devsquad.implement.finalize']
 handoffs:
   - label: Review Implementation
     agent: devsquad.review
@@ -115,21 +115,25 @@ If the dev cannot explain, continue guiding. **When they demonstrate understandi
 
 ## Orchestration Flow
 
-This agent is an **orchestrator**. The detailed steps are delegated to specialized skills. The complete flow is:
+This agent is an **orchestrator**. The detailed steps are delegated to specialized skills and worker sub-agents. The complete flow is:
 
 ```
 1. Work Item Workflow  →  skill: work-item-workflow
 2. Additional Context  →  inline (below)
-3. Spec Validation     →  inline (below) + skill: quality-gate
-4. Impact Classification  →  inline (below)
+3. Spec Validation     →  sub-agent: devsquad.implement.validate
+4. Impact Classification  →  sub-agent: devsquad.implement.validate
 5. Understanding Checkpoint  →  inline (below)
 6. Branch Management   →  skill: git-branch
-7. Implementation Execution  →  inline (below) + skill: git-commit (per task)
-8. Self-Verification   →  skill: quality-gate (code rubric)
-9. Automated Review    →  inline (below) + sub-agent: devsquad.review
-10. Finalization and PR  →  skill: pull-request
+7. Implementation Execution  →  sub-agent: devsquad.implement.execute + skill: git-commit (per task)
+8. Self-Verification   →  sub-agent: devsquad.implement.verify
+9. Automated Review    →  sub-agent: devsquad.review (with parallel workers)
+10. Finalization and PR  →  sub-agent: devsquad.implement.finalize + skill: pull-request
 11. Next Task Suggestion  →  skill: next-task
 ```
+
+**Worker delegation**: Steps 3-4 are delegated to `devsquad.implement.validate`, which returns impact classification and spec mapping. Steps 7-8 can use `devsquad.implement.execute` and `devsquad.implement.verify` respectively. Step 9 delegates to `devsquad.review` which internally fans out to 5 parallel compliance checkers. Step 10 delegates to `devsquad.implement.finalize`.
+
+**When to use workers vs inline**: Use workers when the step benefits from context isolation (verification, review). Keep steps inline when they require interactive developer dialogue (understanding checkpoint, code question guidance, churn detection).
 
 For **low-impact** tasks, skip steps 3, 5, 8, 9 and apply fast-track (see Impact Classification).
 

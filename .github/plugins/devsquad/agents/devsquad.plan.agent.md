@@ -1,7 +1,8 @@
 ---
 name: devsquad.plan
 description: Execute the implementation planning flow using the plan template to generate design artifacts.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory', 'agent']
+agents: ['devsquad.security', 'devsquad.plan.context', 'devsquad.plan.architecture', 'devsquad.plan.design']
 handoffs: 
   - label: Create Tasks
     agent: devsquad.decompose
@@ -107,7 +108,11 @@ Planning follows two perspectives that must be addressed in order:
 
 ### Step 1: Setup and Context
 
-1. **Identify spec**: Check both `docs/features/` and `docs/migrations/`. If the user did not specify, list available specs from both directories and ask them to choose.
+**Delegate to `devsquad.plan.context` worker** to load all project artifacts in parallel. The worker returns a structured context summary including spec type, envisioning, ADRs, and related specs.
+
+If the worker flags missing spec or ambiguous target, handle interactively before proceeding.
+
+1. **Invoke context worker** with the feature/migration name (if known)
 
 2. **Load existing context**:
    - Read the spec (`docs/features/<name>/spec.md` or `docs/migrations/<name>/spec.md`)
@@ -139,6 +144,10 @@ Planning follows two perspectives that must be addressed in order:
    ```
 
 ### Step 2: ZOOM OUT - System Architecture
+
+**Delegate to `devsquad.plan.architecture` worker** for systemic analysis. The worker analyzes impact, ADR conflicts, and engineering practices status. Pass the context summary from Step 1.
+
+After receiving the worker's analysis, proceed with interactive steps:
 
 **Objective**: Ensure systemic architectural decisions are defined BEFORE detailing the feature.
 
@@ -211,7 +220,11 @@ If technical debt is identified during the analysis, ask whether the user wants 
 
 **Prerequisite**: Step 3 completed and approved.
 
-**If this is a migration spec**, use the Migration Architecture flow in Step 4M below. Otherwise, continue with feature architecture.
+**Delegate to `devsquad.plan.design` worker** with mode `feature`, passing the spec, approved ADRs, and user clarifications. The worker returns data model proposals, contract proposals, and unknowns.
+
+Handle unknowns interactively, then pass clarifications back to the worker if needed.
+
+**If this is a migration spec**, use the Migration Architecture flow in Step 4M below (delegate with mode `migration`). Otherwise, continue with feature architecture.
 
 #### 4.1 Requirements and Unknowns Analysis
 

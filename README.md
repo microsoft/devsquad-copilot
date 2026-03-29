@@ -5,7 +5,7 @@ A delivery framework for GitHub Copilot that guides teams from **intent** to **i
 > [!TIP]
 > Install in [VS Code](#vs-code) or [GitHub Copilot CLI](#copilot-cli) in under 30 seconds.
 
-The framework is composed of 12 specialized agents, 18 skills, and 5 hooks that enable the following delivery flow:
+The framework is composed of 13 invocable agents, 18 skills, and 5 hooks that enable the following delivery flow:
 
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
@@ -70,7 +70,7 @@ Each phase produces persistent artifacts, so a new developer can reconstruct the
 ## Who is this for?
 
 * Multiple developers working on the same product, where handoffs, shared decisions, and backlog coordination are constant.
-* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow the project context resist over time, and reduce onboarding time for new contributors.
+* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow the project context to persist over time, and reduce onboarding time for new contributors.
 
 ## What this is not
 
@@ -148,6 +148,7 @@ To invoke a specific agent directly:
 
 * [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
 * Sign in to your GitHub account ([setup guide](https://code.visualstudio.com/docs/copilot/setup))
+* `chat.subagents.allowInvocationsFromSubagents` enabled in VS Code settings (required for nested sub-agent workflows)
 * `github.copilot.advanced.experimental.memory` enabled in extension settings (optional, for cross-session memory)
 
 #### Installation
@@ -169,12 +170,18 @@ Use `devsquad` as the entry point in the chat panel. To invoke a specific agent 
 
 | You have... | Start with |
 |-------------|-----------|
+| A new project to set up | `devsquad.init` to create templates, instructions, and configurations |
 | A product idea without defined scope | `devsquad.envision` to capture vision, pains, and objectives |
 | A clear vision, ready to structure the backlog | `devsquad.kickoff` to create epics and features |
 | A defined feature to specify | `devsquad.specify` to write the spec with requirements and conformance criteria |
 | A spec ready for technical planning | `devsquad.plan` to produce ADRs, contracts, and data models |
+| A plan ready to break into tasks | `devsquad.decompose` to create user stories and work items |
+| A sprint to plan | `devsquad.sprint` to prepare velocity, capacity, and scope |
 | Tasks ready to implement | `devsquad.implement` to execute from tasks or work items |
+| A completed implementation to validate | `devsquad.review` to check alignment against spec and ADRs |
+| Security concerns on design or code | `devsquad.security` to run architectural or code assessment |
 | An existing backlog that needs organization | `devsquad.refine` to detect inconsistencies and classify readiness |
+| Stack or domain knowledge to add | `devsquad.extend` to create instructions, skills, agents, or hooks |
 
 For the full list of agents, see the [agent catalog](docs/framework/core-components/custom-agents.md).
 
@@ -193,7 +200,7 @@ The `devsquad.extend` agent guides creation of new components tailored to the pr
 | Automated validation after edits | Hook | `Add a hook that validates OpenAPI specs after editing` |
 
 > [!NOTE]
-The **Tool Extensions** capability is currently in preview: inject tools from any MCP server into existing plugin agents. The `devsquad.extend` agent handles the full setup: MCP server config, extension YAML, and sync.
+> The **Tool Extensions** capability is currently in preview: inject tools from any MCP server into existing plugin agents. The `devsquad.extend` agent handles the full setup: MCP server config, extension YAML, and sync.
 
 For the full technical reference, see the [Extensibility guide](docs/framework/extensibility.md).
 
@@ -217,6 +224,7 @@ For the full technical reference, see the [Extensibility guide](docs/framework/e
 | Goal | Document |
 |------|----------|
 | Understand the framework architecture, decisions and use cases | [Framework Architecture](docs/framework/README.md) |
+| Understand how guardrails sustain comprehension and reduce rework | [Delivery Guardrails](docs/framework/delivery-guardrails.md) |
 | Understand the approach used by the `extend` agent to guide the creation of skills, agents, instructions or hooks | [Extensibility](docs/framework/extensibility.md) |
 | See what changed | [Changelog](CHANGELOG.md) |
 | See who and what inspired us | [Acknowledgments](ACKNOWLEDGMENTS.md) |

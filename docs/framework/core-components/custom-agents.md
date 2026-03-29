@@ -4,7 +4,7 @@
 
 | Agent | What it does | When to use |
 |-------|-------------|-------------|
-| `sdd` | Unified entry point. Guides the user through phases, delegates to sub-agents, mediates interaction, maintains cross-phase context | Always. Default entry point for any SDD work |
+| `devsquad` | Unified entry point. Guides the user through phases, delegates to sub-agents, mediates interaction, maintains cross-phase context | Always. Default entry point for any SDD work |
 
 The conductor uses the [Mediated Coordinator-Worker](./README.md#pattern-mediated-coordinator-worker) pattern: detects intent, invokes sub-agents with `[CONDUCTOR]`, relays questions to the user, and executes returned actions (create files, work items).
 
