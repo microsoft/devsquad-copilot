@@ -16,5 +16,7 @@ Applicable after `devsquad.implement` completes a medium or high impact task. Do
 | # | Dimension | PASS Criterion | Evidence |
 |---|-----------|----------------|----------|
 | C5 | Consistency with codebase | Code follows existing patterns in the project (naming, structure, error handling). | Compare with adjacent code |
-| C6 | Error handling | Expected error paths (identified in the spec) have explicit handling. | Check error scenarios from spec |
+| C6 | Error handling | Expected error paths (identified in the spec) have explicit handling. External calls (HTTP, DB, file I/O, SDK) have error handling at each call site. | Check error scenarios from spec and scan call sites |
 | C7 | Traceability | Commit references task/issue. If using a branch, the name follows the convention. | Check git |
+| C8 | No duplicate logic | No substantially similar code blocks (>15 lines) exist across files that should be a shared utility. | Search for distinctive snippets of new code in the codebase |
+| C9 | Justified dependencies | New packages/libraries are referenced in spec/plan or have clear technical justification. No known security advisories. | Check dependency additions against spec and advisory databases |

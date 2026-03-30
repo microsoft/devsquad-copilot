@@ -1,7 +1,8 @@
 ---
 name: devsquad.refine
 description: Analyze backlog health, detect inconsistencies between specs/ADRs and work items, and identify items that need attention.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_list', 'github/search_code', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'ado/wit_get_work_item', 'ado/search_workitem']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_list', 'github/search_code', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'ado/wit_get_work_item', 'ado/search_workitem', 'agent']
+agents: ['devsquad.refine.artifacts', 'devsquad.refine.health']
 handoffs:
   - label: Update Spec
     agent: devsquad.specify
@@ -105,11 +106,20 @@ Collect data from both sources in parallel:
 
 ### Step 3: Analysis
 
-Run the checks below. For each problem found, classify the severity:
+**Delegate to worker sub-agents in parallel** for maximum efficiency:
+
+1. **`devsquad.refine.artifacts`** — checks spec/board consistency (3.1), ADR health (3.2), hierarchy (3.3), design artifact consistency (3.5), and tag completeness (3.6)
+2. **`devsquad.refine.health`** — checks staleness (3.4), PR health (3.7), security health (3.8), and tech debt scan
+
+Pass each worker the collected data from Step 2 (board data, artifact paths, scope, platform).
+
+After both workers complete, **merge their findings** and classify by severity:
 
 - **High**: Active blocker or inconsistency that causes rework risk
 - **Medium**: Gap that should be resolved before the next sprint
 - **Low**: Backlog hygiene, can be resolved when convenient
+
+The check details below serve as reference for what each worker validates:
 
 #### 3.1 Spec ↔ Board Consistency
 

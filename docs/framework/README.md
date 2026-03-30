@@ -23,12 +23,14 @@
 | [0008](./decisions/0008-testing-strategy-in-decomposition.md) | Testing Strategy in Decomposition | Tests integrated as acceptance criteria, without separate tasks |
 | [0009](./decisions/0009-developer-capacity.md) | Developer Capacity | One task at a time with soft concurrency limit |
 | [0010](./decisions/0010-agent-tool-extension.md) | Agent Tool Extension | Agent overlay generation for consumer tool injection [Preview] |
+| [0011](./decisions/0011-subagent-nesting-resolution.md) | Sub-agent Nesting Resolution | Superseded by 0012 |
+| [0012](./decisions/0012-nested-subagent-architecture.md) | Nested Subagent Architecture | Nested subagent support with depth-based agent topology |
 
 ## Architecture Diagrams
 
 ### Agent Interaction
 
-The framework follows a [conductor pattern](./decisions/0001-agent-orchestration.md): the user interacts with a central conductor that delegates to specialist agents by phase. Agents can also be invoked directly. Sub-agents are invoked autonomously by other agents for security assessment, code review, and backlog health analysis. All agents are prefixed with `devsquad.` (e.g., `init` in the diagram represents `devsquad.init`).
+The framework follows a [conductor pattern](./decisions/0001-agent-orchestration.md): the user interacts with a central conductor that delegates to specialist agents by phase. Agents can also be invoked directly. Specialist agents that handle complex workflows (plan, implement, review, refine) act as coordinators, delegating to focused worker sub-agents that run with independent context. This [nested sub-agent architecture](./decisions/0012-nested-subagent-architecture.md) enables parallel execution and context isolation at zero additional cost to users. All agents are prefixed with `devsquad.` (e.g., `init` in the diagram represents `devsquad.init`).
 
 ```mermaid
 flowchart LR
@@ -44,27 +46,21 @@ flowchart LR
             envision["envision"]
             kickoff["kickoff"]
             specify["specify"]
-            plan["plan"]
         end
         subgraph agents-row2[" "]
             direction LR
+            plan[["plan"]]
             decompose["decompose"]
-            implement["implement"]
+            implement[["implement"]]
             sprint["sprint"]
+        end
+        subgraph agents-row3[" "]
+            direction LR
+            review[["review"]]
+            refine[["refine"]]
+            security["security"]
             extend["extend"]
         end
-    end
-
-    plan -->|"invokes"| security
-    implement -->|"invokes"| review
-    review -->|"invokes"| security
-    sprint -->|"invokes"| refine
-
-    subgraph subagents["Sub-agents"]
-        direction LR
-        security["security"]
-        review["review"]
-        refine["refine"]
     end
 
     agents -->|"work items<br/>and repos"| github-ado
@@ -79,7 +75,59 @@ flowchart LR
     end
 ```
 
-Solid arrows: explicit invocation or tool calls. Dashed arrows: optional path.
+Solid arrows: explicit invocation or tool calls. Dashed arrows: optional path. Double-bordered nodes ([["..."]]) are coordinators that delegate to worker sub-agents (see detail below).
+
+#### Nested Sub-agent Detail
+
+Agents marked with ⚙ delegate internally to focused workers. Workers run with independent context windows and are not visible in the agent dropdown. Parallel workers execute simultaneously for reduced latency.
+
+```mermaid
+flowchart TD
+    subgraph impl["implement (coordinator)"]
+        direction TB
+        impl-validate["validate"]
+        impl-execute["execute"]
+        impl-verify["verify"]
+        impl-finalize["finalize"]
+    end
+
+    impl --> review
+
+    subgraph review["review (coordinator)"]
+        direction TB
+        subgraph review-parallel["parallel"]
+            direction LR
+            rev-spec["spec"]
+            rev-adr["adr"]
+            rev-code["code"]
+            rev-sec["security"]
+            rev-tests["tests"]
+        end
+    end
+
+    subgraph plan-box["plan (coordinator)"]
+        direction TB
+        subgraph plan-parallel["parallel"]
+            direction LR
+            plan-ctx["context"]
+            plan-arch["architecture"]
+        end
+        plan-design["design"]
+    end
+
+    plan-box --> security["security<br>(sub-agent)"]
+
+    subgraph refine-box["refine (coordinator)"]
+        direction TB
+        subgraph refine-parallel["parallel"]
+            direction LR
+            ref-artifacts["artifacts"]
+            ref-health["health"]
+        end
+    end
+```
+
+Maximum nesting depth: 4 (conductor &#8594; implement &#8594; review &#8594; review workers). Requires `chat.subagents.allowInvocationsFromSubagents` enabled.
 
 ### Extension Mechanisms
 

@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.7.0] - 2026-03-29
+
+### Added
+
+- **Nested sub-agent architecture** (ADR 0012): Decomposed 4 monolithic agents into coordinator + worker patterns leveraging VS Code 1.113 nested subagent support (`chat.subagents.allowInvocationsFromSubagents`)
+  - `devsquad.review` → coordinator with 5 parallel compliance checkers: `review.spec`, `review.adr`, `review.code`, `review.security`, `review.tests`
+  - `devsquad.implement` → coordinator with 4 workers: `implement.validate`, `implement.execute`, `implement.verify`, `implement.finalize` (plus existing `review` sub-agent)
+  - `devsquad.plan` → coordinator with 3 workers: `plan.context`, `plan.architecture`, `plan.design` (plus `security` sub-agent)
+  - `devsquad.refine` → coordinator with 2 parallel workers: `refine.artifacts`, `refine.health`
+- 14 new worker agent files, all with `user-invocable: false` and minimal tool sets
+- ADR 0012: Nested Subagent Architecture (Status: Proposed, supersedes ADR 0011)
+- `plan` → `security` sub-agent wiring (previously documented but not connected in frontmatter)
+
+### Changed
+
+- Agent Interaction diagrams in `docs/framework/README.md` redesigned: overview diagram with double-bordered coordinator nodes, plus new zoom-in diagram showing worker topology and parallel execution
+- `README.md` prerequisites updated: `chat.subagents.allowInvocationsFromSubagents` added as required VS Code setting
+- Review Phase 2 (Implementation Validation) replaced with parallel worker delegation instead of sequential inline execution
+- Implement orchestration flow updated to reference worker sub-agents for validation, execution, verification, and finalization steps
+- Plan execution flow updated with worker delegation for context loading (Step 1), architecture analysis (Step 2), and feature/migration design (Step 4)
+- Refine analysis (Step 3) updated with parallel worker delegation for artifact checks and health checks
+
+### Deprecated
+
+- ADR 0011 (Subagent Nesting Resolution): Status changed to Superseded by 0012. The skill-conversion workaround is no longer the primary nesting strategy, though skills created under ADR 0011 remain valid as shared cross-cutting behaviors
+
 ## [v0.6.1] - 2026-03-23
 
 ### Changed

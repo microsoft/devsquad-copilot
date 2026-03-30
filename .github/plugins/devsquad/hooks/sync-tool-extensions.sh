@@ -230,6 +230,7 @@ generate_overlay() {
   # Atomic write: build in temp file, then move into place
   local tmp_file
   tmp_file=$(mktemp "${output_file}.tmp.XXXXXX")
+  trap 'rm -f "$tmp_file"' EXIT
 
   {
     echo "---"
@@ -255,6 +256,7 @@ generate_overlay() {
   } > "$tmp_file"
 
   mv "$tmp_file" "$output_file"
+  trap - EXIT
 }
 
 # --- Main ---

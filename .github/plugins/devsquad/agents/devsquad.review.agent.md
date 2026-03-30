@@ -1,7 +1,8 @@
 ---
 name: devsquad.review
 description: Validate implementation against spec, ADRs, and plan with independent context. Produces a review log with findings by severity.
-tools: ['read/readFile', 'search/changes', 'read/problems', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/pull_request_read', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'memory']
+tools: ['read/readFile', 'search/changes', 'read/problems', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/pull_request_read', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'memory', 'agent']
+agents: ['devsquad.review.spec', 'devsquad.review.adr', 'devsquad.review.code', 'devsquad.review.security', 'devsquad.review.tests']
 handoffs:
   - label: Fix Issues
     agent: devsquad.implement
@@ -192,73 +193,36 @@ From Codebase:
 Proceed with validation? [Y/N]
 ```
 
-### Phase 2: Implementation Validation
+### Phase 2: Implementation Validation (Parallel Workers)
 
-For each checklist item, validate with evidence:
+Delegate validation to specialized worker sub-agents. Each worker operates with an independent context window, approaching the code without bias from other checks. **Run all 5 workers in parallel** for maximum efficiency.
 
-#### 2.1 Spec Compliance
+Pass each worker the relevant context from Phase 1:
 
-For each mapped RF-XXX and CC-XXX:
+1. **Spec Compliance** (`devsquad.review.spec`):
+   - Pass: spec.md path, plan.md path, changed files list, review mode
+   - Returns: RF/CC compliance table, conformance test mapping, findings
 
-- Locate the code that implements the requirement
-- Verify that the behavior meets the conformance criterion
-- Document evidence (file:line) or gap found
-- **Test traceability**: For each CC-XXX, identify the corresponding test case by name. If no test maps to a conformance criterion, flag as a finding.
+2. **ADR Compliance** (`devsquad.review.adr`):
+   - Pass: ADR file paths, plan.md path, changed files list
+   - Returns: ADR compliance table, findings
 
-For each invariant documented in the spec:
+3. **Code Consistency and AI Smell Detection** (`devsquad.review.code`):
+   - Pass: changed files list, coding-guidelines.md path
+   - Returns: consistency table, code smell findings
 
-- Verify the invariant holds across all relevant code paths (not just a single scenario)
-- Check that tests exercise the invariant under multiple conditions
+4. **Security Trigger** (`devsquad.review.security`):
+   - Pass: changed files list, spec.md path
+   - Returns: trigger detection result, security findings (if triggered)
 
-#### 2.2 ADR Compliance
+5. **Build and Tests** (`devsquad.review.tests`):
+   - Pass: plan.md path (for commands), changed files list
+   - Returns: build/test results table, findings
 
-For each relevant ADR:
-
-- Verify that the technologies used match those decided
-- Verify that architectural patterns were followed
-- Identify deviations and assess whether they are justified
-- **If the ADR references a Microsoft service/SDK**: Use `microsoft_docs_search` to verify the implementation follows the current official pattern (APIs may have changed since the ADR was written)
-
-#### 2.3 Microsoft API Verification
-
-When the reviewed code uses Microsoft/Azure SDKs or APIs:
-
-- Use `microsoft_docs_search` to validate that methods/classes used exist and are correct
-- Use `microsoft_docs_fetch` to verify signatures when there is suspicion of incorrect usage
-
-**When to use**: Only when a concrete suspicion of incorrect API or outdated pattern is identified. Do not use for generic verification of all code.
-
-#### 2.4 Codebase Consistency
-
-- Compare naming conventions with existing adjacent code
-- Verify directory structure and organization
-- Identify duplication or inconsistency with established patterns
-
-#### 2.5 Build and Test Validation
-
-Execute available validation commands:
-
-```bash
-# Detect available commands from plan.md, package.json, Makefile, etc.
-```
-
-- Does the build compile without errors?
-- Do existing tests continue to pass?
-- Do new tests cover the spec scenarios?
-
-#### 2.6 Security Review (if applicable)
-
-Assess whether the implementation requires a security review:
-
-| Trigger | Description |
-|---------|-------------|
-| Authentication/Authorization | Access control |
-| Sensitive data | Protected information |
-| External input | Data from untrusted sources |
-| Persistence | Queries or storage operations |
-| Integrations | Communication with external systems |
-
-**If trigger detected**: Execute the security review following the `security-review` skill workflow in code mode.
+After all workers complete, **merge their results**:
+- Collect all findings from all workers into a single list
+- Deduplicate findings that appear in multiple workers (prefer the more specific one)
+- Proceed to Phase 3 (Finding Classification) with the merged findings
 
 ### Phase 3: Finding Classification
 

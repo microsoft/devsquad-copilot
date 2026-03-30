@@ -2,8 +2,10 @@
 
 A delivery framework for GitHub Copilot that guides teams from **intent** to **implementation**: starting with a clearly defined business purpose and expected outcomes (**why**), translating it into explicit specifications and architecture decisions (**what**), and continuously ensuring the **how** (the code) remains aligned with that intent through ongoing validation.
 
-> [!WARNING]
-> This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
+> [!TIP]
+> Install in [VS Code](#vs-code) or [GitHub Copilot CLI](#copilot-cli) in under 30 seconds.
+
+The framework is composed of 13 invocable agents, 18 skills, and 5 hooks that enable the following delivery flow:
 
 <img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
 
@@ -16,6 +18,9 @@ Following an **Intent-Driven Development** approach, it is designed to be:
 * **Intent-first**: every initiative (feature, migration, infrastructure change) traces back to a business need captured in the envisioning document
 * **Spec-driven**: specifications act as formal contracts between what stakeholders need and what developers build
 * **Human-in-the-loop**: agents ask before assuming and require approval for high-impact changes.
+
+> [!WARNING]
+> This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
 
 ## Core Concepts
 
@@ -65,7 +70,7 @@ Each phase produces persistent artifacts, so a new developer can reconstruct the
 ## Who is this for?
 
 * Multiple developers working on the same product, where handoffs, shared decisions, and backlog coordination are constant.
-* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow the project context resist over time, and reduce onboarding time for new contributors.
+* Projects that require traceability and cross-role visibility. Persisted artifacts (specs, ADRs, plans) allow the project context to persist over time, and reduce onboarding time for new contributors.
 
 ## What this is not
 
@@ -97,76 +102,86 @@ Specs decompose into prioritized tasks by user story and sync to GitHub Issues o
 ### Prerequisites
 
 * Node.js 18+ (for lint hooks and MCP servers)
-* Development tools (at least one)
-  * [VS Code](https://code.visualstudio.com/download) 1.111.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
-  * [Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
-* **If using VS Code**: enable in extension settings:
-  * `github.copilot.advanced.experimental.memory` (optional, for cross-session memory)
 
-#### Authentication
+Use `devsquad` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across the delivery lifecycle. See [Choosing an Agent](#choosing-an-agent) for direct invocation.
 
-Sign in to GitHub before first use so the framework can manage issues, pull requests, and board operations.
+### Copilot CLI
 
-* **VS Code**: Follow the [Copilot setup guide](https://code.visualstudio.com/docs/copilot/setup) to install the extension and sign in to your GitHub account.
-* **Copilot CLI**: Follow the [CLI authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli) to authenticate via the GitHub CLI.
+#### Prerequisites
 
-### Installation
+* [Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
+* Sign in to GitHub via the GitHub CLI ([authentication guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/authenticate-copilot-cli))
 
-#### Option 1: Via Copilot CLI
-
-Install the plugin:
+#### Installation
 
    ```bash
    copilot plugin install microsoft/devsquad-copilot
    ```
 
-To update:
+> [!NOTE]
+> Use `copilot plugin update devsquad` to update and `copilot plugin uninstall devsquad` to remove.
+
+#### Usage
+
+Start a new chat with the conductor agent:
 
    ```bash
-   copilot plugin update devsquad
+   copilot --agent devsquad:devsquad
    ```
 
-To uninstall:
+To invoke a specific agent directly:
 
    ```bash
-   copilot plugin uninstall devsquad
+   copilot --agent devsquad:devsquad.implement
    ```
 
-#### Option 2: Via VS Code
+> [!WARNING]
+> The `--yolo` flag allows the agent to operate autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation. Use with caution.
+>
+> ```bash
+> copilot --agent devsquad:devsquad --yolo
+> ```
 
-1. Add the following to your VS Code user settings (`Ctrl+Shift+P` / `Cmd+Shift+P` then "Open User Settings (JSON)"):
+### VS Code
 
-   ```jsonc
-   {
-     "chat.plugins.enabled": true,
-     "chat.plugins.marketplaces": [
-         "microsoft/devsquad-copilot"
-     ]
-   }
-   ```
+#### Prerequisites
 
-2. Open the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`), search for `@agentPlugins devsquad`, and install.
+* [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+* Sign in to your GitHub account ([setup guide](https://code.visualstudio.com/docs/copilot/setup))
+* `chat.subagents.allowInvocationsFromSubagents` enabled in VS Code settings (required for nested sub-agent workflows)
+* `github.copilot.advanced.experimental.memory` enabled in extension settings (optional, for cross-session memory)
 
-3. To manage installed plugins, open the **Agent Plugins - Installed** view in the Extensions sidebar, or select the **gear icon** in the Chat view and choose **Plugins**.
+#### Installation
 
-### Usage
+Open the following URL in your browser to install the plugin:
 
-#### Option 1: Guided (Recommended)
+```
+vscode://chat-plugin/install?source=microsoft/devsquad-copilot
+```
 
-Use `devsquad` as the entry point. It guides through phases, delegates to specialized sub-agents, and maintains context across phases.
+> [!NOTE]
+> For VS Code Insiders, use `vscode-insiders://chat-plugin/install?source=microsoft/devsquad-copilot` instead.
 
-#### Option 2: Direct
+#### Usage
 
-Invoke a specific agent based on your current state:
+Use `devsquad` as the entry point in the chat panel. To invoke a specific agent directly, use `devsquad.<agent>` (for example, `devsquad.implement`).
+
+### Choosing an Agent
 
 | You have... | Start with |
 |-------------|-----------|
+| A new project to set up | `devsquad.init` to create templates, instructions, and configurations |
 | A product idea without defined scope | `devsquad.envision` to capture vision, pains, and objectives |
 | A clear vision, ready to structure the backlog | `devsquad.kickoff` to create epics and features |
 | A defined feature to specify | `devsquad.specify` to write the spec with requirements and conformance criteria |
 | A spec ready for technical planning | `devsquad.plan` to produce ADRs, contracts, and data models |
+| A plan ready to break into tasks | `devsquad.decompose` to create user stories and work items |
+| A sprint to plan | `devsquad.sprint` to prepare velocity, capacity, and scope |
 | Tasks ready to implement | `devsquad.implement` to execute from tasks or work items |
+| A completed implementation to validate | `devsquad.review` to check alignment against spec and ADRs |
+| Security concerns on design or code | `devsquad.security` to run architectural or code assessment |
 | An existing backlog that needs organization | `devsquad.refine` to detect inconsistencies and classify readiness |
+| Stack or domain knowledge to add | `devsquad.extend` to create instructions, skills, agents, or hooks |
 
 For the full list of agents, see the [agent catalog](docs/framework/core-components/custom-agents.md).
 
@@ -185,7 +200,7 @@ The `devsquad.extend` agent guides creation of new components tailored to the pr
 | Automated validation after edits | Hook | `Add a hook that validates OpenAPI specs after editing` |
 
 > [!NOTE]
-The **Tool Extensions** capability is currently in preview: inject tools from any MCP server into existing plugin agents. The `devsquad.extend` agent handles the full setup: MCP server config, extension YAML, and sync.
+> The **Tool Extensions** capability is currently in preview: inject tools from any MCP server into existing plugin agents. The `devsquad.extend` agent handles the full setup: MCP server config, extension YAML, and sync.
 
 For the full technical reference, see the [Extensibility guide](docs/framework/extensibility.md).
 
@@ -209,5 +224,7 @@ For the full technical reference, see the [Extensibility guide](docs/framework/e
 | Goal | Document |
 |------|----------|
 | Understand the framework architecture, decisions and use cases | [Framework Architecture](docs/framework/README.md) |
+| Understand how guardrails sustain comprehension and reduce rework | [Delivery Guardrails](docs/framework/delivery-guardrails.md) |
 | Understand the approach used by the `extend` agent to guide the creation of skills, agents, instructions or hooks | [Extensibility](docs/framework/extensibility.md) |
 | See what changed | [Changelog](CHANGELOG.md) |
+| See who and what inspired us | [Acknowledgments](ACKNOWLEDGMENTS.md) |

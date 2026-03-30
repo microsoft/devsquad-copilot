@@ -29,7 +29,7 @@ fi
 RESULT=$(npx --yes markdownlint "$FILE" 2>&1) || true
 
 if [ -n "$RESULT" ]; then
-  echo "{\"message\": \"Markdown lint issues:\\n$RESULT\"}"
+  printf '%s' "$RESULT" | jq -Rs '{message: ("Markdown lint issues:\n" + .)}'
 fi
 
 exit 0

@@ -6,7 +6,7 @@ Every phase includes human checkpoints: agents ask clarifying questions, propose
 
 ## What You Get
 
-This plugin adds **13 invocable agents**, **13 skills**, and **lifecycle hooks** that guide your team through a structured delivery lifecycle:
+This plugin adds **13 invocable agents**, **18 skills**, and **lifecycle hooks** that guide your team through a structured delivery lifecycle:
 
 `envision` &#8594; `kickoff` &#8594; `specify` &#8594; `plan` &#8594; `decompose` &#8594; `implement` &#8594; `review`
 

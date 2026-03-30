@@ -21,3 +21,8 @@ MD060: false
 # MD032 - Lists should be surrounded by blank lines
 # Disabled: in some cases, such as lists inside tables or code blocks, blank lines are not necessary or desirable.
 MD032: false
+
+# MD024 - No duplicate headings
+# siblings_only: allow identical headings under different parents (e.g., "Authentication" under "Copilot CLI" and "VS Code")
+MD024:
+  siblings_only: true
