@@ -1,0 +1,56 @@
+---
+title: Hooks
+description: Five lifecycle scripts that run automatically at specific points during agent execution.
+---
+
+import { Aside, Card, CardGrid } from '@astrojs/starlight/components';
+
+Hooks are **lifecycle scripts** that run automatically at specific points during agent execution. They are external bash scripts with **zero LLM context cost** — they execute outside the model and return results via JSON.
+
+## Hook Types
+
+| Type | When | Purpose |
+|------|------|---------|
+| `sessionStart` | New agent session begins | Auto-detection, environment setup |
+| `postToolUse` | After an agent uses a tool | Validation, linting |
+| `sessionEnd` | Session ends | Cleanup |
+
+Configuration lives in `hooks.json` with command path and timeout (default 10 seconds).
+
+## Hooks Reference
+
+<CardGrid>
+  <Card title="detect-repo-platform.sh" icon="github">
+    **Type**: sessionStart (10s timeout)
+
+    Checks `git remote` URL. Classifies as GitHub (`github.com`) or Azure DevOps (`dev.azure.com` / `visualstudio.com`). Seeds `.memory/board-config.md`.
+  </Card>
+  <Card title="detect-branching-strategy.sh" icon="random">
+    **Type**: sessionStart (10s timeout)
+
+    Analyzes branch naming patterns. Identifies GitFlow (develop/release/hotfix branches) or Trunk-based (main/feature branches). Seeds `.memory/git-config.md`.
+  </Card>
+  <Card title="detect-tool-extensions.sh" icon="setting">
+    **Type**: sessionStart (10s timeout)
+
+    Checks if consumer tool extensions are synced with the current plugin version. Warns if extensions are stale or unsynced.
+  </Card>
+  <Card title="validate-work-item-tags.sh" icon="approve-check">
+    **Type**: postToolUse (10s timeout)
+
+    After work item creation or update, validates required tags: `copilot-generated` and `ai-model:*`. Ensures AI traceability.
+  </Card>
+  <Card title="lint-markdown.sh" icon="document">
+    **Type**: postToolUse (10s timeout)
+
+    Runs markdownlint against `.markdownlint.yaml` config after markdown file edits. Reports formatting issues.
+  </Card>
+</CardGrid>
+
+## Hook Output
+
+Hooks return JSON on stdout with results. Stderr is used for descriptive error messages. All hooks must:
+- Include a bash shebang (`#!/bin/bash` or `#!/usr/bin/env bash`)
+- Output JSON on a single line
+- Complete within their timeout (default 30 seconds)
+- Be idempotent (safe to run multiple times)

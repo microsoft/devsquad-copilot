@@ -1,0 +1,109 @@
+---
+title: Instructions
+description: Seven path-scoped rules that ensure consistent formatting and structure for specific artifact types.
+---
+
+import { Aside, Tabs, TabItem, Badge } from '@astrojs/starlight/components';
+
+Instructions are **path-scoped rules** (under 50 lines each) that are deterministically loaded whenever an agent edits a file matching the glob pattern. They ensure consistent formatting and structure without configuration.
+
+<Aside>
+  Instructions activate via the `applyTo` glob pattern in their frontmatter. When a matching file is created or edited, the instruction is injected into the agent's context automatically.
+</Aside>
+
+## Instructions Reference
+
+| Instruction | Scope (`applyTo`) | Purpose |
+|-------------|-------------------|---------|
+| `specs.instructions.md` | `docs/features/**/spec.md` | Feature specification format |
+| `adrs.instructions.md` | `docs/architecture/decisions/*.md` | ADR format with status and traceability |
+| `tasks.instructions.md` | `docs/features/**/tasks.md` | Task decomposition format |
+| `envisioning.instructions.md` | `docs/envisioning/**` | Envisioning document format |
+| `migration-specs.instructions.md` | `docs/migrations/**/spec.md` | Migration specification format |
+| `migration-tasks.instructions.md` | `docs/migrations/**/tasks.md` | Migration task decomposition |
+| `documentation-style.instructions.md` | `docs/**/*.md` | General markdown style rules |
+
+## Instruction Details
+
+<Tabs>
+  <TabItem label="Feature Specs">
+    ### specs.instructions.md
+
+    Applied to: `docs/features/**/spec.md`
+
+    - Focus on **WHAT/WHY**, never HOW
+    - Written for business stakeholders, not developers
+    - User stories prioritized P1/P2/P3, independently testable
+    - Quantify vague terms: "fast" → specific latency, "easy" → specific steps
+    - Conformance table: ID, Scenario, Input, Expected Output
+    - Minimum 3 cases (happy path, error, edge case)
+    - Maximum 3 `[NEEDS CLARIFICATION]` markers
+  </TabItem>
+  <TabItem label="ADRs">
+    ### adrs.instructions.md
+
+    Applied to: `docs/architecture/decisions/*.md`
+
+    - File naming: `NNNN-domain.md` (domain, not choice)
+    - Statuses: `Proposed` → `Accepted` → `Superseded by NNNN`
+    - Required sections: Status, Date, Context, Priorities (ranked), Options, Decision
+    - Options evaluated against ranked priorities, not generic pros/cons
+    - Do not invent options; only include actually considered alternatives
+  </TabItem>
+  <TabItem label="Tasks">
+    ### tasks.instructions.md
+
+    Applied to: `docs/features/**/tasks.md`
+
+    - Format: `- [ ] [P?] Description with file path`
+    - `[P]` marks parallelizable tasks
+    - Phases: Setup → Foundational → User Stories (P1 → P2 → P3) → Polish
+    - Within each story: Models → Services → Endpoints → Integration
+    - **No separate test tasks** — tests are part of acceptance criteria
+    - Missing ADRs block the Foundational phase
+  </TabItem>
+  <TabItem label="Envisioning">
+    ### envisioning.instructions.md
+
+    Applied to: `docs/envisioning/**`
+
+    - Business first: pains and objectives before technical details
+    - Quantify impacts with measurable metrics
+    - Keep to 1-2 pages maximum
+    - Distinguish direct client vs end client
+    - Success KPIs with target and baseline values
+  </TabItem>
+  <TabItem label="Migrations">
+    ### migration-specs.instructions.md
+
+    Applied to: `docs/migrations/**/spec.md`
+
+    - Focus on WHAT/WHERE, never HOW
+    - Phase numbers: P1, P2, P3 (sequential, not independently deployable)
+    - Behavioral parity mandatory post-migration (unless explicitly documented)
+    - Data migration validation: row counts, checksums, referential integrity
+    - Cutover: ordered sequence with success criteria
+    - Rollback: trigger conditions, steps, maximum time
+
+    ### migration-tasks.instructions.md
+
+    Applied to: `docs/migrations/**/tasks.md`
+
+    - Phases: Setup → Foundational → Infrastructure Provisioning → Data Migration Setup → Cutover Automation → Rollback and Validation → Polish
+    - Infrastructure order: Compute → Networking → Storage → Identity → Configuration
+    - Data order: Initial sync → Delta capture → Validation pipeline
+    - Mandatory data validation and rollback testing tasks
+  </TabItem>
+  <TabItem label="Style">
+    ### documentation-style.instructions.md
+
+    Applied to: `docs/**/*.md`
+
+    - No spelling errors, emojis, or decorative Unicode (→, •, ★, ✓, 🎯, ✅)
+    - No hyphens as separators
+    - No `#<number>` in free text (Azure DevOps auto-link issue)
+    - Active voice, direct sentences
+    - No promotional language ("not just", "goes beyond")
+    - Prefer lists and tables over prose paragraphs
+  </TabItem>
+</Tabs>

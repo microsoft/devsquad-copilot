@@ -1,0 +1,138 @@
+---
+title: Support Agents
+description: Agents for review, security, sprint planning, backlog health, and framework extension.
+---
+
+import { Card, CardGrid, Aside, Badge } from '@astrojs/starlight/components';
+
+These agents provide quality assurance, security, planning, and extensibility capabilities.
+
+---
+
+## devsquad.review <Badge text="Quality" variant="success" />
+
+Validate implementation against spec, ADRs, and plan with independent context.
+
+| | |
+|---|---|
+| **Produces** | Review log with findings by severity |
+| **Handoff** | → implement, specify, or plan |
+| **Skills** | documentation-style, reasoning, quality-gate |
+
+Key design principle: The review agent operates with **clean context** — it did not participate in implementation, reducing confirmation bias.
+
+Coordinator execution model:
+- **Parallel checkers** — Spec, ADR, code, security, and tests validation run in isolated worker contexts
+- **Merged verdict** — The coordinator consolidates findings, classifies severity, and decides whether self-correction can proceed
+
+Three trigger scopes:
+- **Pull Request** — Code-level review of changes
+- **Work item** — Task-level validation against acceptance criteria
+- **Feature completion** — Full feature validation against spec, ADRs, and plan
+
+Self-correction loop: maximum 2 attempts before escalating findings.
+
+---
+
+## devsquad.security <Badge text="Security" variant="danger" />
+
+Security assessment in two modes: architectural (design-time) and code (implementation-time).
+
+| | |
+|---|---|
+| **Produces** | Security report with findings |
+| **Handoff** | → implement or review |
+| **Skills** | documentation-style, reasoning |
+
+<CardGrid>
+  <Card title="Architectural Mode" icon="setting">
+    STRIDE threat analysis, ADR security evaluation, trust boundary mapping, Azure compliance checks (Policy, RBAC, Well-Architected Framework).
+  </Card>
+  <Card title="Code Mode" icon="warning">
+    OWASP vulnerability checks, dependency scanning, GitHub security alerts (code scanning, secret scanning, Dependabot).
+  </Card>
+</CardGrid>
+
+Six security principles applied:
+1. **CIA Triad** — Confidentiality, Integrity, Availability
+2. **Defense in Depth** — Multiple layers of security controls
+3. **Least Privilege** — Minimum permissions required
+4. **Secure by Default** — Secure configuration out of the box
+5. **Zero Trust** — Verify explicitly, assume breach
+6. **Shift Left** — Security early in the lifecycle
+
+Triggers: authentication/authorization, sensitive data, external integrations, exposed endpoints, data persistence.
+
+---
+
+## devsquad.sprint <Badge text="Planning" variant="tip" />
+
+Sprint planning with previous sprint closure, velocity analysis, and adaptive capacity.
+
+| | |
+|---|---|
+| **Produces** | `docs/sprints/sprint-N.md` + scope options |
+| **Handoff** | → plan, decompose, or specify |
+| **Skills** | documentation-style, reasoning |
+
+<Aside>
+  The sprint agent is **read-only** on the board. It analyzes and presents options — the team decides.
+</Aside>
+
+Five-step execution:
+1. **Previous sprint closure** — Planned vs actual, velocity, goal achievement
+2. **Historical velocity** — Calculated from 2+ sprints of data
+3. **Capacity calculation** — Team size, availability, adjustment factors
+4. **Backlog readiness** — Flag incomplete items, missing dependencies
+5. **Scope options** — Committed vs stretch scenarios with data
+
+Operating principles: Options not recommendations. Dependencies visible. Gaps visible. Evidence-based.
+
+---
+
+## devsquad.refine <Badge text="Health" variant="note" />
+
+Analyze backlog health and detect inconsistencies between specs, ADRs, and work items.
+
+| | |
+|---|---|
+| **Produces** | Analysis report with fixes |
+| **Handoff** | → specify, plan, decompose, or kickoff |
+| **Skills** | documentation-style, reasoning, work-item-creation |
+
+Six analysis categories:
+1. **Spec-Board Mismatch** — Specs updated after tasks were created
+2. **ADR-Implementation Gap** — Decisions made but not reflected in code
+3. **Missing Tasks** — User story without task coverage
+4. **Orphan Tasks** — Tasks without parent user story
+5. **Stale PRs** — Open, unreviewed, or failing CI
+6. **Unfinished Dependencies** — Blocking tasks still open
+
+Principles: Read-first with surgical edits. Facts, not opinions. No false positives. Configurable scope.
+
+Execution model: `devsquad.refine` can fan out artifact analysis and backlog health checks into parallel workers, then merge the results into a single report.
+
+---
+
+## devsquad.extend <Badge text="Extension" variant="note" />
+
+Guide creation of extensions for the SDD framework.
+
+| | |
+|---|---|
+| **Produces** | Custom instructions, skills, agents, or hooks |
+| **Handoff** | varies |
+| **Skills** | documentation-style, reasoning |
+
+Decision tree for choosing the right mechanism:
+
+| Criterion | Mechanism |
+|-----------|-----------|
+| Less than 50 lines, applies to file type | **Instruction** |
+| 50-200 lines, reusable by agents | **Skill** |
+| Over 200 lines or needs own tools | **Agent** |
+| Deterministic post-action validation | **Hook** |
+| Inject MCP tools into agents | **Tool Extension** |
+| Access external API | **MCP Server** |
+
+Process: Understand need → Recommend mechanism → Check name collision → Scaffold with reference example.

@@ -1,0 +1,65 @@
+---
+title: Contributing
+description: How to contribute to DevSquad Copilot — agents, skills, instructions, hooks, and documentation.
+---
+
+import { Aside, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+
+DevSquad Copilot welcomes contributions. This page summarizes the guidelines.
+
+## Reporting Issues
+
+Use GitHub Issues with detailed context:
+- Steps to reproduce
+- Expected vs actual behavior
+- Environment (VS Code version, OS, Node.js version)
+
+## Project Structure
+
+```
+.github/
+  plugins/devsquad/
+    agents/          # Visible agents and internal worker agents (.agent.md)
+    skills/          # 18 skill definitions
+    hooks/           # Lifecycle scripts + hooks.json
+    .mcp.json        # MCP server configuration
+  instructions/      # 7 path-scoped instruction files
+  docs/              # Internal reference docs
+docs/
+  framework/         # Architecture documentation
+  templates/         # Community file templates
+```
+
+## Contributing by Type
+
+<CardGrid>
+  <Card title="Agents" icon="rocket">
+    Naming: `devsquad.<phase>.agent.md`. Required frontmatter: `description`, `tools`. Procedural and imperative instructions. Nested sub-agents are supported in VS Code 1.113+ with `chat.subagents.allowInvocationsFromSubagents`. Internal workers should use `user-invocable: false` and minimal tool sets.
+  </Card>
+  <Card title="Skills" icon="puzzle">
+    Directory name = frontmatter `name` (kebab-case). Description optimized for semantic trigger. Max 500 lines. Include use/don't-use scenarios.
+  </Card>
+  <Card title="Instructions" icon="document">
+    One per artifact type. Must include `applyTo` glob pattern. Concise, actionable rules. Under 50 lines.
+  </Card>
+  <Card title="Hooks" icon="setting">
+    Bash scripts with shebang. JSON output on single line. 30-second default timeout. Register in `hooks.json`.
+  </Card>
+</CardGrid>
+
+## Pull Requests
+
+<Steps>
+1. Clear title and description explaining what and why
+2. Link to related issues
+3. Small, coherent increments (300-500 lines, 5-10 files)
+4. Follow Conventional Commits for commit messages
+5. English only, no emojis or decorative Unicode
+6. Validate with markdownlint before submitting
+</Steps>
+
+<Aside>
+  **Code of Conduct**: This project follows the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+
+  **Security**: Report vulnerabilities to [MSRC](https://msrc.microsoft.com/create-report) — not public issues.
+</Aside>

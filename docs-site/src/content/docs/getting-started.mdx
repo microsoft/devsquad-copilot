@@ -1,0 +1,124 @@
+---
+title: Getting Started
+description: Install DevSquad Copilot, initialize your project, and run your first workflow.
+---
+
+import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Prerequisites
+
+| Requirement | Version | Notes |
+|:------------|:--------|:------|
+| Node.js | 18+ | Required for all installation methods |
+| VS Code | 1.113.0+ | Required for nested sub-agent workflows in VS Code |
+| GitHub CLI | Latest | Required for CLI usage, with the Copilot extension |
+| GitHub auth | — | Via Copilot extension or `gh auth login` |
+| VS Code setting | `chat.subagents.allowInvocationsFromSubagents` | Required for nested sub-agent workflows |
+
+## Installation
+
+<Tabs>
+  <TabItem label="VS Code">
+    <Steps>
+      1. Open VS Code settings and enable `chat.subagents.allowInvocationsFromSubagents`.
+      2. Install **DevSquad Copilot** from the VS Code Extensions marketplace.
+      3. Sign in with your GitHub account via the Copilot extension.
+      4. Use `devsquad` as the default entry point in the chat panel. Use `devsquad.<agent>` for direct invocation.
+    </Steps>
+  </TabItem>
+  <TabItem label="Copilot CLI">
+    ```bash
+    copilot plugin install microsoft/devsquad-copilot
+    ```
+    Authenticate with:
+    ```bash
+    gh auth login
+    ```
+  </TabItem>
+</Tabs>
+
+## Project Initialization
+
+Run `@devsquad.init` to set up SDD Framework files in your repository:
+
+<Steps>
+1. **Config files** — `copilot-instructions.md`, instruction files for specs/ADRs/tasks, coding guidelines, markdownlint config.
+2. **Documentation templates** — Templates for features, migrations, envisioning, and ADRs.
+3. **Community files** (optional) — `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
+</Steps>
+
+## Your First Workflow
+
+<Steps>
+1. **Envision** — `@devsquad.envision`
+   Capture the strategic vision through structured questions about customer, pain points, and goals.
+
+2. **Kickoff** — `@devsquad.kickoff`
+   Structure the project hierarchy with epics and features. Sync with GitHub Issues or Azure DevOps.
+
+3. **Specify** — `@devsquad.specify`
+   Write feature specifications with user stories, acceptance criteria, and compliance requirements.
+
+4. **Plan** — `@devsquad.plan`
+   Generate technical design artifacts. Create Architecture Decision Records for significant choices.
+
+5. **Decompose** — `@devsquad.decompose`
+   Break specifications into user stories and tasks. Create work items on the board.
+
+6. **Implement** — `@devsquad.implement`
+   Execute implementation from a task, issue, or work item. Quality gates and branch management included.
+
+7. **Review** — `@devsquad.review`
+   Validate the implementation against specs, ADRs, and the plan with independent context.
+</Steps>
+
+## Usage Scenarios
+
+<CardGrid>
+  <Card title="Feature-first" icon="pencil">
+    Start with `@devsquad.specify` when you know what feature to build. The specification drives planning, decomposition, and implementation.
+  </Card>
+  <Card title="Architecture-first" icon="setting">
+    Start with `@devsquad.plan` when technical decisions need to come before feature work. Useful for greenfield projects.
+  </Card>
+  <Card title="Board-first" icon="list-format">
+    Start with `@devsquad.kickoff` when project structure and work items need to be established first.
+  </Card>
+  <Card title="Iterative" icon="random">
+    Use individual agents as needed. Run `@devsquad.implement` for a task, then `@devsquad.review` to validate.
+  </Card>
+</CardGrid>
+
+## Guided vs Direct Mode
+
+<Tabs>
+  <TabItem label="Guided">
+    Invoke `@devsquad` without specifying an agent. The conductor walks through each phase in sequence, asking Socratic questions and delegating to the right specialist.
+
+    ```
+    @devsquad
+    ```
+  </TabItem>
+  <TabItem label="Direct">
+    Invoke a specific agent for targeted work. Both modes use the same agents, skills, and quality gates.
+
+    ```
+    @devsquad.implement    # Go directly to implementation
+    @devsquad.specify      # Go directly to specification
+    @devsquad.security     # Run a security assessment
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside type="tip">
+  Both modes have access to the same agents, skills, and quality gates. Guided mode adds orchestration and phase transitions. Direct mode gives immediate access to a specific capability.
+</Aside>
+
+## Next Steps
+
+<CardGrid>
+  <LinkCard title="Framework Architecture" href="/devsquad-copilot/framework/" description="Design principles, architecture patterns, and usage scenarios." />
+  <LinkCard title="Agents Reference" href="/devsquad-copilot/agents/overview/" description="Conductor, specialist agents, and nested worker flow." />
+  <LinkCard title="Skills Reference" href="/devsquad-copilot/skills/" description="All 18 skills with activation model." />
+  <LinkCard title="Extensibility" href="/devsquad-copilot/extensibility/" description="Add custom instructions, skills, agents, and hooks." />
+</CardGrid>

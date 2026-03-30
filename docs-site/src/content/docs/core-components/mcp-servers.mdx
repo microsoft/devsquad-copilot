@@ -1,0 +1,62 @@
+---
+title: MCP Servers
+description: Five Model Context Protocol servers providing tools for external system integration.
+---
+
+import { Card, CardGrid, Aside } from '@astrojs/starlight/components';
+
+MCP (Model Context Protocol) servers provide tools that agents call to interact with external systems. They extend agent capabilities beyond file and code operations.
+
+## Server Reference
+
+<CardGrid>
+  <Card title="GitHub" icon="github">
+    **Transport**: HTTP (`https://api.githubcopilot.com/mcp/`)
+
+    Toolsets: repos, issues, pull_requests, projects, labels, users, copilot, actions, code_security, secret_protection, security_advisories, dependabot.
+
+    **Used by**: Most agents (envision, kickoff, specify, decompose, implement, sprint, refine, review, security)
+  </Card>
+  <Card title="Azure DevOps" icon="list-format">
+    **Transport**: stdio (`npx @azure-devops/mcp@next`)
+
+    Work item CRUD, hierarchy management (parent-child), traceability links, board management. Requires organization name input.
+
+    **Used by**: envision, kickoff, specify, decompose, implement, sprint, refine
+  </Card>
+  <Card title="Azure" icon="setting">
+    **Transport**: stdio (`npx @azure/mcp@latest server start`)
+
+    Architecture guidance, deployment operations, pricing estimation, best practices, compliance checking.
+
+    **Used by**: plan, decompose, implement, security
+  </Card>
+  <Card title="Microsoft Learn" icon="open-book">
+    **Transport**: HTTP (`https://learn.microsoft.com/api/mcp`)
+
+    Official Microsoft documentation lookup, API references, code samples, security guidance.
+
+    **Used by**: plan, implement, review, security
+  </Card>
+  <Card title="Draw.io" icon="pencil">
+    **Transport**: HTTP (`https://mcp.draw.io/mcp`)
+
+    Create and edit architecture diagrams, threat models, system diagrams.
+
+    **Used by**: plan, security
+  </Card>
+</CardGrid>
+
+## Configuration
+
+MCP servers are configured in `.mcp.json` at the plugin root. The VS Code workspace-level `.vscode/mcp.json` can override or extend the configuration.
+
+## Error Handling
+
+<Aside type="caution">
+  MCP calls use a retry strategy:
+  1. Wait 2-3 seconds, try again
+  2. Maximum 3 attempts per operation
+  3. After 3 failures: inform user, offer Continue/Pause/Retry
+  4. Show summary: created/updated vs failed items
+</Aside>

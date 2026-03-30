@@ -1,0 +1,92 @@
+---
+title: Extensibility
+description: Six extension mechanisms for adding stack-specific, domain-specific, or organization-specific knowledge.
+---
+
+import { Card, CardGrid, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+DevSquad is designed to be extended. Six mechanisms are available, each with different activation models, context costs, and complexity.
+
+## Extension Mechanisms
+
+| Mechanism | Activation | Context Cost | Size |
+|-----------|-----------|-------------|------|
+| **Instructions** | Deterministic (file glob) | Always loaded in scope | < 50 lines |
+| **Skills** | Semantic (description) | On demand | 50-200 lines |
+| **Agents** | Explicit (invocation) | Isolated | > 200 lines |
+| **Hooks** | Automatic (lifecycle) | Zero (external) | Any |
+| **MCP Servers** | Per tool call | On demand | Any |
+| **Tool Extensions** | Per sync | Same as base agent | YAML patch |
+
+## Decision Tree
+
+<Steps>
+1. Does the knowledge apply when a specific file type is edited?
+   → **Instruction** (file glob activation)
+
+2. Is the knowledge reusable by multiple agents?
+   - Is it over 200 lines or needs its own tools? → **Agent**
+   - Otherwise → **Skill**
+
+3. Is it deterministic post-action validation?
+   → **Hook** (lifecycle script)
+
+4. Need access to an external system via API?
+   - Should existing agents use the tools? → **Tool Extension**
+   - Otherwise → **MCP Server**
+</Steps>
+
+## Creating Extensions
+
+<Tabs>
+  <TabItem label="Instructions">
+    Path-scoped rules applied when editing matching files.
+
+    - Use `applyTo` glob in frontmatter
+    - Keep under 50 lines
+    - Concise, actionable rules (not documentation)
+    - One per artifact type
+
+    **Examples**: Python conventions, TypeScript rules, Terraform patterns, REST API rules.
+  </TabItem>
+  <TabItem label="Skills">
+    Reusable knowledge packages loaded on demand.
+
+    - Directory name = frontmatter `name` (kebab-case)
+    - Description optimized for semantic trigger (include keywords, use/don't-use scenarios)
+    - Maximum 500 lines
+
+    **Examples**: python-patterns, react-patterns, resilience-patterns, domain-rules.
+  </TabItem>
+  <TabItem label="Agents">
+    Specialized workflows with isolated context.
+
+    - Naming: `devsquad.<phase>.agent.md`
+    - Required frontmatter: `description`, `tools`
+    - Modalities: Direct (user selects), Sub-agent (programmatic), Both
+    - Nested sub-agent invocation supported up to 5 levels in VS Code 1.113+ with `chat.subagents.allowInvocationsFromSubagents`
+    - Internal workers should set `user-invocable: false` and keep tool sets minimal
+
+    **Examples**: `devsquad.implement-python`, `devsquad.accessibility`, `devsquad.compliance`.
+  </TabItem>
+  <TabItem label="Hooks">
+    External scripts triggered by lifecycle events.
+
+    - Bash scripts with shebang
+    - JSON output on single line
+    - 30-second default timeout
+    - Register in `hooks.json`
+    - Events: `sessionStart`, `preToolUse`, `postToolUse`, `sessionEnd`
+  </TabItem>
+  <TabItem label="Tool Extensions">
+    Inject any MCP server tools into existing plugin agents via YAML patches. (Preview — ADR 0010)
+
+    - Consumer creates `.github/devsquad/tool-extensions/*.yml`
+    - Sync script generates workspace-level agent overrides in `.github/agents/`
+    - `sessionStart` hook detects when extensions are stale or unsynced
+  </TabItem>
+</Tabs>
+
+<Aside type="tip">
+  Use `@devsquad.extend` to get interactive guidance for creating any extension type.
+</Aside>
