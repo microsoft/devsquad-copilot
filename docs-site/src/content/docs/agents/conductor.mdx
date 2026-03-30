@@ -14,6 +14,7 @@ The `devsquad` agent is the **unified entry point** for the framework. It does n
 | **Intent Detection** | Analyzes what the user wants and routes to the right phase agent |
 | **Cross-Phase Context** | Maintains context as work moves between phases |
 | **Language Detection** | Auto-detects user language, translates all output, keeps identifiers in English |
+| **Nested Delegation** | Hands off to coordinator specialists that can invoke worker sub-agents when deeper decomposition is needed |
 | **Structured Actions** | Relays sub-agent actions: `[ASK]`, `[CREATE]`, `[EDIT]`, `[BOARD]`, `[CHECKPOINT]`, `[DONE]` |
 
 ## Phase Routing
@@ -32,6 +33,10 @@ The `devsquad` agent is the **unified entry point** for the framework. It does n
 | "Plan the sprint" | `devsquad.sprint` |
 | "Check backlog health" | `devsquad.refine` |
 | "Add a custom skill" | `devsquad.extend` |
+
+<Aside type="tip">
+  In VS Code, nested specialist workflows require `chat.subagents.allowInvocationsFromSubagents` enabled. The conductor remains the same entry point; coordinator specialists handle the internal worker fan-out.
+</Aside>
 
 ## Skills Used
 

@@ -19,7 +19,7 @@ Use GitHub Issues with detailed context:
 ```
 .github/
   plugins/devsquad/
-    agents/          # 13 agent definitions (.agent.md)
+    agents/          # Visible agents and internal worker agents (.agent.md)
     skills/          # 18 skill definitions
     hooks/           # Lifecycle scripts + hooks.json
     .mcp.json        # MCP server configuration
@@ -34,7 +34,7 @@ docs/
 
 <CardGrid>
   <Card title="Agents" icon="rocket">
-    Naming: `devsquad.<phase>.agent.md`. Required frontmatter: `description`, `tools`. Procedural/imperative instructions. Max 1 level of sub-agent nesting.
+    Naming: `devsquad.<phase>.agent.md`. Required frontmatter: `description`, `tools`. Procedural and imperative instructions. Nested sub-agents are supported in VS Code 1.113+ with `chat.subagents.allowInvocationsFromSubagents`. Internal workers should use `user-invocable: false` and minimal tool sets.
   </Card>
   <Card title="Skills" icon="puzzle">
     Directory name = frontmatter `name` (kebab-case). Description optimized for semantic trigger. Max 500 lines. Include use/don't-use scenarios.

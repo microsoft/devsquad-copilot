@@ -5,7 +5,15 @@ description: Version history for DevSquad Copilot.
 
 import { Badge } from '@astrojs/starlight/components';
 
-## v0.6.1 <Badge text="Latest" variant="success" />
+## v0.7.0 <Badge text="Latest" variant="success" />
+
+- Added nested sub-agent architecture support around coordinator and worker patterns for `devsquad.plan`, `devsquad.implement`, `devsquad.review`, and `devsquad.refine`
+- Added 14 worker agent files with `user-invocable: false` and minimal tool sets
+- Added ADR 0012 and marked ADR 0011 as superseded
+- Updated public prerequisites to require VS Code 1.113.0+ and `chat.subagents.allowInvocationsFromSubagents` for nested workflows
+- Updated architecture diagrams to show coordinator nodes, worker topology, and parallel execution
+
+## v0.6.1
 
 - Replaced ~45K embedded template content with `sdd-init.sh` shell script for deterministic file operations
 - Reduced agent file sizes significantly

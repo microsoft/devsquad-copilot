@@ -64,7 +64,8 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
     - Naming: `devsquad.<phase>.agent.md`
     - Required frontmatter: `description`, `tools`
     - Modalities: Direct (user selects), Sub-agent (programmatic), Both
-    - Maximum 1 level of sub-agent nesting
+    - Nested sub-agent invocation supported up to 5 levels in VS Code 1.113+ with `chat.subagents.allowInvocationsFromSubagents`
+    - Internal workers should set `user-invocable: false` and keep tool sets minimal
 
     **Examples**: `devsquad.implement-python`, `devsquad.accessibility`, `devsquad.compliance`.
   </TabItem>

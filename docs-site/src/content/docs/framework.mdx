@@ -3,8 +3,7 @@ title: Framework Architecture
 description: Design principles, architecture patterns, and usage scenarios for DevSquad Copilot.
 ---
 
-import { Card, CardGrid, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
-import overviewImg from '../../assets/overview.png';
+import { Card, CardGrid, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 ## Design Principles
 
@@ -31,8 +30,6 @@ import overviewImg from '../../assets/overview.png';
 
 ## Architecture Overview
 
-<img src={overviewImg.src} alt="DevSquad Framework Architecture Overview" style="border-radius: 12px; margin: 1.5rem 0; box-shadow: 0 4px 24px rgba(0,0,0,0.12);" />
-
 The architecture spans three main phases:
 
 | Phase | Focus | Key Agents |
@@ -41,11 +38,115 @@ The architecture spans three main phases:
 | **Contracts (What)** | Specifications + ADRs | specify, plan |
 | **Iterative Delivery (How)** | Board → Sprint → Implement → Review → Refine | decompose, sprint, implement, review, refine, security |
 
+### Agent Interaction
+
+The framework follows a conductor pattern: the user interacts with the `devsquad` conductor, which delegates to specialist agents by phase. Complex specialist agents also act as coordinators, delegating to focused worker sub-agents with isolated context. This nested sub-agent architecture enables parallel execution and context isolation without adding extra user requests.
+
+```mermaid
+flowchart LR
+  user["User"] --> conductor["devsquad<br>(conductor)"]
+  user -.->|"direct invocation"| agents
+
+  conductor -->|"delegates<br/>by phase"| agents
+
+  subgraph agents["Specialist Agents"]
+    subgraph agents-row1[" "]
+      direction LR
+      init["init"]
+      envision["envision"]
+      kickoff["kickoff"]
+      specify["specify"]
+    end
+    subgraph agents-row2[" "]
+      direction LR
+      plan[["plan"]]
+      decompose["decompose"]
+      implement[["implement"]]
+      sprint["sprint"]
+    end
+    subgraph agents-row3[" "]
+      direction LR
+      review[["review"]]
+      refine[["refine"]]
+      security["security"]
+      extend["extend"]
+    end
+  end
+
+  agents -->|"work items<br/>and repos"| github-ado
+  agents -->|"Azure services<br/>and policies"| azure
+  agents -->|"documentation<br/>and guidance"| learn
+
+  subgraph mcp["MCP Servers"]
+    direction LR
+    github-ado["GitHub /<br/>Azure DevOps"]
+    learn["Microsoft<br/>Learn"]
+    azure["Azure"]
+  end
+```
+
+Double-bordered nodes are coordinator agents. They can delegate internally to worker sub-agents.
+
+### Nested Sub-agent Detail
+
+The current worker topology centers on `plan`, `implement`, `review`, and `refine`. Workers run with isolated context windows and are hidden from the user-facing agent picker.
+
+```mermaid
+flowchart TD
+  subgraph impl["implement (coordinator)"]
+    direction TB
+    impl-validate["validate"]
+    impl-execute["execute"]
+    impl-verify["verify"]
+    impl-finalize["finalize"]
+  end
+
+  impl --> review
+
+  subgraph review["review (coordinator)"]
+    direction TB
+    subgraph review-parallel["parallel"]
+      direction LR
+      rev-spec["spec"]
+      rev-adr["adr"]
+      rev-code["code"]
+      rev-sec["security"]
+      rev-tests["tests"]
+    end
+  end
+
+  subgraph plan-box["plan (coordinator)"]
+    direction TB
+    subgraph plan-parallel["parallel"]
+      direction LR
+      plan-ctx["context"]
+      plan-arch["architecture"]
+    end
+    plan-design["design"]
+  end
+
+  plan-box --> security["security<br/>(sub-agent)"]
+
+  subgraph refine-box["refine (coordinator)"]
+    direction TB
+    subgraph refine-parallel["parallel"]
+      direction LR
+      ref-artifacts["artifacts"]
+      ref-health["health"]
+    end
+  end
+```
+
+<Aside type="tip">
+  Nested sub-agent workflows require VS Code 1.113.0 or later and the `chat.subagents.allowInvocationsFromSubagents` setting enabled.
+</Aside>
+
 ## Conductor Pattern
 
 The central `devsquad` agent implements a **Mediated Coordinator-Worker** pattern (ADR 0001):
 
 - Detects user intent and delegates to the appropriate specialist agent
+- Allows coordinator specialists to continue delegation to focused worker sub-agents
 - **Dual-mode**: guided (through conductor) or direct (invoke specialists)
 - **Resilient**: if the conductor fails, specialist agents remain accessible independently
 - **No domain logic**: the conductor routes and relays; specialists own all phase logic
@@ -74,7 +175,7 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
 
 | Component | Count | Description |
 |-----------|-------|-------------|
-| [Specialist Agents](/devsquad-copilot/agents/overview/) | 13 | Autonomous agents for each delivery phase |
+| [Agents](/devsquad-copilot/agents/overview/) | 13 visible + internal workers | One conductor, 12 specialist agents, and hidden worker sub-agents for nested execution |
 | [Skills](/devsquad-copilot/skills/) | 18 | Reusable capabilities loaded on demand |
 | [Instructions](/devsquad-copilot/core-components/instructions/) | 7 | Path-specific behavioral rules |
 | [Hooks](/devsquad-copilot/core-components/hooks/) | 5 | Lifecycle hooks for deterministic operations |

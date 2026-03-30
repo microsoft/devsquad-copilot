@@ -21,6 +21,10 @@ Validate implementation against spec, ADRs, and plan with independent context.
 
 Key design principle: The review agent operates with **clean context** — it did not participate in implementation, reducing confirmation bias.
 
+Coordinator execution model:
+- **Parallel checkers** — Spec, ADR, code, security, and tests validation run in isolated worker contexts
+- **Merged verdict** — The coordinator consolidates findings, classifies severity, and decides whether self-correction can proceed
+
 Three trigger scopes:
 - **Pull Request** — Code-level review of changes
 - **Work item** — Task-level validation against acceptance criteria
@@ -105,6 +109,8 @@ Six analysis categories:
 6. **Unfinished Dependencies** — Blocking tasks still open
 
 Principles: Read-first with surgical edits. Facts, not opinions. No false positives. Configurable scope.
+
+Execution model: `devsquad.refine` can fan out artifact analysis and backlog health checks into parallel workers, then merge the results into a single report.
 
 ---
 

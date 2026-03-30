@@ -1,11 +1,13 @@
 ---
 title: Architecture Decisions
-description: All 11 Architecture Decision Records documenting significant technical decisions.
+description: All 12 Architecture Decision Records documenting significant technical decisions.
 ---
 
 import { Badge, Aside } from '@astrojs/starlight/components';
 
 Architecture Decision Records (ADRs) document significant technical decisions made during the development of DevSquad Copilot. Each records the context, priorities, options evaluated, and the chosen decision with trade-offs.
+
+ADR 0011 is now historical context. ADR 0012 documents the current nested sub-agent architecture.
 
 ---
 
@@ -105,10 +107,20 @@ Architecture Decision Records (ADRs) document significant technical decisions ma
 
 ---
 
-## ADR 0011: Sub-Agent Nesting Resolution <Badge text="Accepted" variant="success" />
+## ADR 0011: Sub-Agent Nesting Resolution <Badge text="Superseded" variant="note" />
 
-**Problem**: GitHub Copilot limits sub-agent nesting to 1 level. Conductor → L1 → L2 chains violate this.
+**Problem**: Earlier GitHub Copilot releases limited sub-agent nesting to 1 level, which blocked conductor → specialist → worker chains.
 
-**Decision**: Convert L2 sub-agents to skills (security-review, init-config, init-docs, init-scaffold). Standalone agent files kept for direct invocation.
+**Decision**: Convert L2 sub-agents to skills as a temporary workaround. Standalone agent files remained available for direct invocation.
 
-**Affected chains**: init → (init-config, init-docs, init-scaffold), implement → security, plan → security, review → security, sprint → refine.
+**Trade-off**: Guided mode worked within the platform limit, but worker isolation and parallel execution were deferred.
+
+---
+
+## ADR 0012: Nested Subagent Architecture <Badge text="Proposed" variant="caution" />
+
+**Problem**: The framework had monolithic hotspot agents for plan, implement, and review, even after native nested sub-agent support became available.
+
+**Decision**: Use coordinator + worker patterns for complex agents. `plan`, `implement`, `review`, and `refine` delegate to focused worker sub-agents with isolated context and parallel fan-out where tasks are independent.
+
+**Trade-off**: More agent files and orchestration logic in exchange for cleaner context boundaries, lower bias during validation, and lower latency for independent checks.

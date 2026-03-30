@@ -10,18 +10,20 @@ import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard } from '@astrojs/
 | Requirement | Version | Notes |
 |:------------|:--------|:------|
 | Node.js | 18+ | Required for all installation methods |
-| VS Code | 1.111.0+ | Required for VS Code usage |
+| VS Code | 1.113.0+ | Required for nested sub-agent workflows in VS Code |
 | GitHub CLI | Latest | Required for CLI usage, with the Copilot extension |
 | GitHub auth | — | Via Copilot extension or `gh auth login` |
+| VS Code setting | `chat.subagents.allowInvocationsFromSubagents` | Required for nested sub-agent workflows |
 
 ## Installation
 
 <Tabs>
   <TabItem label="VS Code">
     <Steps>
-      1. Open VS Code settings and set `chat.plugins.enabled` to `true`.
+      1. Open VS Code settings and enable `chat.subagents.allowInvocationsFromSubagents`.
       2. Install **DevSquad Copilot** from the VS Code Extensions marketplace.
       3. Sign in with your GitHub account via the Copilot extension.
+      4. Use `devsquad` as the default entry point in the chat panel. Use `devsquad.<agent>` for direct invocation.
     </Steps>
   </TabItem>
   <TabItem label="Copilot CLI">
@@ -116,7 +118,7 @@ Run `@devsquad.init` to set up SDD Framework files in your repository:
 
 <CardGrid>
   <LinkCard title="Framework Architecture" href="/devsquad-copilot/framework/" description="Design principles, architecture patterns, and usage scenarios." />
-  <LinkCard title="Agents Reference" href="/devsquad-copilot/agents/overview/" description="All 13 agents with capabilities and flow." />
+  <LinkCard title="Agents Reference" href="/devsquad-copilot/agents/overview/" description="Conductor, specialist agents, and nested worker flow." />
   <LinkCard title="Skills Reference" href="/devsquad-copilot/skills/" description="All 18 skills with activation model." />
   <LinkCard title="Extensibility" href="/devsquad-copilot/extensibility/" description="Add custom instructions, skills, agents, and hooks." />
 </CardGrid>

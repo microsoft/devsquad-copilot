@@ -105,6 +105,7 @@ Technical planning with ADRs, data model, contracts, and architecture decisions.
 Socratic approach to architecture:
 - Explores options through questions, not prescriptions
 - ADR creation with duplicate checking, Microsoft Learn lookup, Azure cost estimates
+- Coordinator workflow can delegate context loading and architecture analysis to nested workers before authoring design artifacts
 - Security decisions trigger `devsquad.security` assessment
 - Engineering practices guidance (CI/CD, branching, observability, IaC)
 
@@ -144,6 +145,7 @@ Execute implementation from `tasks.md`, a GitHub issue, or an Azure DevOps work 
 
 Key characteristics:
 - **Socratic coaching** — Guides developers to find answers, not direct solutions
+- **Coordinator workflow** — Delegates validation, execution, verification, and finalization to focused workers with isolated context
 - **Quality checks** — IDE problems detection, test failure analysis
 - **Git workflow** — Branch creation following detected strategy, conventional commits
 - **PR automation** — Automated reviews, technical debt tracking, Copilot review option
