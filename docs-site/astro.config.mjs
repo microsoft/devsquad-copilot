@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 export default defineConfig({
 	site: 'https://microsoft.github.io',
-	base: '/devsquad-copilot',
+	base: '/',
 	integrations: [
 		starlight({
 			title: 'DevSquad Copilot',
