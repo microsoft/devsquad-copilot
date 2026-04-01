@@ -183,6 +183,24 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
 | [Context Management](/devsquad-copilot/core-components/context-management/) | — | Memory, handoff envelopes, disk persistence |
 | [Extensibility](/devsquad-copilot/extensibility/) | 6 | Extension mechanisms for customization |
 
+### Extension Mechanisms
+
+Four mechanisms extend agent capabilities without modifying agent code. Each has a different activation model (ADR 0004):
+
+```mermaid
+flowchart TD
+  instructions["Path-specific Instructions<br/>(deterministic, by file glob)"]
+  skills["Skills<br/>(semantic, by context relevance)"]
+
+  instructions -.->|"auto-injected when<br/>file glob matches"| agents["Specialist Agents"]
+  skills -.->|"auto-injected when<br/>context is relevant"| agents
+
+  agents -->|"post-action<br/>validation"| hooks["Hooks<br/>(deterministic, by lifecycle event)"]
+  agents -->|"tool calls to<br/>external systems"| mcpservers["MCP Servers<br/>(external system access)"]
+```
+
+Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows: agent-initiated. See [Extensibility](/devsquad-copilot/extensibility/) for the full decision tree.
+
 ## Usage Scenarios
 
 <Tabs>
@@ -210,6 +228,13 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
 
     `kickoff (map existing) → specify → plan → decompose → implement`
   </TabItem>
+  <TabItem label="Emergent scope">
+    Clear vision, undefined scope. Features emerge during specification while exploring solutions.
+
+    `envision → kickoff (epic only) → specify (features emerge) → plan → decompose → implement`
+
+    Kickoff generates only the epic. Specify is used for brainstorming and exploring features incrementally.
+  </TabItem>
   <TabItem label="Iterative">
     Discover scope incrementally as you specify and plan.
 
@@ -223,6 +248,15 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
   - **No automatic impact propagation**: When specs or ADRs are updated, dependent artifacts are not automatically refreshed. Use `@devsquad.refine` to detect inconsistencies.
   - **Single board assumption**: The framework assumes a single GitHub Issues or Azure DevOps board. Cross-platform sync is not supported.
 </Aside>
+
+| Scenario | Current Behavior | Mitigation |
+|----------|-----------------|------------|
+| Spec updated | Existing tasks are not notified | Run `@devsquad.refine` to detect mismatch |
+| ADR superseded | Tasks depending on old decision continue | Refine flags ADR-implementation gaps |
+| Feature canceled | Work items become orphaned | Manual board cleanup |
+| Re-prioritization | Requires manual board update | Use `@devsquad.sprint` to reassess |
+
+See [Team Coordination](/devsquad-copilot/guardrails/team-coordination/) for multi-developer guardrails.
 
 ## Versioning
 

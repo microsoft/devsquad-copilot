@@ -3,7 +3,7 @@ title: Troubleshooting
 description: Common issues and solutions for DevSquad Copilot.
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 ## Plugin not found after update
 
@@ -61,3 +61,11 @@ Some rules are intentionally disabled in `.markdownlint.yaml`:
 - **MD013**: Line length (tables and links frequently exceed 80 chars)
 - **MD033**: Inline HTML (Azure DevOps mermaid uses `:::mermaid`)
 - **MD041**: First-line heading (agent files start with YAML frontmatter)
+
+## Still stuck?
+
+<CardGrid>
+  <LinkCard title="FAQ" href="/devsquad-copilot/faq/" description="Common questions and answers about workflow, guardrails, and extensibility." />
+  <LinkCard title="Open an issue" href="https://github.com/microsoft/devsquad-copilot/issues" description="Report a bug with steps to reproduce, expected vs actual behavior, and environment details." />
+  <LinkCard title="Getting Started" href="/devsquad-copilot/getting-started/" description="Revisit installation, prerequisites, and initialization steps." />
+</CardGrid>

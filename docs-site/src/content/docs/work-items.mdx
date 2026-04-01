@@ -3,7 +3,7 @@ title: Work Items
 description: GitHub Issues and Azure DevOps integration for work item management.
 ---
 
-import { Tabs, TabItem, Aside, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 The board is the **source of truth**. Local files (`tasks.md`, `structure.md`) are caches. DevSquad integrates with GitHub Issues and Azure DevOps for bidirectional work item management.
 
@@ -79,3 +79,11 @@ Tasks labeled `copilot-candidate` are suitable for autonomous AI execution:
 | Validations per spec | External integrations |
 | Service following contract | Public API changes |
 | Unit tests following pattern | Multi-module refactoring |
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Agents: Lifecycle" href="/devsquad-copilot/agents/lifecycle/" description="The agents that create and manage work items (kickoff, decompose, implement)." />
+  <LinkCard title="Core Components: Hooks" href="/devsquad-copilot/core-components/hooks/" description="Automatic tag validation and platform detection hooks." />
+  <LinkCard title="Team Coordination" href="/devsquad-copilot/guardrails/team-coordination/" description="How artifacts and board state coordinate parallel developer sessions." />
+</CardGrid>

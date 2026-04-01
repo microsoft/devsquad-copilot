@@ -1,0 +1,74 @@
+---
+title: Glossary
+description: Key terms and concepts used throughout the DevSquad Copilot framework.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## A
+
+**ADR (Architecture Decision Record)**
+A document that records a significant technical decision, including context, priorities, options evaluated, and the chosen approach with trade-offs. ADRs follow the lifecycle: `Proposed` → `Accepted` → `Superseded by NNNN`. See [Decisions](/devsquad-copilot/decisions/).
+
+## C
+
+**Comprehension Checkpoint**
+A verification step triggered before medium or high impact tasks. The agent asks the developer to describe what will happen in their own words, ensuring active understanding rather than passive delegation. Generic responses ("ok", "go") trigger deeper questions. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
+
+**Conductor**
+The central `devsquad` agent that detects user intent and delegates to specialist agents. It contains no domain logic — only routing and orchestration. See [Conductor](/devsquad-copilot/agents/conductor/).
+
+**Conformance Criteria**
+Testable conditions in a feature specification that define when the system meets requirements. Each criterion has an ID (CC-XXX), scenario description, input, and expected output. Minimum 3 cases: happy path, error, and edge case.
+
+**Coordinator Agent**
+A specialist agent that delegates internally to focused worker sub-agents with isolated context. The framework has four coordinators: `plan`, `implement`, `review`, and `refine`.
+
+## D
+
+**Disk Artifacts**
+Versioned files on disk that serve as the source of truth for the framework. Includes `spec.md`, `plan.md`, `tasks.md`, and ADRs. Session context is ephemeral; artifacts persist via git.
+
+## H
+
+**Handoff Envelope**
+A structured context-passing contract between agent phases (ADR 0003). Contains four sections: relevant artifacts, inherited assumptions, pending decisions, and discarded information. See [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/).
+
+## I
+
+**IDD (Intent-Driven Development)**
+The methodology that structures vision, specification, and architecture decisions before code generation. Built on three pillars: Intent (Why), Specification (What), and Architecture Decisions (How).
+
+**Impact Classification**
+A three-level system for classifying changes before acting. **Low** (typo, log) → direct action. **Medium** (function change) → plan + confirm. **High** (service, API, schema) → ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
+
+## M
+
+**MCP (Model Context Protocol)**
+A protocol for providing tools to AI agents. MCP servers expose capabilities (GitHub, Azure DevOps, Azure, Microsoft Learn, Draw.io) that agents call to interact with external systems. See [MCP Servers](/devsquad-copilot/core-components/mcp-servers/).
+
+## R
+
+**Reasoning Log**
+A record of decisions made during agent execution. Each entry includes: the decision, principles applied, alternatives considered, justification, and confidence level (High/Medium/Low). Used for auditability and handoff between phases. See [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/).
+
+## S
+
+**SDD (Spec-Driven Development)**
+The development approach where specifications drive all downstream work: planning, decomposition, implementation, and review. Specifications define WHAT and WHY; implementation artifacts define HOW.
+
+**Socratic AI**
+An adaptive approach where agents ask clarifying questions, surface trade-offs, and present options rather than making autonomous decisions. Low-impact tasks are fast-tracked; high-impact tasks require comprehension verification. Based on ADR 0005.
+
+**Specialist Agent**
+An agent that owns the logic for a specific delivery phase (e.g., `devsquad.specify` for specifications, `devsquad.implement` for code). Can be invoked directly or through the conductor.
+
+## T
+
+**Tool Extension**
+A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview — ADR 0010). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
+
+## W
+
+**Worker Sub-agent**
+An internal agent that runs with isolated context as part of a coordinator's workflow. Workers are not visible in the agent picker and require `chat.subagents.allowInvocationsFromSubagents` enabled. Maximum nesting depth: 4 levels.

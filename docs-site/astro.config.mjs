@@ -1,11 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import mermaid from 'astro-mermaid';
 
 export default defineConfig({
 	site: 'https://microsoft.github.io',
 	base: '/',
 	integrations: [
+		mermaid(),
 		starlight({
 			title: 'DevSquad Copilot',
 			description: 'A GitHub Copilot delivery framework with guardrails for Spec-Driven Development.',
@@ -18,7 +20,7 @@ export default defineConfig({
 				replacesTitle: false,
 			},
 			editLink: {
-				baseUrl: 'https://github.com/microsoft/devsquad-copilot/edit/main/site/',
+				baseUrl: 'https://github.com/microsoft/devsquad-copilot/edit/main/docs-site/',
 			},
 			customCss: ['./src/styles/custom.css'],
 			lastUpdated: true,
@@ -26,6 +28,15 @@ export default defineConfig({
 				{ label: 'Home', slug: 'index' },
 				{ label: 'Getting Started', slug: 'getting-started' },
 				{ label: 'Framework Architecture', slug: 'framework' },
+				{
+					label: 'Concepts',
+					items: [
+						{ label: 'Glossary', slug: 'concepts/glossary' },
+						{ label: 'Impact Classification', slug: 'concepts/impact-classification', badge: 'Core' },
+						{ label: 'Comprehension Checkpoints', slug: 'concepts/comprehension-checkpoints', badge: 'Core' },
+						{ label: 'Reasoning and Handoff', slug: 'concepts/reasoning-and-handoff' },
+					],
+				},
 				{
 					label: 'Agents',
 					items: [
@@ -46,16 +57,37 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Delivery Guardrails',
+					items: [
+						{ label: 'Philosophy', slug: 'delivery-guardrails' },
+						{ label: 'Implementation Guardrails', slug: 'guardrails/implementation' },
+						{ label: 'Team Coordination', slug: 'guardrails/team-coordination' },
+					],
+				},
+				{
+					label: 'Extensibility',
+					items: [
+						{ label: 'Overview', slug: 'extensibility' },
+						{ label: 'Extension Recipes', slug: 'extensibility/recipes', badge: { text: 'New', variant: 'success' } },
+					],
+				},
+				{ label: 'Work Items', slug: 'work-items' },
+				{
 					label: 'Decisions',
 					collapsed: true,
+					badge: '12 ADRs',
 					autogenerate: { directory: 'decisions' },
 				},
-				{ label: 'Extensibility', slug: 'extensibility' },
-				{ label: 'Delivery Guardrails', slug: 'delivery-guardrails' },
-				{ label: 'Work Items', slug: 'work-items' },
-				{ label: 'Troubleshooting', slug: 'troubleshooting' },
-				{ label: 'Contributing', slug: 'contributing' },
-				{ label: 'Changelog', slug: 'changelog' },
+				{
+					label: 'Reference',
+					collapsed: true,
+					items: [
+						{ label: 'FAQ', slug: 'faq' },
+						{ label: 'Troubleshooting', slug: 'troubleshooting' },
+						{ label: 'Contributing', slug: 'contributing' },
+						{ label: 'Changelog', slug: 'changelog' },
+					],
+				},
 			],
 		}),
 	],

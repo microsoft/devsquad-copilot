@@ -1,0 +1,102 @@
+---
+title: Comprehension Checkpoints
+description: How DevSquad verifies developer understanding before and after code generation to prevent passive delegation.
+---
+
+import { Card, CardGrid, Aside, Steps } from '@astrojs/starlight/components';
+
+Research shows developers who delegate code to AI without cognitive engagement retain **17% less knowledge**, and the greatest skill loss from passive AI assistance is **debugging capability**.
+
+> **Sustainable velocity = code generation x comprehension**
+
+## Before Implementation
+
+Before executing medium or high impact tasks, the `devsquad.implement` agent requests confirmation of understanding:
+
+```
+Before implementing, confirm that you understand what will be done:
+
+Task: [ID and description]
+Affected files: [list]
+Approach: [summary]
+
+Briefly describe what this change does, or say "reviewed, proceed"
+if you have already analyzed the plan.
+```
+
+Generic responses ("ok", "go", "do it") trigger a request for more specific confirmation. The goal is to encourage the developer to process what will happen, not merely authorize it.
+
+## After Implementation
+
+Post-implementation questions verify the developer knows how to navigate the generated code:
+
+```
+Implementation complete. To ensure knowledge transfer:
+
+1. Where is the entry point for this feature?
+2. Which test covers the main error scenario?
+3. What happens if [critical dependency] fails?
+```
+
+## Anti-pattern Detection
+
+The `devsquad.implement` agent detects signs that the developer did not understand the code:
+
+| Anti-pattern | Agent Response |
+|---|---|
+| "It works but I don't know why" | "Let's understand together. What do you think each part does?" |
+| "I copied it from somewhere else" | "Is that context the same as yours? What might be different?" |
+| "Copilot generated this" | "Right, but do you understand what this code does? Walk me through it." |
+| Trial-and-error debugging | "Before trying more things, let's understand what's happening." |
+
+## Code Churn Detection
+
+If the developer asks to modify code generated in the same session, the agent identifies the pattern:
+
+```
+You are asking to modify code that was generated recently.
+
+Before proceeding, this may indicate:
+1. Requirement was unclear. Go back to spec?
+2. Chosen approach was not adequate. Review trade-offs?
+3. Legitimate requirement change. Document the reason?
+```
+
+If the pattern repeats (3+ modifications to the same code), the agent suggests pausing to review the spec or plan. This prevents the generate-fix-generate cycle that consumes attention without real progress.
+
+## Socratic Guidance
+
+When the developer has questions, agents guide through questions instead of giving ready-made answers:
+
+<Steps>
+1. **Clarify the problem** — "What do you expect to happen? What is actually happening?"
+2. **Guide investigation** — "Have you checked the value of [variable] at this point?"
+3. **Point to existing resources** — "In [file:line], there is an example of how this is done."
+4. **Verify understanding** — "In your own words, what is causing the problem?"
+</Steps>
+
+The developer only receives direct implementation when they demonstrate understanding.
+
+## Refusing Debugging Without Context
+
+The agent refuses requests like "fix this" or "debug this" without sufficient context:
+
+```
+I cannot implement fixes without understanding the problem. Please provide:
+
+1. Expected behavior vs observed behavior
+2. Complete error message (if any)
+3. What you have already tried
+```
+
+This protects against the cycle of generating code to fix poorly defined problems.
+
+<Aside type="tip">
+  Comprehension checkpoints are not about slowing developers down. Over the project horizon (long-term development, team turnover, changing requirements), each step provides protection against exponential rework.
+</Aside>
+
+## Related
+
+- [Impact Classification](/devsquad-copilot/concepts/impact-classification/) — When checkpoints trigger based on impact level
+- [Delivery Guardrails](/devsquad-copilot/delivery-guardrails/) — The philosophy behind structured verification
+- [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/) — How decisions are recorded and passed between phases

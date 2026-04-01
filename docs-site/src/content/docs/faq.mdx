@@ -1,0 +1,80 @@
+---
+title: FAQ
+description: Frequently asked questions about DevSquad Copilot.
+---
+
+import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+## Getting Started
+
+### Do I have to use all phases or can I skip some?
+
+Each phase produces artifacts that reduce rework downstream. However, you can enter the workflow at any point. Use `@devsquad.implement` directly if you already have a task, or `@devsquad.specify` if you know what feature to build. See [Usage Scenarios](/devsquad-copilot/framework/#usage-scenarios) for workflow patterns.
+
+### Is this only for teams, or can solo developers use it?
+
+Both. Many features (ADRs, specs, tasks, comprehension checkpoints) are valuable even for solo projects. The framework scales down: skip sprint planning and board sync, keep specs and ADRs for your future self.
+
+### What AI models does DevSquad support?
+
+DevSquad is model-agnostic (Design Principle 5). It works with whatever model is configured in your GitHub Copilot subscription. The framework does not prescribe which models to use.
+
+### Do I need GitHub Copilot Business or Enterprise?
+
+DevSquad requires a GitHub Copilot subscription that supports chat plugins. Check your organization's Copilot plan for plugin support.
+
+## Workflow
+
+### My team uses Azure DevOps. Does DevSquad work?
+
+Yes. The framework auto-detects your platform from the git remote URL and supports Agile, Scrum, Basic, and CMMI process templates. See [Work Items](/devsquad-copilot/work-items/).
+
+### How do I know when to make a new ADR vs update an existing one?
+
+The `adr-workflow` skill checks for duplicates automatically when you use `@devsquad.plan`. If a related ADR exists, it surfaces it and asks whether to update or create a new one with a supersedes reference.
+
+### What is the difference between guided mode and direct mode?
+
+**Guided**: Invoke `@devsquad` — the conductor walks through phases sequentially, asking Socratic questions. **Direct**: Invoke `@devsquad.<agent>` — go straight to a specific capability. Both modes use the same agents, skills, and quality gates.
+
+### Can I use DevSquad with an existing project that already has code?
+
+Yes. Use `@devsquad.init` to add framework files, then `@devsquad.kickoff` to map your existing board structure. Specs and ADRs can be created retroactively for undocumented features.
+
+## Guardrails
+
+### I keep getting flagged for comprehension checkpoints but I want to move faster
+
+Impact classification is based on risk, not opinion. A "simple" change to a public API is still high impact. Low-impact tasks (typos, logs) skip all checkpoints automatically. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
+
+### Why does the agent refuse to debug without context?
+
+Generating code to fix poorly defined problems frequently introduces new problems. The agent requires: expected vs observed behavior, error messages, and what you have already tried. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
+
+### What happens if the agent and I disagree on a decision?
+
+The agent presents options with trade-offs but does not make autonomous decisions for medium or high impact changes. You always have the final say. The agent records your decision in the reasoning log for auditability.
+
+## Extensibility
+
+### How do I add project-specific coding conventions?
+
+Create an instruction file at `.github/instructions/your-language.instructions.md` with an `applyTo` glob pattern. See [Extension Recipes](/devsquad-copilot/extensibility/recipes/) for examples.
+
+### When should I create a skill vs an instruction?
+
+**Instructions** are under 50 lines, deterministic (always loaded for matching files), and best for coding conventions. **Skills** are 50-200 lines, loaded semantically when relevant, and best for reusable workflow knowledge. See [Extensibility](/devsquad-copilot/extensibility/).
+
+## Troubleshooting
+
+### Nested sub-agent workflows are not working
+
+Ensure VS Code is 1.113.0+ and `chat.subagents.allowInvocationsFromSubagents` is enabled in settings. See [Troubleshooting](/devsquad-copilot/troubleshooting/).
+
+### The agent is not following my project conventions
+
+Check that your instruction files have the correct `applyTo` glob pattern and are under 50 lines. Verify they exist in `.github/instructions/`. Larger rule sets should be skills, not instructions.
+
+<Aside type="tip">
+  Can't find your answer? [Open an issue on GitHub](https://github.com/microsoft/devsquad-copilot/issues) or check the [Troubleshooting](/devsquad-copilot/troubleshooting/) page.
+</Aside>

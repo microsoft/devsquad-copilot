@@ -3,7 +3,7 @@ title: Extensibility
 description: Six extension mechanisms for adding stack-specific, domain-specific, or organization-specific knowledge.
 ---
 
-import { Card, CardGrid, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Card, CardGrid, Aside, Steps, Tabs, TabItem, FileTree, LinkCard } from '@astrojs/starlight/components';
 
 DevSquad is designed to be extended. Six mechanisms are available, each with different activation models, context costs, and complexity.
 
@@ -20,21 +20,26 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
 
 ## Decision Tree
 
-<Steps>
-1. Does the knowledge apply when a specific file type is edited?
-   → **Instruction** (file glob activation)
+```mermaid
+flowchart TD
+  start["I need to add specific<br/>knowledge to the framework"]
 
-2. Is the knowledge reusable by multiple agents?
-   - Is it over 200 lines or needs its own tools? → **Agent**
-   - Otherwise → **Skill**
+  start --> q1{"Does the knowledge apply<br/>whenever a specific file<br/>type is edited?"}
+  q1 -->|Yes| instruction["Instruction<br/>(applyTo: file glob)"]
+  q1 -->|No| q2{"Is the knowledge<br/>reusable by<br/>multiple agents?"}
 
-3. Is it deterministic post-action validation?
-   → **Hook** (lifecycle script)
+  q2 -->|Yes| q3{"Is it over 200 lines<br/>or needs its own tools?"}
+  q3 -->|Yes| agent["Agent<br/>(specialized sub-agent)"]
+  q3 -->|No| skill["Skill<br/>(loaded by relevance)"]
 
-4. Need access to an external system via API?
-   - Should existing agents use the tools? → **Tool Extension**
-   - Otherwise → **MCP Server**
-</Steps>
+  q2 -->|No| q4{"Is it a deterministic<br/>post-action<br/>validation?"}
+  q4 -->|Yes| hook["Hook<br/>(lifecycle script)"]
+  q4 -->|No| q5{"Does it need access<br/>to an external system<br/>via API?"}
+  q5 -->|Yes| q6{"Should existing plugin agents<br/>use these tools?"}
+  q6 -->|Yes| toolext["Tool Extension<br/>(overlay generation)"]
+  q6 -->|No| mcp["MCP Server<br/>(standalone config)"]
+  q5 -->|No| agent2["Agent or Skill<br/>(depends on volume)"]
+```
 
 ## Creating Extensions
 
@@ -47,7 +52,21 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
     - Concise, actionable rules (not documentation)
     - One per artifact type
 
-    **Examples**: Python conventions, TypeScript rules, Terraform patterns, REST API rules.
+    **Example**:
+
+    ```markdown
+    <!-- .github/instructions/python.instructions.md -->
+    ---
+    applyTo: "**/*.py"
+    ---
+    # Python - Project Conventions
+
+    - Type hints required on every public signature
+    - Domain errors inherit from `AppError` (src/core/errors.py)
+    - Async by default for I/O (httpx, asyncpg)
+    - Tests with pytest; shared fixtures in conftest.py
+    - Imports organized: stdlib, third-party, local
+    ```
   </TabItem>
   <TabItem label="Skills">
     Reusable knowledge packages loaded on demand.
@@ -56,7 +75,27 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
     - Description optimized for semantic trigger (include keywords, use/don't-use scenarios)
     - Maximum 500 lines
 
-    **Examples**: python-patterns, react-patterns, resilience-patterns, domain-rules.
+    **Example**:
+
+    ```markdown
+    <!-- .github/skills/resilience-patterns/SKILL.md -->
+    ---
+    name: resilience-patterns
+    description: Retry, circuit breaker, and fallback patterns.
+      Use when implementing external service calls, HTTP
+      clients, or database connections. Do not use for
+      in-memory operations.
+    ---
+    # Resilience Patterns
+
+    ## Retry
+    - Exponential backoff with jitter
+    - Maximum 3 retries for transient failures
+
+    ## Circuit Breaker
+    - Failure threshold: 5 consecutive failures
+    - Half-open after 30 seconds
+    ```
   </TabItem>
   <TabItem label="Agents">
     Specialized workflows with isolated context.
@@ -64,10 +103,22 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
     - Naming: `devsquad.<phase>.agent.md`
     - Required frontmatter: `description`, `tools`
     - Modalities: Direct (user selects), Sub-agent (programmatic), Both
-    - Nested sub-agent invocation supported up to 5 levels in VS Code 1.113+ with `chat.subagents.allowInvocationsFromSubagents`
+    - Nested sub-agent invocation supported up to 5 levels in VS Code 1.113+
     - Internal workers should set `user-invocable: false` and keep tool sets minimal
 
-    **Examples**: `devsquad.implement-python`, `devsquad.accessibility`, `devsquad.compliance`.
+    **Example frontmatter**:
+
+    ```yaml
+    ---
+    description: Python implementation specialist. Invoked by
+      devsquad.implement for task execution in Python projects.
+    tools:
+      - edit/editFiles
+      - edit/createFile
+      - execute/runInTerminal
+      - search/codebase
+    ---
+    ```
   </TabItem>
   <TabItem label="Hooks">
     External scripts triggered by lifecycle events.
@@ -77,6 +128,25 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
     - 30-second default timeout
     - Register in `hooks.json`
     - Events: `sessionStart`, `preToolUse`, `postToolUse`, `sessionEnd`
+
+    **Example**:
+
+    ```bash
+    #!/bin/bash
+    # validate-python-imports.sh (postToolUse)
+
+    FILE="$1"
+    if [[ "$FILE" != *.py ]]; then
+      echo '{"status":"skipped"}'
+      exit 0
+    fi
+    RESULT=$(ruff check "$FILE" --select I 2>&1)
+    if [ $? -eq 0 ]; then
+      echo '{"status":"pass"}'
+    else
+      echo '{"status":"fail","details":"import issues"}'
+    fi
+    ```
   </TabItem>
   <TabItem label="Tool Extensions">
     Inject any MCP server tools into existing plugin agents via YAML patches. (Preview — ADR 0010)
@@ -84,9 +154,48 @@ DevSquad is designed to be extended. Six mechanisms are available, each with dif
     - Consumer creates `.github/devsquad/tool-extensions/*.yml`
     - Sync script generates workspace-level agent overrides in `.github/agents/`
     - `sessionStart` hook detects when extensions are stale or unsynced
+
+    **Example**:
+
+    ```yaml
+    # .github/devsquad/tool-extensions/jira.yml
+    name: jira
+    description: Jira integration for work items
+    mcp:
+      server: "@atlassian/jira-mcp"
+      transport: stdio
+    agents:
+      - devsquad.kickoff
+      - devsquad.decompose
+    ```
   </TabItem>
 </Tabs>
+
+## Extension File Locations
+
+<FileTree>
+- .github/
+  - instructions/ (deterministic, by file glob)
+  - skills/ (semantic, on demand)
+    - resilience-patterns/
+      - SKILL.md
+  - agents/ (explicit invocation)
+    - devsquad.implement-python.agent.md
+  - plugins/devsquad/
+    - hooks/ (lifecycle scripts)
+      - hooks.json
+  - devsquad/
+    - tool-extensions/ (MCP tool injection)
+</FileTree>
 
 <Aside type="tip">
   Use `@devsquad.extend` to get interactive guidance for creating any extension type.
 </Aside>
+
+## Next Steps
+
+<CardGrid>
+  <LinkCard title="Extension Recipes" href="/devsquad-copilot/extensibility/recipes/" description="Step-by-step examples for creating instructions, skills, agents, and hooks." />
+  <LinkCard title="Skills Reference" href="/devsquad-copilot/skills/" description="All 18 built-in skills with activation model." />
+  <LinkCard title="Core Components" href="/devsquad-copilot/core-components/instructions/" description="Built-in instructions, hooks, MCP servers, and context management." />
+</CardGrid>

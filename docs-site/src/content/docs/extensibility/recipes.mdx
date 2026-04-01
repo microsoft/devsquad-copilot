@@ -1,0 +1,260 @@
+---
+title: Extension Recipes
+description: Step-by-step examples for creating custom instructions, skills, agents, and hooks.
+---
+
+import { Aside, Steps, Tabs, TabItem, FileTree } from '@astrojs/starlight/components';
+
+Concrete examples for each extension type. For the decision tree and mechanism comparison, see [Extensibility Overview](/devsquad-copilot/extensibility/).
+
+## File Locations
+
+<FileTree>
+- .github/
+  - instructions/ (path-scoped rules)
+    - python.instructions.md
+    - typescript.instructions.md
+  - skills/ (semantic knowledge packages)
+    - python-patterns/
+      - SKILL.md
+  - agents/ (specialized workflows)
+    - devsquad.implement-python.agent.md
+  - plugins/devsquad/
+    - hooks/ (lifecycle scripts)
+      - my-hook.sh
+      - hooks.json
+  - devsquad/
+    - tool-extensions/ (MCP tool injection)
+      - jira.yml
+</FileTree>
+
+---
+
+## Recipe 1: Add Project Coding Conventions (Instruction)
+
+**Goal**: Ensure all Python files follow your team's conventions.
+
+<Steps>
+1. Create the instruction file:
+
+   ```markdown
+   <!-- .github/instructions/python.instructions.md -->
+   ---
+   applyTo: "**/*.py"
+   ---
+   # Python - Project Conventions
+
+   - Type hints required on every public signature
+   - Domain errors inherit from `AppError` (src/core/errors.py)
+   - Async by default for I/O (httpx, asyncpg)
+   - Tests with pytest; shared fixtures in the module's conftest.py
+   - Imports organized: stdlib, third-party, local (isort with black profile)
+   ```
+
+2. The instruction activates automatically whenever an agent edits any `.py` file.
+</Steps>
+
+**Adapt for other languages**:
+
+| Language | File | `applyTo` |
+|----------|------|-----------|
+| TypeScript | `typescript.instructions.md` | `**/*.ts` |
+| Go | `go.instructions.md` | `**/*.go` |
+| Terraform | `terraform.instructions.md` | `**/*.tf` |
+| Bicep | `bicep.instructions.md` | `**/*.bicep` |
+| REST API contracts | `api-contracts.instructions.md` | `**/contracts/**` |
+| Dockerfile | `docker.instructions.md` | `**/Dockerfile*` |
+
+<Aside type="tip">
+  Keep instructions under 50 lines. If your rules grow beyond that, migrate to a skill.
+</Aside>
+
+---
+
+## Recipe 2: Add Reusable Knowledge (Skill)
+
+**Goal**: Share resilience patterns across all agents working with your project.
+
+<Steps>
+1. Create the skill directory and file:
+
+   ```markdown
+   <!-- .github/skills/resilience-patterns/SKILL.md -->
+   ---
+   name: resilience-patterns
+   description: Retry, circuit breaker, and fallback patterns for the project.
+     Use when implementing external service calls, HTTP clients, database
+     connections, or message queue consumers. Do not use for in-memory
+     operations or pure computation.
+   ---
+   # Resilience Patterns
+
+   ## Retry
+   - Use exponential backoff with jitter
+   - Maximum 3 retries for transient failures
+   - No retry for 4xx client errors
+
+   ## Circuit Breaker
+   - Failure threshold: 5 consecutive failures
+   - Half-open after 30 seconds
+   - Reset on successful call
+
+   ## Fallback
+   - Cache last known good response (TTL: 5 minutes)
+   - Return degraded response with warning header
+   - Log fallback activation for monitoring
+   ```
+
+2. The skill activates automatically when the conversation involves external calls or resilience.
+</Steps>
+
+**Key**: The `description` field drives semantic activation. Include keywords, and specify use/don't-use scenarios:
+
+```yaml
+# Bad: too generic, won't activate reliably
+description: Code patterns
+
+# Good: specific, with domain keywords
+description: Python implementation patterns for the project. Use when
+  implementing Python code, including error handling patterns with
+  Result type, async with asyncio, tests with pytest and module structure.
+```
+
+---
+
+## Recipe 3: Add a Specialized Agent
+
+**Goal**: Create a Python implementation specialist invoked by `devsquad.implement`.
+
+<Steps>
+1. Create the agent file:
+
+   ```yaml
+   # .github/agents/devsquad.implement-python.agent.md
+   ---
+   description: Python implementation specialist. Invoked by
+     devsquad.implement for task execution in Python projects.
+   tools:
+     - edit/editFiles
+     - edit/createFile
+     - execute/runInTerminal
+     - execute/getTerminalOutput
+     - search/codebase
+   ---
+   ```
+
+2. Add the agent body with procedural instructions:
+
+   ```markdown
+   # Python Implementation Specialist
+
+   ## Before Writing Code
+   1. Read the task from tasks.md
+   2. Identify affected modules
+   3. Check existing patterns in the codebase
+
+   ## Implementation Rules
+   - Follow conventions from python.instructions.md
+   - Use Result type for expected errors
+   - Write tests alongside implementation (no separate test tasks)
+   - Run `pytest` after each change
+
+   ## After Writing Code
+   1. Run `ruff check .` for linting
+   2. Run `pytest --cov` for test coverage
+   3. Commit with conventional format
+   ```
+
+3. The agent can be invoked directly with `@devsquad.implement-python` or delegated as a sub-agent.
+</Steps>
+
+---
+
+## Recipe 4: Add a Lifecycle Hook
+
+**Goal**: Validate Python imports after every file edit.
+
+<Steps>
+1. Create the hook script:
+
+   ```bash
+   #!/bin/bash
+   # .github/plugins/devsquad/hooks/validate-python-imports.sh
+
+   FILE="$1"
+
+   if [[ "$FILE" != *.py ]]; then
+     echo '{"status":"skipped","reason":"not a Python file"}'
+     exit 0
+   fi
+
+   if command -v ruff &> /dev/null; then
+     RESULT=$(ruff check "$FILE" --select I 2>&1)
+     if [ $? -eq 0 ]; then
+       echo '{"status":"pass","message":"imports valid"}'
+     else
+       echo "{\"status\":\"fail\",\"message\":\"import issues found\",\"details\":\"$RESULT\"}"
+     fi
+   else
+     echo '{"status":"skipped","reason":"ruff not installed"}'
+   fi
+   ```
+
+2. Register in `hooks.json`:
+
+   ```json
+   {
+     "hooks": [
+       {
+         "event": "postToolUse",
+         "command": ".github/plugins/devsquad/hooks/validate-python-imports.sh",
+         "timeout": 10000
+       }
+     ]
+   }
+   ```
+
+3. Make the script executable: `chmod +x .github/plugins/devsquad/hooks/validate-python-imports.sh`
+</Steps>
+
+<Aside type="caution">
+  Hooks must output JSON on a single line to stdout. Use stderr for human-readable error messages. Default timeout is 30 seconds.
+</Aside>
+
+---
+
+## Recipe 5: Add an External Tool Integration (Tool Extension)
+
+**Goal**: Give existing agents access to Jira tools via MCP.
+
+<Steps>
+1. Create the tool extension YAML:
+
+   ```yaml
+   # .github/devsquad/tool-extensions/jira.yml
+   name: jira
+   description: Jira integration for work item management
+   mcp:
+     server: "@atlassian/jira-mcp"
+     transport: stdio
+   agents:
+     - devsquad.kickoff
+     - devsquad.decompose
+     - devsquad.implement
+   ```
+
+2. Run the sync script to generate workspace-level agent overrides in `.github/agents/`.
+
+3. The `sessionStart` hook will detect when extensions are stale or unsynced and warn you.
+</Steps>
+
+<Aside>
+  Tool Extensions are in **Preview** (ADR 0010). The mechanism may change.
+</Aside>
+
+## Related
+
+- [Extensibility Overview](/devsquad-copilot/extensibility/) — Decision tree and mechanism comparison
+- [Skills Reference](/devsquad-copilot/skills/) — All 18 built-in skills
+- [Core Components: Instructions](/devsquad-copilot/core-components/instructions/) — Built-in instruction reference
+- [Core Components: Hooks](/devsquad-copilot/core-components/hooks/) — Built-in hook reference

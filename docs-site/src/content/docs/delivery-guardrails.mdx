@@ -3,7 +3,7 @@ title: Delivery Guardrails
 description: Why DevSquad structures thought before and after code generation, and the Socratic AI approach.
 ---
 
-import { Card, CardGrid, Aside } from '@astrojs/starlight/components';
+import { Card, CardGrid, Aside, LinkCard } from '@astrojs/starlight/components';
 
 ## Before Code Generation
 
@@ -11,10 +11,10 @@ Phase structuring (vision → spec → plan → decompose → implement) ensures
 
 <CardGrid>
   <Card title="Impact Classification" icon="warning">
-    **Low** (typo) → direct action. **Medium** (function change) → plan + confirm. **High** (service/API) → ADR + explicit approval.
+    **Low** (typo) → direct action. **Medium** (function change) → plan + confirm. **High** (service/API) → ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
   </Card>
   <Card title="Comprehension Checkpoint" icon="approve-check">
-    Before executing medium/high impact tasks, the agent requests confirmation of understanding.
+    Before executing medium/high impact tasks, the agent requests confirmation of understanding. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
   </Card>
   <Card title="Trade-off Explanation" icon="information">
     Mandatory for non-trivial decisions: what is gained, what is lost, why this choice.
@@ -25,7 +25,9 @@ Phase structuring (vision → spec → plan → decompose → implement) ensures
 
 Research shows developers who delegate without cognitive engagement retain **17% less knowledge**. The greatest skill loss from passive AI assistance is **debugging capability**.
 
-> **Sustainable velocity = code generation × comprehension**
+> **Sustainable velocity = code generation x comprehension**
+
+If comprehension is low, effective velocity is too, regardless of how many lines of code were generated. The framework adds deliberate steps that initially seem to slow things down. But over the project horizon (long-term development, team turnover, changing requirements), each step provides protection against exponential rework.
 
 <CardGrid>
   <Card title="Knowledge Transfer" icon="open-book">
@@ -38,7 +40,7 @@ Research shows developers who delegate without cognitive engagement retain **17%
     Questions, not answers. Guide developers to find solutions rather than handing them out.
   </Card>
   <Card title="Reasoning Log" icon="document">
-    Every decision recorded with principle, alternatives, justification, and confidence level.
+    Every decision recorded with principle, alternatives, justification, and confidence level. See [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/).
   </Card>
 </CardGrid>
 
@@ -49,7 +51,8 @@ Based on ADR 0005, the framework uses adaptive Socratic methods:
 | Impact Level | Behavior |
 |-------------|----------|
 | **Low** (typo, log message) | Fast-track: direct action, minimal questions |
-| **High** (new service, schema, API) | Checkpoint: comprehension verification, Socratic questions, reasoning log |
+| **Medium** (function change) | Plan + confirmation. Agent presents approach and waits for understanding. |
+| **High** (new service, schema, API) | Checkpoint: comprehension verification, Socratic questions, reasoning log, mandatory ADR |
 
 ## Core Operating Principles
 
@@ -63,3 +66,12 @@ Based on ADR 0005, the framework uses adaptive Socratic methods:
 8. Refuse to debug blindly — require sufficient context
 9. Classify changes by impact before acting
 10. Mandatory trade-off explanation for non-trivial decisions
+
+## Deep Dives
+
+<CardGrid>
+  <LinkCard title="Implementation Guardrails" href="/devsquad-copilot/guardrails/implementation/" description="Capacity verification, phase structuring, risk analysis, context cleanup, and sprint protection." />
+  <LinkCard title="Team Coordination" href="/devsquad-copilot/guardrails/team-coordination/" description="ADRs as sync points, duplicate detection, inconsistency analysis, and change propagation." />
+  <LinkCard title="Comprehension Checkpoints" href="/devsquad-copilot/concepts/comprehension-checkpoints/" description="Before/after verification, anti-pattern detection, code churn detection, and Socratic guidance." />
+  <LinkCard title="Impact Classification" href="/devsquad-copilot/concepts/impact-classification/" description="Low/Medium/High classification, decision flow, and ceremony requirements by level." />
+</CardGrid>

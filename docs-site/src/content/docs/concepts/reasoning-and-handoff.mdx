@@ -1,0 +1,90 @@
+---
+title: Reasoning and Handoff
+description: How DevSquad records decisions and passes context between agent phases without assumption contamination.
+---
+
+import { Card, CardGrid, Aside, Steps } from '@astrojs/starlight/components';
+
+## Reasoning Log
+
+Every non-trivial decision is recorded with structured metadata for auditability and traceability:
+
+| Field | Description |
+|-------|-------------|
+| **Decision** | What was decided |
+| **Principle Applied** | Which design principle or ADR guided the decision |
+| **Alternatives Considered** | Other options that were evaluated |
+| **Justification** | Why this option was chosen over others |
+| **Confidence** | High, Medium, or Low — indicating certainty |
+
+The reasoning log prevents decisions from becoming tribal knowledge. When a new team member joins or requirements change, the log explains not just what was decided but **why**.
+
+## Handoff Envelope
+
+When work moves between phases (e.g., specify → plan), context is transferred via a structured envelope (ADR 0003):
+
+<CardGrid>
+  <Card title="Relevant Artifacts" icon="document">
+    Paths to files the next phase should read: `spec.md`, `plan.md`, ADRs, `tasks.md`.
+  </Card>
+  <Card title="Inherited Assumptions" icon="information">
+    Decisions and assumptions from the current phase that carry forward and need validation.
+  </Card>
+  <Card title="Pending Decisions" icon="warning">
+    Open questions or decisions that the next phase needs to resolve before proceeding.
+  </Card>
+  <Card title="Discarded Information" icon="close">
+    Context that was considered but explicitly excluded from the handoff, with rationale.
+  </Card>
+</CardGrid>
+
+## Why Clean Context Matters
+
+Each phase starts with **clean context** and reads artifacts from disk. This isolation prevents assumption contamination from previous phases.
+
+<Aside type="caution">
+  Without clean context, assumptions from the specification phase can leak into planning, causing the plan to reflect what the developer *intended to write* rather than what the specification *actually says*. The review agent is especially sensitive: it must operate with independent context to avoid confirmation bias.
+</Aside>
+
+## Phase Cleanup Points
+
+<Steps>
+1. **specify → plan** — Spec locked on disk. Plan starts fresh, reading spec from file.
+2. **plan → decompose** — ADRs locked. Decompose reads decisions from files.
+3. **decompose → implement** — Tasks locked. Implement picks one task at a time.
+4. **implement → review** — Code committed. Review reads independently with clean context. (**Mandatory** cleanup.)
+</Steps>
+
+## Artifacts as Source of Truth
+
+All persistent state lives in versioned files on disk:
+
+| Artifact | Path | Phase | What It Answers |
+|----------|------|-------|----------------|
+| Strategic vision | `docs/envisioning/README.md` | Envision | Why does this project exist? |
+| Feature specification | `docs/features/*/spec.md` | Specify | What should the system do? |
+| Technical plan | `docs/features/*/plan.md` | Plan | How will we build it? |
+| Architecture decisions | `docs/architecture/decisions/*.md` | Plan | Why did we choose this approach? |
+| Task decomposition | `docs/features/*/tasks.md` | Decompose | What tasks, in what order? |
+| Sprint records | `docs/sprints/sprint-N.md` | Sprint | What was planned and delivered? |
+
+## End-to-End Traceability
+
+```mermaid
+flowchart LR
+  vision["Business Vision"] --> epics["Epics"]
+  epics --> features["Features"]
+  features --> stories["User Stories"]
+  stories --> tasks["Tasks"]
+  tasks --> branches["Branches"]
+  branches --> prs["Pull Requests"]
+  prs --> code["Code"]
+```
+
+Work items include hierarchy and tags (`copilot-generated`, `ai-model:MODEL`). Tasks reference requirements (FR-XXX) and conformance criteria (CC-XXX). PRs reference tasks (`Closes #N`). Every line of code is traceable back to a business requirement.
+
+## Related
+
+- [Context Management](/devsquad-copilot/core-components/context-management/) — Technical details of memory and session management
+- [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/) — How understanding is verified at each phase
+- [Impact Classification](/devsquad-copilot/concepts/impact-classification/) — Determines the level of reasoning documentation required

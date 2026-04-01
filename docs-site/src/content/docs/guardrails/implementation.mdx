@@ -1,0 +1,91 @@
+---
+title: Implementation Guardrails
+description: Concrete guardrail mechanisms that operate during implementation to protect developer attention and code quality.
+---
+
+import { Card, CardGrid, Aside, Steps } from '@astrojs/starlight/components';
+
+These guardrails activate during the implementation phase to protect developer attention, prevent rework cycles, and ensure code quality.
+
+## Capacity Verification
+
+Before starting work on a task, the `work-item-workflow` skill checks the developer's workload:
+
+```
+You already have [N] tasks in progress:
+
+- #[ID]: [title]
+
+[F] Finish a task before picking up another (recommended)
+[C] Continue and pick up another task
+```
+
+The default limit is 3 tasks in progress. The developer can ignore it, but the system flags it. Developers should work on **one task at a time** (ADR 0009); the framework enforces this via workflow.
+
+## Impact-Based Ceremony
+
+Not every change needs all guardrails. The framework classifies tasks by [impact](/devsquad-copilot/concepts/impact-classification/) and adjusts the level of ceremony:
+
+| Impact | Criteria | Ceremony |
+|--------|----------|----------|
+| **Low** | Typo, log, formatting | Executes directly, no checkpoints |
+| **Medium** | New function, local refactoring | Plan + confirmation + automated review |
+| **High** | New service, schema, public API | Mandatory ADR + approval + review + all checkpoints |
+
+<Aside>
+  High-impact tasks are **not eligible** for streamlined mode (end-to-end). The full flow with all checkpoints is mandatory.
+</Aside>
+
+## Phase Structuring
+
+By the time you reach implementation, you have already articulated what you want, why you want it, and how you will do it:
+
+| Phase | Agent | What You Do | Rework It Prevents |
+|-------|-------|-------------|-------------------|
+| Vision | `envision` | Articulate business pains and objectives | "We built the wrong thing" |
+| Specification | `specify` | Define verifiable requirements | "The requirement was ambiguous" |
+| Planning | `plan` | Make technical decisions with trade-offs | "Why did we do it this way?" |
+| Decomposition | `decompose` | Validate tasks and complexity | "This task was more complex than expected" |
+| Implementation | `implement` | Execute with comprehension checkpoints | "It works but I don't know why" |
+
+## Risk-Based Complexity Analysis
+
+Isolated numerical estimates (story points, hours) are of little use without context. The framework focuses on the **unknowns**, not the knowns:
+
+- **Known work** — Tasks with established patterns and clear scope
+- **Unknown work (risks)** — First time, external dependency, vague requirement, missing ADR
+- **Scenarios** — 2-3 approaches with explicit trade-offs ("if it goes well" vs "if risks materialize")
+
+<Aside type="caution">
+  Anti-pattern: "3 story points" without justification. The framework requires separating known work from risks and presenting scenarios.
+</Aside>
+
+## Context Cleanup Between Phases
+
+When multiple phases run in the same session without cleanup, assumptions from the previous phase can contaminate the next one:
+
+| Transition | Cleanup | Reason |
+|-----------|---------|--------|
+| specify → plan | Recommended | Spec is a persistent artifact; plan should read from the file |
+| plan → decompose | Recommended | Tasks should come from artifacts, not from memory |
+| decompose → implement | Recommended | Decomposition context is not relevant for implementation |
+| implement → review | **Mandatory** | Independent review requires clean context |
+
+## Sprint Planning with Overload Protection
+
+The `devsquad.sprint` agent prepares planning by presenting **scope options, not recommendations**. The team decides what fits. The agent classifies items by readiness (ready / almost ready / not ready) with cited evidence, flagging:
+
+- Cross-feature dependencies that are easy to forget
+- Tasks that are bottlenecks (prerequisites for multiple others)
+- Gaps between spec and tasks that indicate future rework
+
+## Related
+
+<CardGrid>
+  <Card title="Team Coordination" icon="group">
+    Multi-developer guardrails for parallel sessions and ADR synchronization. See [Team Coordination](/devsquad-copilot/guardrails/team-coordination/).
+  </Card>
+  <Card title="Comprehension Checkpoints" icon="approve-check">
+    How the agent verifies understanding before and after code generation. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
+  </Card>
+</CardGrid>

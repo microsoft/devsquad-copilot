@@ -3,7 +3,7 @@ title: Skills Reference
 description: All 18 reusable skills with their activation model, purpose, and usage details.
 ---
 
-import { Card, CardGrid, Aside, Tabs, TabItem, Badge } from '@astrojs/starlight/components';
+import { Card, CardGrid, Aside, Badge, LinkCard } from '@astrojs/starlight/components';
 
 Skills are reusable knowledge packages (50-200 lines) activated **semantically** based on their description. Unlike instructions (deterministic, glob-based) or agents (explicit invocation), skills activate automatically when the agent's context matches the skill description.
 
@@ -36,100 +36,115 @@ Skills are reusable knowledge packages (50-200 lines) activated **semantically**
 
 ---
 
-## Skill Details
+## Architecture Skills
 
-<Tabs>
-  <TabItem label="Architecture">
-    ### adr-workflow
+### adr-workflow
 
-    Complete workflow for Architecture Decision Records. Includes duplicate checking, status determination (Proposed → Accepted → Superseded), Microsoft Learn documentation lookup, Azure cost estimates, and completeness validation.
+Complete workflow for Architecture Decision Records. Includes duplicate checking, status determination (Proposed → Accepted → Superseded), Microsoft Learn documentation lookup, Azure cost estimates, and completeness validation.
 
-    ### diagram-design
+### diagram-design
 
-    Architecture diagram guidance. Principles: audience-specific, zoom don't cram, keep simple. Tool selection: Mermaid (simple, version-controlled) vs Draw.io (complex, visual). Review checklist for readability, accessibility, notation.
+Architecture diagram guidance. Principles: audience-specific, zoom don't cram, keep simple. Tool selection: Mermaid (simple, version-controlled) vs Draw.io (complex, visual). Review checklist for readability, accessibility, notation.
 
-    ### engineering-practices
+### engineering-practices
 
-    Socratic guide for engineering decisions: CI/CD, branching, observability, IaC. Context-based exploration by team scale, domain, and regulatory needs. Classifies decisions as ADR vs convention based on reversibility, cost, lock-in, and permeation.
-  </TabItem>
+Socratic guide for engineering decisions: CI/CD, branching, observability, IaC. Context-based exploration by team scale, domain, and regulatory needs. Classifies decisions as ADR vs convention based on reversibility, cost, lock-in, and permeation.
 
-  <TabItem label="Work Items">
-    ### board-config
+---
 
-    Configure work item platform. Auto-detects GitHub vs Azure DevOps from git remote. Identifies process template (Scrum, Agile, Basic, CMMI for ADO). Saves preference to `.memory/board-config.md`.
+## Work Item and Estimation Skills
 
-    ### complexity-analysis
+### board-config
 
-    Evidence-based complexity estimation. Separates known work from unknown work (risks). Generates 2-3 scenarios with trade-offs.
+Configure work item platform. Auto-detects GitHub vs Azure DevOps from git remote. Identifies process template (Scrum, Agile, Basic, CMMI for ADO). Saves preference to `.memory/board-config.md`.
 
-    Risk classification:
-    - **High** (2+ risks, critical dependency) → supervision required
-    - **Medium** (1 risk, complex logic) → checkpoints
-    - **Low** (only known work) → autonomous
+### complexity-analysis
 
-    ### work-item-creation
+Evidence-based complexity estimation. Separates known work from unknown work (risks). Generates 2-3 scenarios with trade-offs.
 
-    Rules and checklist for work items. Required tags: `copilot-generated`, `ai-model:MODEL_NAME`. Title format by type. Hierarchy: Tasks → User Stories → Features → Epics. Creation order: Epics first, then Features, then link.
+Risk classification:
+- **High** (2+ risks, critical dependency) → supervision required
+- **Medium** (1 risk, complex logic) → checkpoints
+- **Low** (only known work) → autonomous
 
-    ### work-item-workflow
+### work-item-creation
 
-    Work item workflow for starting implementation. Required checks in order: Assignee → State update → Dependencies → Priority → Capacity. Board sync and cascade closure.
-  </TabItem>
+Rules and checklist for work items. Required tags: `copilot-generated`, `ai-model:MODEL_NAME`. Title format by type. Hierarchy: Tasks → User Stories → Features → Epics. Creation order: Epics first, then Features, then link.
 
-  <TabItem label="Quality">
-    ### quality-gate
+### work-item-workflow
 
-    Quality validation for SDD artifacts at the point of creation. Three evaluation levels scaled by impact:
-    - **Quick** — Minor changes
-    - **Standard** — Normal features
-    - **Deep** — High-impact or cross-cutting
+Work item workflow for starting implementation. Required checks in order: Assignee → State update → Dependencies → Priority → Capacity. Board sync and cascade closure.
 
-    Rubrics by artifact type (specs, ADRs, tasks, code). Maximum 2 correction iterations.
+---
 
-    ### reasoning
+## Quality and Review Skills
 
-    Decision recording and context passing. Two components:
-    - **Reasoning Log** — Decisions, principles applied, alternatives considered, justification, confidence (High/Medium/Low)
-    - **Handoff Envelope** — Relevant artifacts, inherited assumptions, pending decisions, discarded information
+### quality-gate
 
-    ### documentation-style
+Quality validation for SDD artifacts at the point of creation. Three evaluation levels scaled by impact:
+- **Quick** — Minor changes
+- **Standard** — Normal features
+- **Deep** — High-impact or cross-cutting
 
-    Markdown formatting rules. No spelling errors, emojis, or decorative Unicode. Active voice, direct sentences. Never use `#<number>` in free text (Azure DevOps auto-link issue). Prefer lists and tables.
+Rubrics by artifact type (specs, ADRs, tasks, code). Maximum 2 correction iterations.
 
-    ### security-review
+### reasoning
 
-    Security assessment in architectural and code modes. Applies: CIA Triad, Defense in Depth, Least Privilege, Secure by Default, Zero Trust, Shift Left. Triggers on: auth, sensitive data, external integrations, exposed endpoints, data persistence.
-  </TabItem>
+Decision recording and context passing. Two components:
+- **Reasoning Log** — Decisions, principles applied, alternatives considered, justification, confidence (High/Medium/Low)
+- **Handoff Envelope** — Relevant artifacts, inherited assumptions, pending decisions, discarded information
 
-  <TabItem label="Git and Dev">
-    ### git-branch
+See [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/) for details.
 
-    Branch management. Detects branching strategy (GitFlow vs Trunk-based). Naming convention: `feature/ID-short-description`. Remote sync checks before creation.
+### documentation-style
 
-    ### git-commit
+Markdown formatting rules. No spelling errors, emojis, or decorative Unicode. Active voice, direct sentences. Never use `#<number>` in free text (Azure DevOps auto-link issue). Prefer lists and tables.
 
-    Standardized commits with Conventional Commits format. Analyzes diff to determine type, scope, message. Supports logical file grouping and work item references (GitHub Issues and Azure DevOps).
+### security-review
 
-    ### pull-request
+Security assessment in architectural and code modes. Applies: CIA Triad, Defense in Depth, Least Privilege, Secure by Default, Zero Trust, Shift Left. Triggers on: auth, sensitive data, external integrations, exposed endpoints, data persistence.
 
-    PR finalization workflow. Git state check, commit creation, PR opening with automated reviews. High-impact triggers `devsquad.review`. Medium/Low with security triggers invokes `devsquad.security`. CI check, optional Copilot review.
+---
 
-    ### next-task
+## Git and Development Skills
 
-    Suggests next task after completing implementation. Considers dependencies, priority, and sprint context.
-  </TabItem>
+### git-branch
 
-  <TabItem label="Initialization">
-    ### init-config
+Branch management. Detects branching strategy (GitFlow vs Trunk-based). Naming convention: `feature/ID-short-description`. Remote sync checks before creation.
 
-    Project configuration files. Verifies and creates SDD Framework configs: `copilot-instructions.md`, instruction files, coding guidelines, markdownlint config.
+### git-commit
 
-    ### init-docs
+Standardized commits with Conventional Commits format. Analyzes diff to determine type, scope, message. Supports logical file grouping and work item references (GitHub Issues and Azure DevOps).
 
-    Documentation templates. Verifies and creates template files for features, migrations, envisioning, and ADRs.
+### pull-request
 
-    ### init-scaffold
+PR finalization workflow. Git state check, commit creation, PR opening with automated reviews. High-impact triggers `devsquad.review`. Medium/Low with security triggers invokes `devsquad.security`. CI check, optional Copilot review.
 
-    Community and governance files. Guides creation of `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
-  </TabItem>
-</Tabs>
+### next-task
+
+Suggests next task after completing implementation. Considers dependencies, priority, and sprint context.
+
+---
+
+## Initialization Skills
+
+### init-config
+
+Project configuration files. Verifies and creates SDD Framework configs: `copilot-instructions.md`, instruction files, coding guidelines, markdownlint config.
+
+### init-docs
+
+Documentation templates. Verifies and creates template files for features, migrations, envisioning, and ADRs.
+
+### init-scaffold
+
+Community and governance files. Guides creation of `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
+
+---
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Extensibility" href="/devsquad-copilot/extensibility/" description="Create custom skills, instructions, agents, and hooks." />
+  <LinkCard title="Extension Recipes" href="/devsquad-copilot/extensibility/recipes/" description="Step-by-step examples for each extension type." />
+</CardGrid>

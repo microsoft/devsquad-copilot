@@ -3,37 +3,72 @@ title: Getting Started
 description: Install DevSquad Copilot, initialize your project, and run your first workflow.
 ---
 
-import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard, LinkButton, FileTree } from '@astrojs/starlight/components';
 
 ## Prerequisites
 
-| Requirement | Version | Notes |
-|:------------|:--------|:------|
-| Node.js | 18+ | Required for all installation methods |
-| VS Code | 1.113.0+ | Required for nested sub-agent workflows in VS Code |
-| GitHub CLI | Latest | Required for CLI usage, with the Copilot extension |
-| GitHub auth | — | Via Copilot extension or `gh auth login` |
-| VS Code setting | `chat.subagents.allowInvocationsFromSubagents` | Required for nested sub-agent workflows |
+<Tabs>
+  <TabItem label="VS Code">
+    | Requirement | Version | Notes |
+    |:------------|:--------|:------|
+    | VS Code | 1.113.0+ | Required for nested sub-agent workflows |
+    | GitHub Copilot | Active subscription | Copilot extension installed and signed in |
+    | Node.js | 18+ | Required for MCP servers |
+    | VS Code setting | `chat.subagents.allowInvocationsFromSubagents` | Required for nested sub-agent workflows |
+  </TabItem>
+  <TabItem label="GitHub Copilot CLI">
+    | Requirement | Version | Notes |
+    |:------------|:--------|:------|
+    | GitHub CLI | Latest | With the Copilot extension installed |
+    | GitHub Copilot | Active subscription | Authenticated via `gh auth login` |
+    | Node.js | 18+ | Required for MCP servers |
+  </TabItem>
+</Tabs>
 
 ## Installation
 
 <Tabs>
   <TabItem label="VS Code">
     <Steps>
-      1. Open VS Code settings and enable `chat.subagents.allowInvocationsFromSubagents`.
-      2. Install **DevSquad Copilot** from the VS Code Extensions marketplace.
-      3. Sign in with your GitHub account via the Copilot extension.
-      4. Use `devsquad` as the default entry point in the chat panel. Use `devsquad.<agent>` for direct invocation.
+      1. Install **DevSquad Copilot** by clicking the button below. It will open VS Code and install the plugin automatically.
+
+         <LinkButton href="vscode://chat-plugin/install?source=microsoft/devsquad-copilot" variant="primary" icon="rocket" iconPlacement="start">Install in VS Code</LinkButton>
+
+         <Aside type="note">
+           Make sure you are signed in with your GitHub account via the Copilot extension before using DevSquad.
+         </Aside>
+
+      2. Use `devsquad` as the default entry point in the chat panel. Use `devsquad.<agent>` for direct invocation.
     </Steps>
   </TabItem>
-  <TabItem label="Copilot CLI">
-    ```bash
-    copilot plugin install microsoft/devsquad-copilot
-    ```
-    Authenticate with:
-    ```bash
-    gh auth login
-    ```
+  <TabItem label="GitHub Copilot CLI">
+    <Steps>
+      1. Install the plugin:
+
+         ```bash
+         copilot plugin install microsoft/devsquad-copilot
+         ```
+
+         <Aside type="note">
+           Make sure you are authenticated before using DevSquad. Run `gh auth login` if you have not already.
+         </Aside>
+
+      2. Use `devsquad` as the entry point via the `--agent` flag:
+
+         ```bash
+         copilot --agent devsquad:devsquad
+         ```
+
+         For direct agent invocation, use `devsquad:<agent>` (e.g., `devsquad:devsquad.implement`).
+
+         <Aside type="tip" title="YOLO Mode">
+           The `--yolo` flag allows the agent to operate autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation. Use with caution.
+
+           ```bash
+           copilot --agent devsquad:devsquad --yolo
+           ```
+         </Aside>
+    </Steps>
   </TabItem>
 </Tabs>
 
@@ -46,6 +81,32 @@ Run `@devsquad.init` to set up SDD Framework files in your repository:
 2. **Documentation templates** — Templates for features, migrations, envisioning, and ADRs.
 3. **Community files** (optional) — `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
 </Steps>
+
+After initialization, your project structure will look like this:
+
+<FileTree>
+- .github/
+  - instructions/
+    - specs.instructions.md
+    - adrs.instructions.md
+    - tasks.instructions.md
+    - envisioning.instructions.md
+    - migration-specs.instructions.md
+    - migration-tasks.instructions.md
+    - documentation-style.instructions.md
+  - copilot-instructions.md
+- docs/
+  - envisioning/ (vision artifacts)
+  - features/
+    - feature-name/
+      - spec.md (specification)
+      - plan.md (technical design)
+      - tasks.md (task decomposition)
+  - architecture/
+    - decisions/ (ADRs)
+  - migrations/ (migration specs)
+- .markdownlint.yaml
+</FileTree>
 
 ## Your First Workflow
 
