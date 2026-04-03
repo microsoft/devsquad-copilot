@@ -10,7 +10,7 @@ integrations: [
 mermaid(),
 starlight({
 title: 'DevSquad Copilot',
-description: 'A GitHub Copilot delivery framework — leverage AI agents to ship at the pace of innovation without sacrificing quality, security, and scalability.',
+description: 'A GitHub Copilot delivery framework that leverages AI agents to ship at the pace of innovation without sacrificing quality, security, and scalability.',
 social: [
 { icon: 'github', label: 'GitHub', href: 'https://github.com/microsoft/devsquad-copilot' },
 ],
@@ -22,16 +22,46 @@ replacesTitle: false,
 editLink: {
 baseUrl: 'https://github.com/microsoft/devsquad-copilot/edit/main/docs-site/',
 },
+head: [
+{
+tag: 'script',
+content: `
+(function() {
+  var key = 'starlight-sidebar-collapsed';
+  var collapsed = localStorage.getItem(key) === 'true';
+  if (collapsed) document.documentElement.classList.add('sidebar-collapsed');
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth < 800) return;
+    var sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+
+    var btn = document.createElement('button');
+    btn.className = 'sidebar-toggle';
+    btn.setAttribute('aria-label', 'Toggle sidebar');
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
+    sidebar.parentElement.appendChild(btn);
+
+    btn.addEventListener('click', function() {
+      collapsed = !collapsed;
+      document.documentElement.classList.toggle('sidebar-collapsed', collapsed);
+      localStorage.setItem(key, collapsed);
+    });
+  });
+})();
+`,
+},
+],
 customCss: ['./src/styles/custom.css'],
 lastUpdated: true,
 sidebar: [
 { label: 'Home', slug: 'index' },
 {
 label: 'Start Here',
+collapsed: true,
 items: [
 { label: 'Install & First Run', slug: 'getting-started', badge: { text: '1', variant: 'success' } },
 { label: 'Build a Feature', slug: 'guides/feature-walkthrough', badge: { text: '2', variant: 'success' } },
-{ label: 'How It Works', slug: 'framework', badge: { text: '3', variant: 'success' } },
 ],
 },
 {
@@ -43,6 +73,14 @@ items: [
 { label: 'Comprehension Checkpoints', slug: 'concepts/comprehension-checkpoints', badge: { text: 'Core', variant: 'tip' } },
 { label: 'Implementation Rules', slug: 'guardrails/implementation' },
 { label: 'Team Coordination', slug: 'guardrails/team-coordination' },
+],
+},
+{
+label: 'Architecture',
+collapsed: true,
+items: [
+{ label: 'Framework Overview', slug: 'framework' },
+{ label: 'Decision Records', slug: 'decisions' },
 ],
 },
 {
@@ -98,11 +136,6 @@ items: [
 { label: 'Contributing', slug: 'contributing' },
 { label: 'Changelog', slug: 'changelog' },
 ],
-},
-{
-label: 'Architecture Decisions',
-collapsed: true,
-autogenerate: { directory: 'decisions' },
 },
 ],
 }),

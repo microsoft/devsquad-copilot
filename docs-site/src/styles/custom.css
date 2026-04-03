@@ -53,3 +53,76 @@
 .sidebar-content > ul > li:nth-child(2) > a {
   font-weight: 600;
 }
+
+/* Sidebar collapse toggle */
+.sidebar-toggle {
+  position: fixed;
+  z-index: 20;
+  top: calc(var(--sl-nav-height) + 1rem);
+  left: calc(var(--sl-sidebar-width, 18.75rem) - 0.75rem);
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--sl-color-hairline-shade);
+  background: var(--sl-color-bg-sidebar, var(--sl-color-gray-6));
+  color: var(--sl-color-gray-3);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0;
+  transition: left 0.2s ease;
+}
+
+@media (min-width: 50rem) {
+  .sidebar-toggle {
+    display: flex;
+  }
+}
+
+.sidebar-toggle:hover {
+  color: var(--sl-color-white);
+  border-color: var(--sl-color-gray-3);
+  background: var(--sl-color-gray-5);
+}
+
+.sidebar-toggle svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+/* Sidebar collapsed state */
+html.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
+}
+
+html.sidebar-collapsed .main-frame {
+  padding-inline-start: 0 !important;
+}
+
+html.sidebar-collapsed .header {
+  padding-inline-start: 0;
+}
+
+html.sidebar-collapsed .sidebar-toggle {
+  left: 0.5rem;
+}
+
+html.sidebar-collapsed .sidebar-toggle svg {
+  transform: rotate(180deg);
+}
+
+/* Smooth transitions for collapse */
+@media (min-width: 50rem) {
+  .sidebar {
+    transition: transform 0.2s ease;
+  }
+
+  .main-frame {
+    transition: padding-inline-start 0.2s ease;
+  }
+}
