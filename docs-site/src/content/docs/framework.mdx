@@ -3,24 +3,9 @@ title: Framework Architecture
 description: Design principles, architecture patterns, and usage scenarios. How small teams achieve fast, structured delivery with AI agents.
 ---
 
-import { Card, CardGrid, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Card, CardGrid, Aside, Tabs, TabItem, LinkCard } from '@astrojs/starlight/components';
 
 This page explains how the framework is organized: how agents collaborate, how context moves between phases, and how traceability is maintained from vision to code.
-
-<CardGrid>
-  <Card title="13 Agents" icon="rocket">
-    One conductor, 12 specialists, and nested worker sub-agents for parallel execution.
-  </Card>
-  <Card title="18 Skills" icon="puzzle">
-    Reusable knowledge packages loaded on demand by context relevance.
-  </Card>
-  <Card title="7 Instructions" icon="document">
-    Path-specific behavioral rules applied automatically by file type.
-  </Card>
-  <Card title="5 Lifecycle Hooks" icon="setting">
-    Deterministic scripts for validation, tagging, and platform detection.
-  </Card>
-</CardGrid>
 
 ## Design Principles
 
@@ -34,7 +19,7 @@ This page explains how the framework is organized: how agents collaborate, how c
   <Card title="3. Artifacts as Source of Truth" icon="document">
     Specs, ADRs, and contracts live in files on disk. Session context is ephemeral; the artifacts in the repository are the permanent reference.
   </Card>
-  <Card title="4. Language-Agnostic" icon="translate">
+  <Card title="4. Programming Language-Agnostic" icon="translate">
     The framework does not prescribe a tech stack. Users add context via instructions, skills, hooks, and tool extensions.
   </Card>
   <Card title="5. AI Model-Agnostic" icon="setting">
@@ -46,16 +31,6 @@ This page explains how the framework is organized: how agents collaborate, how c
 </CardGrid>
 
 ## Architecture Overview
-
-SDD (Spec-Driven Development) is the execution model across these phases.
-
-The architecture spans three main phases:
-
-| Phase | Focus | Key Agents |
-|-------|-------|------------|
-| **Intent (Why)** | Strategic vision | envision, kickoff |
-| **Contracts (What)** | Specifications + ADRs | specify, plan |
-| **Iterative Delivery (How)** | Board, Sprint, Implement, Review, Refine | decompose, sprint, implement, review, refine, security |
 
 ### Agent Interaction
 
@@ -283,3 +258,11 @@ The framework uses **Semantic Versioning** with git tags (`vMAJOR.MINOR.PATCH`):
 | Bug fixes, no behavior change | PATCH | v0.6.0 to v0.6.1 |
 | New backward-compatible features | MINOR | v0.5.0 to v0.6.0 |
 | Breaking changes | MAJOR | v0.x to v1.0.0 |
+
+## Coming from a Different Angle?
+
+<CardGrid>
+  <LinkCard title="For Developers" href="/getting-started/" description="Install the plugin and run your first guided workflow." />
+  <LinkCard title="For Leadership" href="/delivery-guardrails/" description="How guardrails keep delivery predictable and traceable." />
+  <LinkCard title="For Platform Teams" href="/extensibility/" description="Customize with your own instructions, skills, agents, and hooks." />
+</CardGrid>

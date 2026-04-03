@@ -21,14 +21,14 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid, Steps, LinkCard } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 ## From Intent to Implementation
 
 Delivering at the pace of innovation means structuring delivery so that speed and quality reinforce each other. The framework organizes work in three layers, and each produces artifacts that reduce rework downstream:
 
 <CardGrid>
-  <Card title="Intent: Why" icon="rocket">
+  <Card title="Intent: Why" icon="star">
     Capture the strategic motivation through structured envisioning. Questions surface customer pain points, goals, and business context before any code is written.
   </Card>
   <Card title="Specification: What" icon="document">
@@ -36,6 +36,9 @@ Delivering at the pace of innovation means structuring delivery so that speed an
   </Card>
   <Card title="Architecture Decisions: How" icon="setting">
     ADRs record how and why specific technical approaches were selected. Evaluated against ranked priorities, not generic pros/cons, so decisions stay traceable.
+  </Card>
+  <Card title="Delivery: When" icon="rocket">
+    Every increment is traceable and reviewable. As priorities shift, the artifact chain keeps delivery aligned with intent.
   </Card>
 </CardGrid>
 
@@ -58,20 +61,6 @@ Across every layer, agents operate with intent, not generating code blindly, but
   </Card>
 </CardGrid>
 
-## Delivery Flow
-
-<Steps>
-1. **Envision** - Capture strategic vision and business context
-2. **Kickoff** - Structure project hierarchy and sync with the board
-3. **Specify** - Produce detailed feature or migration specifications
-4. **Plan** - Generate technical design artifacts and architecture decisions
-5. **Decompose** - Break specifications into user stories and tasks
-6. **Implement** - Execute implementation with guardrails and quality gates
-7. **Review** - Validate implementation against specs, ADRs, and the plan
-</Steps>
-
-Each stage can be revisited as new information emerges. The framework supports iterative refinement without losing traceability.
-
 ## Start Here
 
 <CardGrid>
@@ -85,7 +74,7 @@ Each stage can be revisited as new information emerges. The framework supports i
 
     [See the Framework](./framework/)
   </Card>
-  <Card title="Managers" icon="approve-check">
+  <Card title="Leadership" icon="approve-check">
     Evaluate DevSquad for your team. Learn how guardrails keep delivery predictable.
 
     [Delivery Guardrails](./delivery-guardrails/)

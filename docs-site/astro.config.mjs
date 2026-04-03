@@ -60,8 +60,8 @@ sidebar: [
 label: 'Start Here',
 collapsed: true,
 items: [
-{ label: 'Install & First Run', slug: 'getting-started', badge: { text: '1', variant: 'success' } },
-{ label: 'Build a Feature', slug: 'guides/feature-walkthrough', badge: { text: '2', variant: 'success' } },
+{ label: 'Install & First Run', slug: 'getting-started' },
+{ label: 'Build a Feature', slug: 'guides/feature-walkthrough' },
 ],
 },
 {
