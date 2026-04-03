@@ -1,15 +1,15 @@
 ---
 title: Context Management
-description: How DevSquad manages context across agent phases and sessions.
+description: How agents manage context across phases and sessions.
 ---
 
 import { Card, CardGrid, Aside, Steps } from '@astrojs/starlight/components';
 
-DevSquad uses a multi-layered approach to manage context across agent phases and sessions, preventing assumption contamination while maintaining traceability.
+Agents use a multi-layered approach to manage context across phases and sessions, preventing assumption contamination while maintaining traceability.
 
 ## Disk Artifacts (Source of Truth)
 
-All persistent state lives in versioned files on disk:
+All persistent state lives in versioned files on disk. Board is the source of truth for **task status and ownership**. Disk artifacts are the source of truth for **design decisions, specifications, and architecture**.
 
 | Artifact | Path | Phase |
 |----------|------|-------|
@@ -58,6 +58,44 @@ Structured context passing between phases (ADR 0003):
   Each phase starts with **clean context** and reads artifacts from disk. This isolation prevents assumption contamination from previous phases.
 </Aside>
 
+## Context Flow Between Phases
+
+```mermaid
+flowchart LR
+  subgraph envision["Envision"]
+    E1["envisioning.md"]
+  end
+  subgraph specify["Specify"]
+    S1["spec.md"]
+  end
+  subgraph plan["Plan"]
+    P1["plan.md"]
+    P2["ADRs"]
+  end
+  subgraph decompose["Decompose"]
+    D1["tasks.md"]
+    D2["Work Items"]
+  end
+  subgraph implement["Implement"]
+    I1["Source Code"]
+    I2["Pull Request"]
+  end
+  subgraph review["Review"]
+    R1["Review Log"]
+  end
+
+  E1 -->|"handoff envelope"| S1
+  S1 -->|"handoff envelope"| P1
+  P1 -->|"handoff envelope"| D1
+  P2 -->|"read from disk"| D1
+  D1 -->|"handoff envelope"| I1
+  D2 -->|"board state"| I1
+  I1 --> I2
+  I2 -->|"clean context"| R1
+```
+
+Each arrow represents a phase boundary where context is explicitly passed via a handoff envelope or read from disk artifacts. Agents never inherit the previous phase's working memory.
+
 ## Phase Cleanup Points
 
 <Steps>
@@ -75,3 +113,9 @@ The `.memory/` directory stores session-scoped configuration (not committed to g
 |------|---------|-------------|
 | `board-config.md` | Detected work item platform | `detect-repo-platform.sh` hook |
 | `git-config.md` | Detected branching strategy | `detect-branching-strategy.sh` hook |
+
+---
+## What to Read Next
+
+- [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/) for how decisions transfer between agents
+- [Hooks](/devsquad-copilot/core-components/hooks/) for lifecycle automation points

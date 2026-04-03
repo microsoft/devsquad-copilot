@@ -1,9 +1,11 @@
 ---
 title: Reasoning and Handoff
-description: How DevSquad records decisions and passes context between agent phases without assumption contamination.
+description: How agents record decisions and pass context between phases without assumption contamination.
 ---
 
 import { Card, CardGrid, Aside, Steps } from '@astrojs/starlight/components';
+
+Reasoning logs and handoff envelopes are the mechanisms that preserve decision context as work moves between agents. This page explains how agents record decisions and transfer structured context.
 
 ## Reasoning Log
 
@@ -48,25 +50,11 @@ Each phase starts with **clean context** and reads artifacts from disk. This iso
 
 ## Phase Cleanup Points
 
-<Steps>
-1. **specify → plan** — Spec locked on disk. Plan starts fresh, reading spec from file.
-2. **plan → decompose** — ADRs locked. Decompose reads decisions from files.
-3. **decompose → implement** — Tasks locked. Implement picks one task at a time.
-4. **implement → review** — Code committed. Review reads independently with clean context. (**Mandatory** cleanup.)
-</Steps>
+Phase transitions include structured cleanup points that preserve decisions while resetting context. See [Context Management](/devsquad-copilot/core-components/context-management/) for the full cleanup sequence.
 
 ## Artifacts as Source of Truth
 
-All persistent state lives in versioned files on disk:
-
-| Artifact | Path | Phase | What It Answers |
-|----------|------|-------|----------------|
-| Strategic vision | `docs/envisioning/README.md` | Envision | Why does this project exist? |
-| Feature specification | `docs/features/*/spec.md` | Specify | What should the system do? |
-| Technical plan | `docs/features/*/plan.md` | Plan | How will we build it? |
-| Architecture decisions | `docs/architecture/decisions/*.md` | Plan | Why did we choose this approach? |
-| Task decomposition | `docs/features/*/tasks.md` | Decompose | What tasks, in what order? |
-| Sprint records | `docs/sprints/sprint-N.md` | Sprint | What was planned and delivered? |
+The framework relies on disk artifacts as the canonical source of design decisions. See [Context Management](/devsquad-copilot/core-components/context-management/) for the complete artifact authority model.
 
 ## End-to-End Traceability
 
@@ -88,3 +76,9 @@ Work items include hierarchy and tags (`copilot-generated`, `ai-model:MODEL`). T
 - [Context Management](/devsquad-copilot/core-components/context-management/) — Technical details of memory and session management
 - [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/) — How understanding is verified at each phase
 - [Impact Classification](/devsquad-copilot/concepts/impact-classification/) — Determines the level of reasoning documentation required
+
+---
+## What to Read Next
+
+- [Context Management](/devsquad-copilot/core-components/context-management/) for the full context lifecycle
+- [Conductor Agent](/devsquad-copilot/agents/conductor/) for how the conductor uses handoff envelopes

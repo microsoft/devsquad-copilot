@@ -5,7 +5,7 @@ description: How to contribute to DevSquad Copilot — agents, skills, instructi
 
 import { Aside, Steps, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-DevSquad Copilot welcomes contributions. This page summarizes the guidelines.
+Whether you are contributing an agent, skill, instruction, hook, or documentation fix, this page covers the process and conventions.
 
 ## Reporting Issues
 
@@ -29,6 +29,14 @@ docs/
   framework/         # Architecture documentation
   templates/         # Community file templates
 ```
+
+## Architecture Decisions
+
+Changes to the framework architecture should go through the ADR (Architecture Decision Record) process. See [Decisions](/devsquad-copilot/decisions/) for existing ADRs and the template. To propose a new ADR:
+
+1. Copy the ADR template from `docs/architecture/decisions/ADR-TEMPLATE.md`
+2. Fill in the Context, Priorities, Options, and Decision sections
+3. Submit with status **Proposed**. ADRs require review before moving to Accepted.
 
 ## Contributing by Type
 
@@ -71,3 +79,10 @@ docs/
   <LinkCard title="Extensibility Overview" href="/devsquad-copilot/extensibility/" description="Decision tree for choosing the right extension mechanism." />
   <LinkCard title="Changelog" href="/devsquad-copilot/changelog/" description="Version history and recent changes." />
 </CardGrid>
+
+---
+
+## What to Read Next
+
+- [Extensibility](/devsquad-copilot/extensibility/) for the extension mechanism decision tree
+- [Extension Recipes](/devsquad-copilot/extensibility/recipes/) for step-by-step examples

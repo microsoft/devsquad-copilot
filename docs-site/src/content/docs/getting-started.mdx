@@ -5,6 +5,8 @@ description: Install DevSquad Copilot, initialize your project, and run your fir
 
 import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard, LinkButton, FileTree } from '@astrojs/starlight/components';
 
+By the end of this page, you'll have DevSquad installed and running your first guided workflow.
+
 ## Prerequisites
 
 <Tabs>
@@ -61,8 +63,8 @@ import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard, LinkButton, File
 
          For direct agent invocation, use `devsquad:<agent>` (e.g., `devsquad:devsquad.implement`).
 
-         <Aside type="tip" title="YOLO Mode">
-           The `--yolo` flag allows the agent to operate autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation. Use with caution.
+         <Aside type="tip" title="Unattended Mode">
+           The `--yolo` flag enables unattended mode, where the agent operates autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation. Use only when you accept autonomous file edits, terminal commands, and tool calls without individual confirmation.
 
            ```bash
            copilot --agent devsquad:devsquad --yolo
@@ -71,6 +73,10 @@ import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard, LinkButton, File
     </Steps>
   </TabItem>
 </Tabs>
+
+### Verify Installation
+
+After installation, open VS Code and type `@devsquad` in Copilot Chat. You should see the conductor agent respond with phase detection. If using the CLI, run `copilot --agent devsquad:devsquad` and confirm the agent responds. If you see an error, check the [Troubleshooting](/devsquad-copilot/troubleshooting/) page.
 
 ## Project Initialization
 
@@ -135,20 +141,7 @@ After initialization, your project structure will look like this:
 
 ## Usage Scenarios
 
-<CardGrid>
-  <Card title="Feature-first" icon="pencil">
-    Start with `@devsquad.specify` when you know what feature to build. The specification drives planning, decomposition, and implementation.
-  </Card>
-  <Card title="Architecture-first" icon="setting">
-    Start with `@devsquad.plan` when technical decisions need to come before feature work. Useful for greenfield projects.
-  </Card>
-  <Card title="Board-first" icon="list-format">
-    Start with `@devsquad.kickoff` when project structure and work items need to be established first.
-  </Card>
-  <Card title="Iterative" icon="random">
-    Use individual agents as needed. Run `@devsquad.implement` for a task, then `@devsquad.review` to validate.
-  </Card>
-</CardGrid>
+The framework supports multiple entry points depending on your workflow — feature-first, architecture-first, board-first, or iterative. See [Usage Scenarios](/devsquad-copilot/framework/#usage-scenarios) for patterns like greenfield projects, feature additions, and migrations.
 
 ## Guided vs Direct Mode
 

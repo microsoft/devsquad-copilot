@@ -15,7 +15,7 @@ Hooks are **lifecycle scripts** that run automatically at specific points during
 | `postToolUse` | After an agent uses a tool | Validation, linting |
 | `sessionEnd` | Session ends | Cleanup |
 
-Configuration lives in `hooks.json` with command path and timeout (default 10 seconds).
+Configuration lives in `hooks.json` with command path and timeout (default 30 seconds).
 
 ## Hooks Reference
 
@@ -52,5 +52,11 @@ Configuration lives in `hooks.json` with command path and timeout (default 10 se
 Hooks return JSON on stdout with results. Stderr is used for descriptive error messages. All hooks must:
 - Include a bash shebang (`#!/bin/bash` or `#!/usr/bin/env bash`)
 - Output JSON on a single line
-- Complete within their timeout (default 30 seconds)
+- Complete within their configured timeout. Built-in hooks use a 10-second timeout. The schema default is 30 seconds, configurable per hook via `timeoutSec`
 - Be idempotent (safe to run multiple times)
+
+---
+## What to Read Next
+
+- [Extension Recipes](/devsquad-copilot/extensibility/recipes/) for creating custom hooks
+- [Troubleshooting](/devsquad-copilot/troubleshooting/) for hook debugging

@@ -1,0 +1,77 @@
+---
+title: Initialization Skills
+description: Skills for project configuration, documentation templates, and community file scaffolding.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+These three skills handle project setup: framework configuration files, documentation templates, and community governance files. All three are used exclusively by the `devsquad.init` agent.
+
+## init-config <Badge text="init" variant="tip" />
+
+Verifies and creates SDD Framework configuration files. Manages the core files that control agent behavior, coding guidelines, and linting rules.
+
+**Managed files:**
+| File | Purpose |
+|------|---------|
+| `.github/copilot-instructions.md` | Global Copilot instructions |
+| `.github/instructions/*.instructions.md` | Path-specific instructions (7 files) |
+| `.github/docs/coding-guidelines.md` | Coding standards reference |
+| `.markdownlint.json` | Markdown linting configuration |
+
+**Two modes:**
+- **Verify**: Check which files exist, which are missing, which are outdated
+- **Create**: Create missing files, optionally overwrite outdated ones with latest templates
+
+<Aside>
+  Files are sourced from deterministic templates. The skill never generates content dynamically. It copies from the framework template directory.
+</Aside>
+
+**Activation triggers:** Project initialization, configuration verification, framework updates.
+
+---
+
+## init-docs <Badge text="init" variant="tip" />
+
+Verifies and creates documentation templates for features, migrations, envisioning, and ADRs.
+
+**Managed files:**
+| File | Purpose |
+|------|---------|
+| `docs/features/TEMPLATE.md` | Feature specification template |
+| `docs/migrations/TEMPLATE.md` | Migration specification template |
+| `docs/envisioning/TEMPLATE.md` | Envisioning document template |
+| `docs/architecture/decisions/ADR-TEMPLATE.md` | ADR template |
+
+**Two modes:**
+- **Verify**: Report which templates exist and which are missing
+- **Create**: Create missing templates, optionally overwrite outdated ones
+
+**Activation triggers:** Project initialization, template verification, framework updates.
+
+---
+
+## init-scaffold <Badge text="init" variant="tip" />
+
+Guides creation of community and governance files. Unlike init-config and init-docs, this skill uses interactive prompts to customize content.
+
+**Managed files:**
+| File | Customization |
+|------|---------------|
+| `SECURITY.md` | Security reporting contact and policy |
+| `CONTRIBUTING.md` | Contribution guidelines and process |
+| `LICENSE` | License type selection (MIT, Apache 2.0, etc.) |
+| `CODE_OF_CONDUCT.md` | Code of conduct framework |
+
+**Guided creation:** Each file prompts the user for project-specific details (security contact, contribution workflow, license preference) before generating content from templates.
+
+**Batch mode:** Can create all four files in sequence with a single command.
+
+**Activation triggers:** Project initialization, community file setup, governance scaffolding.
+
+---
+
+## What to Read Next
+
+- [Architecture and Planning Skills](/devsquad-copilot/skills/architecture/) for design-phase capabilities
+- [Getting Started](/devsquad-copilot/getting-started/) for the full installation and setup guide

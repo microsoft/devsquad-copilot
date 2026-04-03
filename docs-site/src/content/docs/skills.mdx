@@ -1,150 +1,50 @@
 ---
 title: Skills Reference
-description: All 18 reusable skills with their activation model, purpose, and usage details.
+description: All 18 reusable skills organized by domain, with activation model and usage details.
 ---
 
-import { Card, CardGrid, Aside, Badge, LinkCard } from '@astrojs/starlight/components';
+import { Card, CardGrid, Aside, LinkCard } from '@astrojs/starlight/components';
 
-Skills are reusable knowledge packages (50-200 lines) activated **semantically** based on their description. Unlike instructions (deterministic, glob-based) or agents (explicit invocation), skills activate automatically when the agent's context matches the skill description.
+Skills are reusable knowledge packages activated **semantically** based on their description. The agent runtime reads each skill's `description` field and decides at every turn whether the skill is relevant to the current task. A well-written description with clear trigger keywords and explicit use/don't-use guidance is the primary mechanism for controlling when a skill loads.
 
 <Aside type="tip">
-  Skills are NOT invoked explicitly — they are loaded on-demand when contextually relevant. A well-written description is the primary mechanism for controlling when a skill fires.
+  Skills are never invoked explicitly. They load on-demand when the agent's context matches the skill description. Unlike instructions (deterministic, path-based) or agents (explicit invocation), skills activate automatically.
 </Aside>
 
-## Skills Summary
+## Skill Catalog
 
 | Skill | Purpose | Used By |
 |-------|---------|---------|
-| `adr-workflow` | ADR creation and management | plan, specify |
-| `board-config` | Platform detection (GitHub/ADO) | devsquad, kickoff, decompose, implement |
-| `complexity-analysis` | Story complexity estimation | kickoff, specify, plan, decompose |
-| `diagram-design` | Architecture diagram guidance | plan, security |
-| `documentation-style` | Markdown formatting rules | All doc-producing agents |
-| `engineering-practices` | DevOps/SRE/CI/CD decisions | plan |
-| `git-branch` | Branch management | implement |
-| `git-commit` | Conventional Commits | implement |
-| `init-config` | Project config initialization | init |
-| `init-docs` | Documentation template init | init |
-| `init-scaffold` | Community file scaffolding | init |
-| `next-task` | Next task suggestion | implement |
-| `pull-request` | PR finalization and review | implement |
-| `quality-gate` | Artifact quality validation | specify, plan, decompose, review |
-| `reasoning` | Decision recording and handoff | All agents |
-| `security-review` | Security assessment workflow | plan, implement, review |
-| `work-item-creation` | Work item creation rules | kickoff, decompose, implement, refine |
-| `work-item-workflow` | Implementation workflow | decompose, implement |
+| [`adr-workflow`](/devsquad-copilot/skills/architecture/#adr-workflow) | ADR creation and management | plan, specify |
+| [`board-config`](/devsquad-copilot/skills/work-items/#board-config) | Platform detection (GitHub/ADO) | devsquad, kickoff, decompose, implement |
+| [`complexity-analysis`](/devsquad-copilot/skills/work-items/#complexity-analysis) | Story complexity estimation | kickoff, specify, plan, decompose |
+| [`diagram-design`](/devsquad-copilot/skills/architecture/#diagram-design) | Architecture diagram guidance | plan, security |
+| [`documentation-style`](/devsquad-copilot/skills/quality/#documentation-style) | Markdown formatting rules | All doc-producing agents |
+| [`engineering-practices`](/devsquad-copilot/skills/architecture/#engineering-practices) | DevOps/SRE/CI/CD decisions | plan |
+| [`git-branch`](/devsquad-copilot/skills/development/#git-branch) | Branch management | implement |
+| [`git-commit`](/devsquad-copilot/skills/development/#git-commit) | Conventional Commits | implement |
+| [`init-config`](/devsquad-copilot/skills/initialization/#init-config) | Project config initialization | init |
+| [`init-docs`](/devsquad-copilot/skills/initialization/#init-docs) | Documentation template init | init |
+| [`init-scaffold`](/devsquad-copilot/skills/initialization/#init-scaffold) | Community file scaffolding | init |
+| [`next-task`](/devsquad-copilot/skills/development/#next-task) | Next task suggestion | implement |
+| [`pull-request`](/devsquad-copilot/skills/development/#pull-request) | PR finalization and review | implement |
+| [`quality-gate`](/devsquad-copilot/skills/quality/#quality-gate) | Artifact quality validation | specify, plan, decompose, review |
+| [`reasoning`](/devsquad-copilot/skills/architecture/#reasoning) | Decision recording and handoff | All agents |
+| [`security-review`](/devsquad-copilot/skills/quality/#security-review) | Security assessment workflow | plan, implement, review |
+| [`work-item-creation`](/devsquad-copilot/skills/work-items/#work-item-creation) | Work item creation rules | kickoff, decompose, implement, refine |
+| [`work-item-workflow`](/devsquad-copilot/skills/work-items/#work-item-workflow) | Implementation workflow | decompose, implement |
 
----
-
-## Architecture Skills
-
-### adr-workflow
-
-Complete workflow for Architecture Decision Records. Includes duplicate checking, status determination (Proposed → Accepted → Superseded), Microsoft Learn documentation lookup, Azure cost estimates, and completeness validation.
-
-### diagram-design
-
-Architecture diagram guidance. Principles: audience-specific, zoom don't cram, keep simple. Tool selection: Mermaid (simple, version-controlled) vs Draw.io (complex, visual). Review checklist for readability, accessibility, notation.
-
-### engineering-practices
-
-Socratic guide for engineering decisions: CI/CD, branching, observability, IaC. Context-based exploration by team scale, domain, and regulatory needs. Classifies decisions as ADR vs convention based on reversibility, cost, lock-in, and permeation.
-
----
-
-## Work Item and Estimation Skills
-
-### board-config
-
-Configure work item platform. Auto-detects GitHub vs Azure DevOps from git remote. Identifies process template (Scrum, Agile, Basic, CMMI for ADO). Saves preference to `.memory/board-config.md`.
-
-### complexity-analysis
-
-Evidence-based complexity estimation. Separates known work from unknown work (risks). Generates 2-3 scenarios with trade-offs.
-
-Risk classification:
-- **High** (2+ risks, critical dependency) → supervision required
-- **Medium** (1 risk, complex logic) → checkpoints
-- **Low** (only known work) → autonomous
-
-### work-item-creation
-
-Rules and checklist for work items. Required tags: `copilot-generated`, `ai-model:MODEL_NAME`. Title format by type. Hierarchy: Tasks → User Stories → Features → Epics. Creation order: Epics first, then Features, then link.
-
-### work-item-workflow
-
-Work item workflow for starting implementation. Required checks in order: Assignee → State update → Dependencies → Priority → Capacity. Board sync and cascade closure.
-
----
-
-## Quality and Review Skills
-
-### quality-gate
-
-Quality validation for SDD artifacts at the point of creation. Three evaluation levels scaled by impact:
-- **Quick** — Minor changes
-- **Standard** — Normal features
-- **Deep** — High-impact or cross-cutting
-
-Rubrics by artifact type (specs, ADRs, tasks, code). Maximum 2 correction iterations.
-
-### reasoning
-
-Decision recording and context passing. Two components:
-- **Reasoning Log** — Decisions, principles applied, alternatives considered, justification, confidence (High/Medium/Low)
-- **Handoff Envelope** — Relevant artifacts, inherited assumptions, pending decisions, discarded information
-
-See [Reasoning and Handoff](/devsquad-copilot/concepts/reasoning-and-handoff/) for details.
-
-### documentation-style
-
-Markdown formatting rules. No spelling errors, emojis, or decorative Unicode. Active voice, direct sentences. Never use `#<number>` in free text (Azure DevOps auto-link issue). Prefer lists and tables.
-
-### security-review
-
-Security assessment in architectural and code modes. Applies: CIA Triad, Defense in Depth, Least Privilege, Secure by Default, Zero Trust, Shift Left. Triggers on: auth, sensitive data, external integrations, exposed endpoints, data persistence.
-
----
-
-## Git and Development Skills
-
-### git-branch
-
-Branch management. Detects branching strategy (GitFlow vs Trunk-based). Naming convention: `feature/ID-short-description`. Remote sync checks before creation.
-
-### git-commit
-
-Standardized commits with Conventional Commits format. Analyzes diff to determine type, scope, message. Supports logical file grouping and work item references (GitHub Issues and Azure DevOps).
-
-### pull-request
-
-PR finalization workflow. Git state check, commit creation, PR opening with automated reviews. High-impact triggers `devsquad.review`. Medium/Low with security triggers invokes `devsquad.security`. CI check, optional Copilot review.
-
-### next-task
-
-Suggests next task after completing implementation. Considers dependencies, priority, and sprint context.
-
----
-
-## Initialization Skills
-
-### init-config
-
-Project configuration files. Verifies and creates SDD Framework configs: `copilot-instructions.md`, instruction files, coding guidelines, markdownlint config.
-
-### init-docs
-
-Documentation templates. Verifies and creates template files for features, migrations, envisioning, and ADRs.
-
-### init-scaffold
-
-Community and governance files. Guides creation of `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
-
----
-
-## Related
+## By Domain
 
 <CardGrid>
-  <LinkCard title="Extensibility" href="/devsquad-copilot/extensibility/" description="Create custom skills, instructions, agents, and hooks." />
-  <LinkCard title="Extension Recipes" href="/devsquad-copilot/extensibility/recipes/" description="Step-by-step examples for each extension type." />
+  <LinkCard title="Architecture and Planning" href="/devsquad-copilot/skills/architecture/" description="ADR management, diagram design, engineering practices, and decision recording." />
+  <LinkCard title="Work Items and Estimation" href="/devsquad-copilot/skills/work-items/" description="Board configuration, complexity analysis, work item creation, and workflow management." />
+  <LinkCard title="Quality and Security" href="/devsquad-copilot/skills/quality/" description="Artifact validation, security assessment, and documentation formatting." />
+  <LinkCard title="Development" href="/devsquad-copilot/skills/development/" description="Branch management, commit standards, PR finalization, and task progression." />
+  <LinkCard title="Initialization" href="/devsquad-copilot/skills/initialization/" description="Project configuration, documentation templates, and community file scaffolding." />
 </CardGrid>
+
+## What to Read Next
+
+- [Choosing the Right Extension](/devsquad-copilot/core-components/comparison/) for when to use skills vs instructions, hooks, or agents
+- [Extension Recipes](/devsquad-copilot/extensibility/recipes/) for creating custom skills

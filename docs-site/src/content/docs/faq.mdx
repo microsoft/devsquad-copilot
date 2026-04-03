@@ -17,7 +17,7 @@ Both. Many features (ADRs, specs, tasks, comprehension checkpoints) are valuable
 
 ### What AI models does DevSquad support?
 
-DevSquad is model-agnostic (Design Principle 5). It works with whatever model is configured in your GitHub Copilot subscription. The framework does not prescribe which models to use.
+The framework is model-agnostic (Design Principle 5). It works with whatever model is configured in your GitHub Copilot subscription. The framework does not prescribe which models to use.
 
 ### Do I need GitHub Copilot Business or Enterprise?
 
@@ -67,13 +67,7 @@ Create an instruction file at `.github/instructions/your-language.instructions.m
 
 ## Troubleshooting
 
-### Nested sub-agent workflows are not working
-
-Ensure VS Code is 1.113.0+ and `chat.subagents.allowInvocationsFromSubagents` is enabled in settings. See [Troubleshooting](/devsquad-copilot/troubleshooting/).
-
-### The agent is not following my project conventions
-
-Check that your instruction files have the correct `applyTo` glob pattern and are under 50 lines. Verify they exist in `.github/instructions/`. Larger rule sets should be skills, not instructions.
+For technical issues (installation, hooks, MCP connections, agent errors), see the dedicated [Troubleshooting](/devsquad-copilot/troubleshooting/) page.
 
 <Aside type="tip">
   Can't find your answer? [Open an issue on GitHub](https://github.com/microsoft/devsquad-copilot/issues) or check the [Troubleshooting](/devsquad-copilot/troubleshooting/) page.

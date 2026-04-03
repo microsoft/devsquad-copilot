@@ -5,6 +5,8 @@ description: The conductor, specialist agents, and nested worker flows that powe
 
 import { CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
+This page maps every agent in the framework: what it does, when it activates, and how agents collaborate. Use the table below to find the right agent for your task.
+
 The DevSquad framework exposes 13 user-visible agents: the `devsquad` conductor plus 12 specialist agents. Complex specialists can also act as coordinators and delegate to hidden worker sub-agents with isolated context.
 
 ## Agent Flow
@@ -79,3 +81,10 @@ flowchart LR
   <LinkCard title="Lifecycle Agents" href="../agents/lifecycle/" description="init, envision, kickoff, specify, plan, decompose, implement — the main delivery pipeline." />
   <LinkCard title="Support Agents" href="../agents/support/" description="review, security, sprint, refine, extend — quality, planning, and extensibility." />
 </CardGrid>
+
+---
+
+## What to Read Next
+
+- [Conductor](/devsquad-copilot/agents/conductor/) for the main entry point
+- [Getting Started](/devsquad-copilot/getting-started/) to install and run your first workflow

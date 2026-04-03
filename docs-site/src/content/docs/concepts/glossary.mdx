@@ -19,7 +19,7 @@ A verification step triggered before medium or high impact tasks. The agent asks
 The central `devsquad` agent that detects user intent and delegates to specialist agents. It contains no domain logic — only routing and orchestration. See [Conductor](/devsquad-copilot/agents/conductor/).
 
 **Conformance Criteria**
-Testable conditions in a feature specification that define when the system meets requirements. Each criterion has an ID (CC-XXX), scenario description, input, and expected output. Minimum 3 cases: happy path, error, and edge case.
+Testable conditions (identified by CC-XXX format) that verify a specification requirement is met. Each includes a scenario, input, and expected output.
 
 **Coordinator Agent**
 A specialist agent that delegates internally to focused worker sub-agents with isolated context. The framework has four coordinators: `plan`, `implement`, `review`, and `refine`.
@@ -37,7 +37,7 @@ A structured context-passing contract between agent phases (ADR 0003). Contains 
 ## I
 
 **IDD (Intent-Driven Development)**
-The methodology that structures vision, specification, and architecture decisions before code generation. Built on three pillars: Intent (Why), Specification (What), and Architecture Decisions (How).
+The methodology that structures vision, specification, and architecture decisions before code generation. Built on three pillars: Intent (Why), Specification (What), and Architecture Decisions (How). IDD is the overarching methodology. SDD (Spec-Driven Development) describes the execution model within it, where specifications drive all downstream work.
 
 **Impact Classification**
 A three-level system for classifying changes before acting. **Low** (typo, log) → direct action. **Medium** (function change) → plan + confirm. **High** (service, API, schema) → ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
@@ -46,6 +46,16 @@ A three-level system for classifying changes before acting. **Low** (typo, log) 
 
 **MCP (Model Context Protocol)**
 A protocol for providing tools to AI agents. MCP servers expose capabilities (GitHub, Azure DevOps, Azure, Microsoft Learn, Draw.io) that agents call to interact with external systems. See [MCP Servers](/devsquad-copilot/core-components/mcp-servers/).
+
+## O
+
+**OWASP**
+Open Worldwide Application Security Project. The framework references OWASP guidelines for code-level security assessment.
+
+## Q
+
+**Quality Gate**
+An automated validation checkpoint that verifies artifact completeness and consistency before delivery. Applied to specs, ADRs, task decompositions, and code implementations.
 
 ## R
 
@@ -63,6 +73,9 @@ An adaptive approach where agents ask clarifying questions, surface trade-offs, 
 **Specialist Agent**
 An agent that owns the logic for a specific delivery phase (e.g., `devsquad.specify` for specifications, `devsquad.implement` for code). Can be invoked directly or through the conductor.
 
+**STRIDE**
+A threat modeling methodology (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) used by the security review process.
+
 ## T
 
 **Tool Extension**
@@ -71,4 +84,10 @@ A mechanism for injecting MCP server tools into existing plugin agents via YAML 
 ## W
 
 **Worker Sub-agent**
-An internal agent that runs with isolated context as part of a coordinator's workflow. Workers are not visible in the agent picker and require `chat.subagents.allowInvocationsFromSubagents` enabled. Maximum nesting depth: 4 levels.
+A specialized agent invoked by a coordinator agent to perform a focused subtask in an isolated context window. Workers return results to the coordinator and do not interact with the user directly.
+
+---
+## What to Read Next
+
+- [Impact Classification](/devsquad-copilot/concepts/impact-classification/) for how changes are categorized
+- [Framework Architecture](/devsquad-copilot/framework/) for the full system overview

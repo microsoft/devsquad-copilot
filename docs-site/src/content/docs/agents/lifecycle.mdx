@@ -7,6 +7,24 @@ import { Card, CardGrid, Aside, Steps, Badge } from '@astrojs/starlight/componen
 
 These seven agents form the primary delivery pipeline: from project setup through implementation.
 
+```mermaid
+flowchart LR
+  init["init"]
+  envision["envision"]
+  kickoff["kickoff"]
+  specify["specify"]
+  plan["plan"]
+  decompose["decompose"]
+  implement["implement"]
+
+  init -->|"config files"| envision
+  envision -->|"envisioning.md"| kickoff
+  kickoff -->|"board structure"| specify
+  specify -->|"spec.md"| plan
+  plan -->|"plan.md + ADRs"| decompose
+  decompose -->|"tasks.md + work items"| implement
+```
+
 ---
 
 ## devsquad.init <Badge text="Setup" variant="note" />
@@ -24,7 +42,7 @@ Three file groups managed:
 - **Docs** — Templates for features, migrations, envisioning, ADRs
 - **Scaffold** — Community files: `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`
 
-Uses the `sdd-init.sh` script for deterministic file operations (verify, create, update, diff).
+Uses a deterministic shell script for file operations (verify, create, update, diff).
 
 ---
 
@@ -105,7 +123,7 @@ Technical planning with ADRs, data model, contracts, and architecture decisions.
 Socratic approach to architecture:
 - Explores options through questions, not prescriptions
 - ADR creation with duplicate checking, Microsoft Learn lookup, Azure cost estimates
-- Coordinator workflow can delegate context loading and architecture analysis to nested workers before authoring design artifacts
+- Coordinator workflow can delegate context loading and architecture analysis to worker sub-agents before authoring design artifacts
 - Security decisions trigger `devsquad.security` assessment
 - Engineering practices guidance (CI/CD, branching, observability, IaC)
 
@@ -150,3 +168,10 @@ Key characteristics:
 - **Git workflow** — Branch creation following detected strategy, conventional commits
 - **PR automation** — Automated reviews, technical debt tracking, Copilot review option
 - **One task at a time** — Soft limit of 3 in-progress with warning signal
+
+---
+
+## What to Read Next
+
+- [Support Agents](/devsquad-copilot/agents/support/) for review, security, and sprint agents
+- [Skills](/devsquad-copilot/skills/) for capabilities used by lifecycle agents

@@ -1,0 +1,80 @@
+---
+title: Architecture and Planning Skills
+description: Skills for ADR management, diagram design, engineering practices, and decision recording.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+These four skills support design work, architecture decisions, and cross-agent context transfer. They are used during planning, specification, security analysis, and agent handoff.
+
+## adr-workflow <Badge text="plan, specify" variant="tip" />
+
+Creates and updates Architecture Decision Records. The skill checks for existing ADRs, determines the correct status, gathers supporting Microsoft documentation, and validates ADR completeness.
+
+**Core responsibilities:**
+| Responsibility | Detail |
+|---------------|--------|
+| Duplicate check | Finds related ADRs before creating a new one |
+| Status handling | Uses proposed, accepted, and superseded states |
+| Documentation lookup | Pulls supporting Microsoft guidance when needed |
+| Cost context | Adds Azure cost estimates when the decision affects spend |
+| Completeness review | Verifies required ADR sections before delivery |
+
+**Activation triggers:** ADR creation, ADR updates, design decisions with long-term impact.
+
+---
+
+## diagram-design <Badge text="plan, security" variant="tip" />
+
+Guides architecture diagrams in Mermaid and Draw.io. The skill helps choose the right format, review readability, and keep diagrams aligned with the intended audience.
+
+**Core responsibilities:**
+| Area | Guidance |
+|------|----------|
+| Tool selection | Use Mermaid for simple version-controlled diagrams; use Draw.io for more complex visual layouts |
+| Readability | Keep labels short, show one abstraction level per diagram, avoid crowded layouts |
+| Accessibility | Use clear structure, consistent naming, and readable connections |
+| Review | Check notation, grouping, and whether the diagram supports the document goal |
+
+**Activation triggers:** Architecture documentation, diagram creation, diagram review.
+
+---
+
+## engineering-practices <Badge text="plan" variant="tip" />
+
+Explores engineering decisions for delivery and operations. The skill uses project context to guide choices for CI/CD, observability, infrastructure as code, branching, and related practices.
+
+**Core responsibilities:**
+| Topic | Detail |
+|------|--------|
+| Delivery workflow | CI/CD structure, release flow, branch strategy |
+| Operations | Observability, reliability, ownership, incident handling |
+| Infrastructure | IaC approach, environment model, deployment controls |
+| Decision scope | Distinguishes ADRs from team conventions |
+
+<Aside>
+  This skill is advisory. It guides questions and trade-offs based on project context instead of applying a fixed solution.
+</Aside>
+
+**Activation triggers:** Initial planning, engineering practice selection, platform and process design.
+
+---
+
+## reasoning <Badge text="all agents" variant="note" />
+
+Records decisions and passes context between agents. The skill captures why a decision was made and what the next agent needs to continue the work.
+
+**Core responsibilities:**
+| Output | Purpose |
+|--------|---------|
+| Reasoning log | Records decisions, trade-offs, assumptions, and confidence |
+| Handoff envelope | Carries relevant context, pending questions, and retained constraints |
+
+**Activation triggers:** Multi-agent workflows, important decisions, agent handoff points.
+
+---
+
+## What to Read Next
+
+- [Quality and Security Skills](/devsquad-copilot/skills/quality/) for validation and security review workflows
+- [Skills Reference](/devsquad-copilot/skills/) for the full catalog

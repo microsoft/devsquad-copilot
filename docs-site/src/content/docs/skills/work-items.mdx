@@ -1,0 +1,87 @@
+---
+title: Work Items and Estimation Skills
+description: Skills for board configuration, complexity analysis, work item creation, and implementation workflow.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+These four skills support backlog setup, estimation, work item creation, and workflow checks before implementation starts.
+
+## board-config <Badge text="devsquad, kickoff, decompose, implement" variant="tip" />
+
+Detects and configures the work item platform for the project. The skill identifies whether the project uses GitHub Issues or Azure DevOps and stores that preference for later workflows.
+
+**Core responsibilities:**
+| Responsibility | Detail |
+|---------------|--------|
+| Platform detection | Inspects repository context to identify GitHub or Azure DevOps |
+| Process detection | Identifies Azure DevOps process templates when applicable |
+| Preference storage | Saves the chosen board configuration for later skills and agents |
+
+**Activation triggers:** Project kickoff, board setup, first work item operation.
+
+---
+
+## complexity-analysis <Badge text="kickoff, specify, plan, decompose" variant="tip" />
+
+Estimates user story complexity using known work, unknown work, and delivery risk. The skill builds scenarios and highlights the sources of uncertainty.
+
+**Core responsibilities:**
+| Responsibility | Detail |
+|---------------|--------|
+| Work split | Separates known implementation work from risk and uncertainty |
+| Scenario planning | Produces two or three delivery scenarios with trade-offs |
+| Risk classification | Labels work as low, medium, or high based on risk concentration |
+
+**Risk model:**
+| Level | Signal |
+|------|--------|
+| Low | Known work with limited uncertainty |
+| Medium | One significant risk or complex logic |
+| High | Multiple risks, major dependency, or broad unknowns |
+
+**Activation triggers:** Estimation, story sizing, backlog decomposition.
+
+---
+
+## work-item-creation <Badge text="kickoff, decompose, implement, refine" variant="tip" />
+
+Applies structure and rules when creating work items. The skill standardizes titles, hierarchy, tagging, and linking.
+
+**Core responsibilities:**
+| Area | Detail |
+|------|--------|
+| Type rules | Uses the right structure for epics, features, stories, and tasks |
+| Tagging | Applies required metadata such as Copilot and model tags |
+| Linking | Creates parent-child and related links in the correct order |
+| Content checks | Verifies title format and required fields before creation |
+
+**Activation triggers:** New backlog items, work item decomposition, work item generation from specs.
+
+---
+
+## work-item-workflow <Badge text="decompose, implement" variant="tip" />
+
+Checks implementation readiness for an existing work item. The skill confirms assignment, state, dependencies, priority, and capacity before coding begins.
+
+**Core responsibilities:**
+| Check | Purpose |
+|------|---------|
+| Assignee | Confirms ownership |
+| State | Moves the item into the correct working state |
+| Dependencies | Verifies predecessor work is complete |
+| Priority | Confirms ordering against competing work |
+| Capacity | Checks whether the team can absorb the work now |
+
+<Aside>
+  This skill applies to existing board items. It does not create new work items.
+</Aside>
+
+**Activation triggers:** Start of implementation, dependency review, work item readiness check.
+
+---
+
+## What to Read Next
+
+- [Development Skills](/devsquad-copilot/skills/development/) for branch, commit, and PR workflows
+- [Skills Reference](/devsquad-copilot/skills/) for the full catalog

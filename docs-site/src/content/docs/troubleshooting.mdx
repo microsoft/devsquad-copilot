@@ -3,7 +3,7 @@ title: Troubleshooting
 description: Common issues and solutions for DevSquad Copilot.
 ---
 
-import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
 
 ## Plugin not found after update
 
@@ -20,7 +20,7 @@ Clear VS Code cache and restart:
 
 ## Agents not visible in VS Code
 
-- Requires **VS Code 1.111.0** or later
+- Requires **VS Code 1.113.0** or later
 - Enable `chat.plugins.enabled` in VS Code settings
 - Verify plugin installation via the Extensions panel
 
@@ -62,10 +62,9 @@ Some rules are intentionally disabled in `.markdownlint.yaml`:
 - **MD033**: Inline HTML (Azure DevOps mermaid uses `:::mermaid`)
 - **MD041**: First-line heading (agent files start with YAML frontmatter)
 
-## Still stuck?
+---
 
-<CardGrid>
-  <LinkCard title="FAQ" href="/devsquad-copilot/faq/" description="Common questions and answers about workflow, guardrails, and extensibility." />
-  <LinkCard title="Open an issue" href="https://github.com/microsoft/devsquad-copilot/issues" description="Report a bug with steps to reproduce, expected vs actual behavior, and environment details." />
-  <LinkCard title="Getting Started" href="/devsquad-copilot/getting-started/" description="Revisit installation, prerequisites, and initialization steps." />
-</CardGrid>
+## Still Stuck?
+
+- Check the [FAQ](/devsquad-copilot/faq/) for common questions
+- Open an issue on [GitHub](https://github.com/microsoft/devsquad-copilot/issues)

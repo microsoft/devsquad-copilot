@@ -5,7 +5,7 @@ description: The central orchestrator that detects user intent and delegates to 
 
 import { Aside, Card, CardGrid } from '@astrojs/starlight/components';
 
-The `devsquad` agent is the **unified entry point** for the framework. It does not contain domain logic — instead, it detects user intent and delegates to the appropriate specialist agent.
+The `devsquad` agent is the **unified entry point** for the framework. It does not contain domain logic. Instead, it detects user intent and delegates to the appropriate specialist agent.
 
 ## How It Works
 
@@ -40,9 +40,18 @@ The `devsquad` agent is the **unified entry point** for the framework. It does n
 
 ## Skills Used
 
-- **reasoning** — Decision recording and handoff envelope
-- **board-config** — Platform detection (GitHub Issues vs Azure DevOps)
+| Skill | Purpose |
+|-------|---------|
+| `reasoning` | Decision recording and handoff envelope |
+| `board-config` | Platform detection (GitHub Issues or Azure DevOps) |
 
 <Aside type="tip">
   You can always bypass the conductor and invoke any agent directly with `@devsquad.<agent>`. The conductor adds orchestration; direct mode gives immediate access.
 </Aside>
+
+---
+
+## What to Read Next
+
+- [Lifecycle Agents](/devsquad-copilot/agents/lifecycle/) for phase-specific agents
+- [Support Agents](/devsquad-copilot/agents/support/) for cross-cutting capabilities

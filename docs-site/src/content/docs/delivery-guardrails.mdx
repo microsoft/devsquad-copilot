@@ -1,9 +1,11 @@
 ---
 title: Delivery Guardrails
-description: Why DevSquad structures thought before and after code generation, and the Socratic AI approach.
+description: Why the framework structures thought before and after code generation, and the Socratic AI approach.
 ---
 
 import { Card, CardGrid, Aside, LinkCard } from '@astrojs/starlight/components';
+
+The framework is built on the premise that velocity without structure is waste. Teams need to move fast — but generating code quickly only creates value when thought is structured before and after code generation.
 
 ## Before Code Generation
 
@@ -23,7 +25,7 @@ Phase structuring (vision → spec → plan → decompose → implement) ensures
 
 ## After Code Generation
 
-Research shows developers who delegate without cognitive engagement retain **17% less knowledge**. The greatest skill loss from passive AI assistance is **debugging capability**.
+Research shows developers who delegate code to AI without cognitive engagement retain [**17% less knowledge**](https://arxiv.org/abs/2601.20245). The greatest skill loss from passive AI assistance is **debugging capability**.
 
 > **Sustainable velocity = code generation x comprehension**
 
@@ -75,3 +77,9 @@ Based on ADR 0005, the framework uses adaptive Socratic methods:
   <LinkCard title="Comprehension Checkpoints" href="/devsquad-copilot/concepts/comprehension-checkpoints/" description="Before/after verification, anti-pattern detection, code churn detection, and Socratic guidance." />
   <LinkCard title="Impact Classification" href="/devsquad-copilot/concepts/impact-classification/" description="Low/Medium/High classification, decision flow, and ceremony requirements by level." />
 </CardGrid>
+
+## What to Read Next
+
+- [Implementation Guardrails](/devsquad-copilot/guardrails/implementation/) for specific enforcement mechanisms
+- [Team Coordination](/devsquad-copilot/guardrails/team-coordination/) for multi-developer workflows
+- [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/) for the checkpoint mechanism

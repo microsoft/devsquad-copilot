@@ -1,16 +1,20 @@
 ---
 title: DevSquad Copilot
-description: A GitHub Copilot delivery framework with guardrails for Spec-Driven Development.
+description: A GitHub Copilot delivery framework — leverage AI agents to ship at the pace of innovation without sacrificing quality, security, and scalability.
 template: splash
 hero:
-  tagline: 13 agents, nested worker flows, 18 skills, and lifecycle hooks orchestrating structured software delivery through GitHub Copilot. Intentional AI with human-in-the-loop decisions.
+  tagline: Ship at the pace of innovation with agents that keep delivery grounded in specs, traceable decisions, and production-ready quality.
   image:
-    file: ../../assets/overview.png
+    file: ../../assets/logos/devsquad-logo-transparent-small.png
   actions:
     - text: Get Started
       link: ./getting-started/
       icon: right-arrow
       variant: primary
+    - text: How It Works
+      link: ./framework/
+      icon: open-book
+      variant: secondary
     - text: View on GitHub
       link: https://github.com/microsoft/devsquad-copilot
       icon: external
@@ -19,22 +23,40 @@ hero:
 
 import { Card, CardGrid, Steps, LinkCard } from '@astrojs/starlight/components';
 
-## What is DevSquad?
+> **By the Numbers:** 13 agents · nested worker flows · 18 skills · lifecycle hooks — delivering structured AI-assisted development through GitHub Copilot.
 
-DevSquad implements **Intent-Driven Development (IDD)**, a methodology built on three pillars:
+## From Intent to Implementation
+
+Delivering at the pace of innovation means structuring delivery so that speed and quality reinforce each other. The framework organizes work in three layers — each produces artifacts that reduce rework downstream:
 
 <CardGrid>
-  <Card title="Intent (Why)" icon="rocket">
-    The strategic motivation behind the project, captured through structured envisioning with Socratic questions about customer, pain points, and goals.
+  <Card title="Intent — Why" icon="rocket">
+    Capture the strategic motivation through structured envisioning. Questions surface customer pain points, goals, and business context before any code is written.
   </Card>
-  <Card title="Specification (What)" icon="document">
-    Precise feature and migration specs that define scope, acceptance criteria, and constraints. Written for stakeholders, not developers.
+  <Card title="Specification — What" icon="document">
+    Feature and migration specs define scope, acceptance criteria, and constraints. Written for stakeholders, these artifacts become the contract that downstream work is measured against.
   </Card>
-  <Card title="Architecture Decisions (How)" icon="setting">
-    ADRs that record how and why specific technical approaches were selected. Evaluated against ranked priorities, not generic pros/cons.
+  <Card title="Architecture Decisions — How" icon="setting">
+    ADRs record how and why specific technical approaches were selected. Evaluated against ranked priorities, not generic pros/cons — so decisions stay traceable.
   </Card>
-  <Card title="Socratic AI" icon="approve-check">
-    Agents ask clarifying questions, surface trade-offs, and present options. Every workflow is human-in-the-loop by design.
+</CardGrid>
+
+## Intentional AI
+
+Across every layer, agents operate with intent — not generating code blindly, but structuring thought at every step.
+
+<CardGrid>
+  <Card title="Ask Before Assuming" icon="approve-check">
+    Agents verify understanding and surface trade-offs before acting. Clarifying questions replace guesswork.
+  </Card>
+  <Card title="Traceable Decisions" icon="document">
+    Every choice is recorded with reasoning, alternatives considered, and confidence level.
+  </Card>
+  <Card title="Human in Control" icon="warning">
+    No medium or high impact change executes without explicit approval. The developer decides; the AI accelerates.
+  </Card>
+  <Card title="Comprehension Over Speed" icon="open-book">
+    Post-implementation checks verify the developer understands what was generated and why.
   </Card>
 </CardGrid>
 
@@ -75,6 +97,31 @@ Each stage can be revisited as new information emerges. The framework supports i
   </Card>
 </CardGrid>
 
+## Start Here
+
+<CardGrid>
+  <Card title="Developers" icon="rocket">
+    Start building with DevSquad. Install the plugin and run your first guided workflow.
+
+    [Get Started →](./getting-started/)
+  </Card>
+  <Card title="Architects" icon="setting">
+    Understand the workflow, decision records, and how the framework structures technical design.
+
+    [See the Framework →](./framework/)
+  </Card>
+  <Card title="Managers" icon="approve-check">
+    Evaluate DevSquad for your team. Learn how guardrails keep delivery predictable.
+
+    [Delivery Guardrails →](./delivery-guardrails/)
+  </Card>
+  <Card title="Platform Teams" icon="add-document">
+    Customize and extend DevSquad with your own instructions, skills, agents, and hooks.
+
+    [Extensibility →](./extensibility/)
+  </Card>
+</CardGrid>
+
 ## Quick Links
 
 <CardGrid>
@@ -82,6 +129,6 @@ Each stage can be revisited as new information emerges. The framework supports i
   <LinkCard title="Framework Architecture" href="./framework/" description="Design principles, architecture patterns, and usage scenarios." />
   <LinkCard title="Agents Reference" href="./agents/overview/" description="Conductor, specialist agents, and nested worker flow." />
   <LinkCard title="Skills Reference" href="./skills/" description="All 18 skills with activation model and usage." />
-  <LinkCard title="Delivery Guardrails" href="./delivery-guardrails/" description="Why and how DevSquad structures thought before and after code generation." />
+  <LinkCard title="Delivery Guardrails" href="./delivery-guardrails/" description="Why and how the framework structures thought before and after code generation." />
   <LinkCard title="FAQ" href="./faq/" description="Common questions about workflow, guardrails, extensibility, and troubleshooting." />
 </CardGrid>

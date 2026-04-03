@@ -7,6 +7,10 @@ import { Badge, Aside } from '@astrojs/starlight/components';
 
 Architecture Decision Records (ADRs) document significant technical decisions made during the development of DevSquad Copilot. Each records the context, priorities, options evaluated, and the chosen decision with trade-offs.
 
+:::note
+**Proposed** ADRs are open for discussion and may change. If you are implementing against a Proposed ADR, treat its decisions as provisional and flag this in your task notes. Only **Accepted** ADRs represent finalized team decisions.
+:::
+
 ADR 0011 is now historical context. ADR 0012 documents the current nested sub-agent architecture.
 
 ---
@@ -124,3 +128,10 @@ ADR 0011 is now historical context. ADR 0012 documents the current nested sub-ag
 **Decision**: Use coordinator + worker patterns for complex agents. `plan`, `implement`, `review`, and `refine` delegate to focused worker sub-agents with isolated context and parallel fan-out where tasks are independent.
 
 **Trade-off**: More agent files and orchestration logic in exchange for cleaner context boundaries, lower bias during validation, and lower latency for independent checks.
+
+---
+
+## What to Read Next
+
+- [Framework Architecture](/devsquad-copilot/framework/) for how ADRs fit into the delivery workflow
+- [Contributing](/devsquad-copilot/contributing/) for how to propose new ADRs

@@ -26,11 +26,30 @@
   --sl-color-black: #ffffff;
 }
 
-.hero img {
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+.hero img,
+.hero picture img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  overflow: visible !important;
+}
+
+.hero picture {
+  overflow: visible !important;
+  max-height: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .card-grid {
   gap: 1rem;
+}
+
+/* Golden-path emphasis: make "Start Here" group visually distinct */
+.sidebar-content > ul > li:nth-child(2) > details > summary,
+.sidebar-content > ul > li:nth-child(2) > a {
+  font-weight: 600;
 }

@@ -5,7 +5,7 @@ description: GitHub Issues and Azure DevOps integration for work item management
 
 import { Tabs, TabItem, Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-The board is the **source of truth**. Local files (`tasks.md`, `structure.md`) are caches. DevSquad integrates with GitHub Issues and Azure DevOps for bidirectional work item management.
+The board is the source of truth for **task status, assignment, and workflow state**. Design decisions and specifications remain authoritative as disk artifacts (specs, ADRs, `plan.md`). Local files (`tasks.md`, `structure.md`) are caches. Agents integrate with GitHub Issues and Azure DevOps for bidirectional work item management.
 
 ## Platform Detection
 
@@ -54,10 +54,10 @@ Always applied to every work item:
 Additional by type:
 | Type | Additional Tags |
 |------|----------------|
-| User Story | `type:user-story`, `feature:NAME`, `priority:p1\|p2\|p3` |
+| User Story | `type:user-story`, `feature:NAME`, `priority:{p1,p2,p3}` |
 | Task | `type:task`, `feature:NAME`, `phase:PHASE` |
 | Epic | `epic` |
-| Feature | `feature`, `priority:p1\|p2\|p3` |
+| Feature | `feature`, `priority:{p1,p2,p3}` |
 
 ## Workflow
 
@@ -65,9 +65,43 @@ Additional by type:
   **One task at a time** (ADR 0009). Soft limit of 3 in-progress with a warning signal.
 </Aside>
 
-Select available task → Assign to self → Mark "In Progress" → Work → Open PR → Close on merge → Sync board.
+```mermaid
+flowchart LR
+  A["Select Task"] --> B["Assign to Self"]
+  B --> C["In Progress"]
+  C --> D["Open PR"]
+  D --> E["Close on Merge"]
+  E --> F["Sync Board"]
+  F -->|"all children done?"| G["Cascade Close Parent"]
+```
 
 **Cascade closure**: When all children complete, the agent proposes closing the parent (user story → feature → epic).
+
+### Work Item Hierarchy
+
+```mermaid
+flowchart TD
+  Epic["Epic"]
+  F1["Feature A"]
+  F2["Feature B"]
+  US1["User Story P1"]
+  US2["User Story P2"]
+  US3["User Story P1"]
+  T1["Task"]
+  T2["Task"]
+  T3["Task"]
+  T4["Task"]
+
+  Epic --> F1
+  Epic --> F2
+  F1 --> US1
+  F1 --> US2
+  F2 --> US3
+  US1 --> T1
+  US1 --> T2
+  US2 --> T3
+  US3 --> T4
+```
 
 ## Autonomous Delegation
 
@@ -87,3 +121,10 @@ Tasks labeled `copilot-candidate` are suitable for autonomous AI execution:
   <LinkCard title="Core Components: Hooks" href="/devsquad-copilot/core-components/hooks/" description="Automatic tag validation and platform detection hooks." />
   <LinkCard title="Team Coordination" href="/devsquad-copilot/guardrails/team-coordination/" description="How artifacts and board state coordinate parallel developer sessions." />
 </CardGrid>
+
+---
+
+## What to Read Next
+
+- [Team Coordination](/devsquad-copilot/guardrails/team-coordination/) for multi-developer workflows
+- [Context Management](/devsquad-copilot/core-components/context-management/) for how artifacts and board state interact
