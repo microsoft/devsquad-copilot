@@ -26,10 +26,10 @@ All persistent state lives in versioned files on disk. Board is the source of tr
 
 Built-in memory that stores stable facts discovered during work:
 
-- **Code conventions** — Detected patterns and project-specific rules
-- **Verified commands** — Build, test, and deployment commands that work
-- **Synchronization patterns** — Board and repository sync status
-- **Project structure** — Key directories, entry points, and configuration
+- **Code conventions**: Detected patterns and project-specific rules
+- **Verified commands**: Build, test, and deployment commands that work
+- **Synchronization patterns**: Board and repository sync status
+- **Project structure**: Key directories, entry points, and configuration
 
 Characteristics: automatic, validated via citations, shared between agents, expires in 28 days.
 
@@ -99,10 +99,10 @@ Each arrow represents a phase boundary where context is explicitly passed via a 
 ## Phase Cleanup Points
 
 <Steps>
-1. **specify → plan** — Spec locked, plan starts fresh reading spec from disk
-2. **plan → decompose** — ADRs locked, decompose reads decisions from files
-3. **decompose → implement** — Tasks locked, implement picks one task at a time
-4. **implement → review** — Code committed, review reads independently with clean context
+1. **specify to plan**: Spec locked, plan starts fresh reading spec from disk
+2. **plan to decompose**: ADRs locked, decompose reads decisions from files
+3. **decompose to implement**: Tasks locked, implement picks one task at a time
+4. **implement to review**: Code committed, review reads independently with clean context
 </Steps>
 
 ## Session Memory

@@ -5,15 +5,15 @@ description: Why the framework structures thought before and after code generati
 
 import { Card, CardGrid, Aside, LinkCard } from '@astrojs/starlight/components';
 
-The framework is built on the premise that velocity without structure is waste. Teams need to move fast — but generating code quickly only creates value when thought is structured before and after code generation.
+The framework is built on the premise that velocity without structure is waste. Teams need to move fast, but generating code quickly only creates value when thought is structured before and after code generation.
 
 ## Before Code Generation
 
-Phase structuring (vision → spec → plan → decompose → implement) ensures developers articulate WHAT, WHY, and HOW before any code is written. This is not bureaucracy — it is the difference between generating code as a **consequence of decisions** versus generating code as a surprise.
+Phase structuring (vision, spec, plan, decompose, implement) ensures developers articulate WHAT, WHY, and HOW before any code is written. This is not bureaucracy; it is the difference between generating code as a **consequence of decisions** versus generating code as a surprise.
 
 <CardGrid>
   <Card title="Impact Classification" icon="warning">
-    **Low** (typo) → direct action. **Medium** (function change) → plan + confirm. **High** (service/API) → ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
+    **Low** (typo): direct action. **Medium** (function change): plan + confirm. **High** (service/API): ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
   </Card>
   <Card title="Comprehension Checkpoint" icon="approve-check">
     Before executing medium/high impact tasks, the agent requests confirmation of understanding. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
@@ -62,10 +62,10 @@ Based on ADR 0005, the framework uses adaptive Socratic methods:
 2. Choose the simplest solution that solves the real problem
 3. Document assumptions when uncertain
 4. No non-trivial decisions without explicit approval
-5. Neutrality over agreement — honest evaluation over accommodating suggestions
-6. Resist confirmation bias — evaluate objectively regardless of framing
-7. Permission to not act — unnecessary code generation is worse than nothing
-8. Refuse to debug blindly — require sufficient context
+5. Neutrality over agreement: honest evaluation over accommodating suggestions
+6. Resist confirmation bias: evaluate objectively regardless of framing
+7. Permission to not act: unnecessary code generation is worse than nothing
+8. Refuse to debug blindly: require sufficient context
 9. Classify changes by impact before acting
 10. Mandatory trade-off explanation for non-trivial decisions
 

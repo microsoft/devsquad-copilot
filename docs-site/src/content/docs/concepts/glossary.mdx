@@ -8,7 +8,7 @@ import { Aside } from '@astrojs/starlight/components';
 ## A
 
 **ADR (Architecture Decision Record)**
-A document that records a significant technical decision, including context, priorities, options evaluated, and the chosen approach with trade-offs. ADRs follow the lifecycle: `Proposed` → `Accepted` → `Superseded by NNNN`. See [Decisions](/devsquad-copilot/decisions/).
+A document that records a significant technical decision, including context, priorities, options evaluated, and the chosen approach with trade-offs. ADRs follow the lifecycle: `Proposed`, then `Accepted`, then `Superseded by NNNN`. See [Decisions](/devsquad-copilot/decisions/).
 
 ## C
 
@@ -16,7 +16,7 @@ A document that records a significant technical decision, including context, pri
 A verification step triggered before medium or high impact tasks. The agent asks the developer to describe what will happen in their own words, ensuring active understanding rather than passive delegation. Generic responses ("ok", "go") trigger deeper questions. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
 
 **Conductor**
-The central `devsquad` agent that detects user intent and delegates to specialist agents. It contains no domain logic — only routing and orchestration. See [Conductor](/devsquad-copilot/agents/conductor/).
+The central `devsquad` agent that detects user intent and delegates to specialist agents. It contains no domain logic, only routing and orchestration. See [Conductor](/devsquad-copilot/agents/conductor/).
 
 **Conformance Criteria**
 Testable conditions (identified by CC-XXX format) that verify a specification requirement is met. Each includes a scenario, input, and expected output.
@@ -40,7 +40,7 @@ A structured context-passing contract between agent phases (ADR 0003). Contains 
 The methodology that structures vision, specification, and architecture decisions before code generation. Built on three pillars: Intent (Why), Specification (What), and Architecture Decisions (How). IDD is the overarching methodology. SDD (Spec-Driven Development) describes the execution model within it, where specifications drive all downstream work.
 
 **Impact Classification**
-A three-level system for classifying changes before acting. **Low** (typo, log) → direct action. **Medium** (function change) → plan + confirm. **High** (service, API, schema) → ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
+A three-level system for classifying changes before acting. **Low** (typo, log) means direct action. **Medium** (function change) means plan + confirm. **High** (service, API, schema) means ADR + explicit approval. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
 
 ## M
 
@@ -79,7 +79,7 @@ A threat modeling methodology (Spoofing, Tampering, Repudiation, Information Dis
 ## T
 
 **Tool Extension**
-A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview — ADR 0010). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
+A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview, ADR 0010). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
 
 ## W
 

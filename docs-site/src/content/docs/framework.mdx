@@ -1,6 +1,6 @@
 ---
 title: Framework Architecture
-description: Design principles, architecture patterns, and usage scenarios — how small teams achieve fast, structured delivery with AI agents.
+description: Design principles, architecture patterns, and usage scenarios. How small teams achieve fast, structured delivery with AI agents.
 ---
 
 import { Card, CardGrid, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
@@ -14,7 +14,7 @@ This page explains how the framework is organized: how agents collaborate, how c
     Users choose between guided mode (through the conductor) or direct mode (invoking specialist agents individually). Both paths produce the same artifacts.
   </Card>
   <Card title="2. Socratic by Design" icon="approve-check">
-    Ask before assuming. Verify understanding before acting. Explain the *why* behind recommendations so teams learn the principles, not just the steps.
+    Ask before assuming. Verify understanding before acting. Explain the *why* behind recommendations so teams learn the principles, beyond following steps.
   </Card>
   <Card title="3. Artifacts as Source of Truth" icon="document">
     Specs, ADRs, and contracts live in files on disk. Session context is ephemeral; the artifacts in the repository are the permanent reference.
@@ -40,7 +40,7 @@ The architecture spans three main phases:
 |-------|-------|------------|
 | **Intent (Why)** | Strategic vision | envision, kickoff |
 | **Contracts (What)** | Specifications + ADRs | specify, plan |
-| **Iterative Delivery (How)** | Board → Sprint → Implement → Review → Refine | decompose, sprint, implement, review, refine, security |
+| **Iterative Delivery (How)** | Board, Sprint, Implement, Review, Refine | decompose, sprint, implement, review, refine, security |
 
 ### Agent Interaction
 
@@ -164,7 +164,7 @@ Sub-agents operate in two modes via a prefix-based protocol (ADR 0002):
 | **Via Conductor** | `[CONDUCTOR]` prefix present | Returns structured actions: `[ASK]`, `[CREATE]`, `[EDIT]`, `[BOARD]`, `[CHECKPOINT]`, `[DONE]` |
 | **Direct** | No prefix | Interacts directly with the user |
 
-Single codebase handles both modes — the prefix check determines the output format.
+Single codebase handles both modes; the prefix check determines the output format.
 
 ## Context Management
 
@@ -184,7 +184,7 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
 | [Instructions](../core-components/instructions/) | 7 | Path-specific behavioral rules |
 | [Hooks](../core-components/hooks/) | 5 | Lifecycle hooks for deterministic operations |
 | [MCP Servers](../core-components/mcp-servers/) | 5 | Remote servers for external integrations |
-| [Context Management](../core-components/context-management/) | — | Memory, handoff envelopes, disk persistence |
+| [Context Management](../core-components/context-management/) | - | Memory, handoff envelopes, disk persistence |
 | [Extensibility](../extensibility/) | 6 | Extension mechanisms for customization |
 
 ### Extension Mechanisms
@@ -211,38 +211,38 @@ Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows:
   <TabItem label="Feature-first">
     Start with a clear product idea and work through the full lifecycle.
 
-    `envision → kickoff → specify → plan → decompose → implement → review`
+    `envision > kickoff > specify > plan > decompose > implement > review`
 
     Features are defined during envisioning, then specified, planned, and implemented in sequence.
   </TabItem>
   <TabItem label="Architecture-first">
     Start with technical decisions before feature work.
 
-    `envision → kickoff → plan → specify → decompose → implement`
+    `envision > kickoff > plan > specify > decompose > implement`
 
     Architecture decisions (ADRs) are made first, then features are specified to align with them.
   </TabItem>
   <TabItem label="Validation-first">
     Build a PoC first, validate assumptions, then build the MVP.
 
-    `envision → kickoff → plan → decompose → implement` (PoC) → validate → full cycle (MVP)
+    `envision > kickoff > plan > decompose > implement` (PoC), then validate, then full cycle (MVP)
   </TabItem>
   <TabItem label="Board-first">
     Map an existing board structure and fill in specs.
 
-    `kickoff (map existing) → specify → plan → decompose → implement`
+    `kickoff (map existing) > specify > plan > decompose > implement`
   </TabItem>
   <TabItem label="Emergent scope">
     Clear vision, undefined scope. Features emerge during specification while exploring solutions.
 
-    `envision → kickoff (epic only) → specify (features emerge) → plan → decompose → implement`
+    `envision > kickoff (epic only) > specify (features emerge) > plan > decompose > implement`
 
     Kickoff generates only the epic. Specify is used for brainstorming and exploring features incrementally.
   </TabItem>
   <TabItem label="Iterative">
     Discover scope incrementally as you specify and plan.
 
-    `specify → plan → discover B → specify → plan → decompose → implement`
+    `specify > plan > discover B > specify > plan > decompose > implement`
   </TabItem>
 </Tabs>
 
@@ -265,6 +265,6 @@ The framework uses **Semantic Versioning** with git tags (`vMAJOR.MINOR.PATCH`):
 
 | Change Type | Version Bump | Example |
 |-------------|-------------|---------|
-| Bug fixes, no behavior change | PATCH | v0.6.0 → v0.6.1 |
-| New backward-compatible features | MINOR | v0.5.0 → v0.6.0 |
-| Breaking changes | MAJOR | v0.x → v1.0.0 |
+| Bug fixes, no behavior change | PATCH | v0.6.0 to v0.6.1 |
+| New backward-compatible features | MINOR | v0.5.0 to v0.6.0 |
+| Breaking changes | MAJOR | v0.x to v1.0.0 |

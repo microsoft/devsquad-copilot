@@ -48,8 +48,8 @@ Configuration saved to `.memory/board-config.md`.
 ## Required Tags
 
 Always applied to every work item:
-- `copilot-generated` — Marks AI-created items
-- `ai-model:MODEL_NAME` — AI model traceability
+- `copilot-generated`: Marks AI-created items
+- `ai-model:MODEL_NAME`: AI model traceability
 
 Additional by type:
 | Type | Additional Tags |
@@ -75,7 +75,7 @@ flowchart LR
   F -->|"all children done?"| G["Cascade Close Parent"]
 ```
 
-**Cascade closure**: When all children complete, the agent proposes closing the parent (user story → feature → epic).
+**Cascade closure**: When all children complete, the agent proposes closing the parent (user story, then feature, then epic).
 
 ### Work Item Hierarchy
 

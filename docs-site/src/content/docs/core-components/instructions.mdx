@@ -38,7 +38,7 @@ Do not use instructions for logic that depends on runtime context, external data
     - Focus on **WHAT/WHY**, never HOW
     - Written for business stakeholders, not developers
     - User stories prioritized P1/P2/P3, independently testable
-    - Quantify vague terms: "fast" → specific latency, "easy" → specific steps
+    - Quantify vague terms: "fast" becomes specific latency, "easy" becomes specific steps
     - Conformance table: ID, Scenario, Input, Expected Output
     - Minimum 3 cases (happy path, error, edge case)
     - Maximum 3 `[NEEDS CLARIFICATION]` markers
@@ -49,7 +49,7 @@ Do not use instructions for logic that depends on runtime context, external data
     Applied to: `docs/architecture/decisions/*.md`
 
     - File naming: `NNNN-domain.md` (domain, not choice)
-    - Statuses: `Proposed` → `Accepted` → `Superseded by NNNN`
+    - Statuses: `Proposed`, `Accepted`, `Superseded by NNNN`
     - Required sections: Status, Date, Context, Priorities (ranked), Options, Decision
     - Options evaluated against ranked priorities, not generic pros/cons
     - Do not invent options; only include actually considered alternatives
@@ -61,9 +61,9 @@ Do not use instructions for logic that depends on runtime context, external data
 
     - Format: `- [ ] [P?] Description with file path`
     - `[P]` marks parallelizable tasks
-    - Phases: Setup → Foundational → User Stories (P1 → P2 → P3) → Polish
-    - Within each story: Models → Services → Endpoints → Integration
-    - **No separate test tasks** — tests are part of acceptance criteria
+    - Phases: Setup, Foundational, User Stories (P1, P2, P3), Polish
+    - Within each story: Models, Services, Endpoints, Integration
+    - **No separate test tasks**: tests are part of acceptance criteria
     - Missing ADRs block the Foundational phase
   </TabItem>
   <TabItem label="Envisioning">
@@ -93,9 +93,9 @@ Do not use instructions for logic that depends on runtime context, external data
 
     Applied to: `docs/migrations/**/tasks.md`
 
-    - Phases: Setup → Foundational → Infrastructure Provisioning → Data Migration Setup → Cutover Automation → Rollback and Validation → Polish
-    - Infrastructure order: Compute → Networking → Storage → Identity → Configuration
-    - Data order: Initial sync → Delta capture → Validation pipeline
+    - Phases: Setup, Foundational, Infrastructure Provisioning, Data Migration Setup, Cutover Automation, Rollback and Validation, Polish
+    - Infrastructure order: Compute, Networking, Storage, Identity, Configuration
+    - Data order: Initial sync, Delta capture, Validation pipeline
     - Mandatory data validation and rollback testing tasks
   </TabItem>
   <TabItem label="Style">

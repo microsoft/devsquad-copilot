@@ -51,7 +51,7 @@ ADR 0011 is now historical context. ADR 0012 documents the current nested sub-ag
 
 **Problem**: Distribute knowledge without overloading agent context.
 
-**Decision**: Differentiated model — Instructions (deterministic glob, fewer than 50 lines), Skills (semantic, 50–200 lines), Agents (explicit, more than 200 lines), Hooks (event-triggered, zero LLM cost), MCP Servers (tool calls).
+**Decision**: Differentiated model. Instructions (deterministic glob, fewer than 50 lines), Skills (semantic, 50–200 lines), Agents (explicit, more than 200 lines), Hooks (event-triggered, zero LLM cost), MCP Servers (tool calls).
 
 **Trade-off**: Greater cognitive complexity for extension authors. Mitigated by decision tree and `devsquad.extend`.
 
@@ -63,7 +63,7 @@ ADR 0011 is now historical context. ADR 0012 documents the current nested sub-ag
 
 **Priorities**: (1) Knowledge transfer, (2) Speed for experienced, (3) Decision quality, (4) Traceability.
 
-**Decision**: Adaptive Socratic approach. Low-impact → fast-track. High-impact → comprehension checkpoints with Socratic questions.
+**Decision**: Adaptive Socratic approach. Low-impact tasks are fast-tracked. High-impact tasks require comprehension checkpoints with Socratic questions.
 
 **Trade-off**: Lower initial speed perception. Better long-term velocity through reduced rework and knowledge retention.
 
@@ -83,7 +83,7 @@ ADR 0011 is now historical context. ADR 0012 documents the current nested sub-ag
 
 **Problem**: Without defined structure, decompositions follow inconsistent criteria.
 
-**Decision**: Mandatory phases — Setup, Foundational, User Stories (P1/P2/P3), Polish. Within each story: Models → Services → Endpoints → Integration. Tasks marked `[P]` when parallelizable.
+**Decision**: Mandatory phases. Setup, Foundational, User Stories (P1/P2/P3), Polish. Within each story: Models, Services, Endpoints, Integration. Tasks marked `[P]` when parallelizable.
 
 ---
 
@@ -113,7 +113,7 @@ ADR 0011 is now historical context. ADR 0012 documents the current nested sub-ag
 
 ## ADR 0011: Sub-Agent Nesting Resolution <Badge text="Superseded" variant="note" />
 
-**Problem**: Earlier GitHub Copilot releases limited sub-agent nesting to 1 level, which blocked conductor → specialist → worker chains.
+**Problem**: Earlier GitHub Copilot releases limited sub-agent nesting to 1 level, which blocked conductor to specialist to worker chains.
 
 **Decision**: Convert L2 sub-agents to skills as a temporary workaround. Standalone agent files remained available for direct invocation.
 
