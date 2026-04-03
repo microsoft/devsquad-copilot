@@ -9,7 +9,7 @@ import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 ### Do I have to use all phases or can I skip some?
 
-Each phase produces artifacts that reduce rework downstream. However, you can enter the workflow at any point. Use `@devsquad.implement` directly if you already have a task, or `@devsquad.specify` if you know what feature to build. See [Usage Scenarios](/devsquad-copilot/framework/#usage-scenarios) for workflow patterns.
+Each phase produces artifacts that reduce rework downstream. However, you can enter the workflow at any point. Use `@devsquad.implement` directly if you already have a task, or `@devsquad.specify` if you know what feature to build. See [Usage Scenarios](/framework/#usage-scenarios) for workflow patterns.
 
 ### Is this only for teams, or can solo developers use it?
 
@@ -27,7 +27,7 @@ DevSquad requires a GitHub Copilot subscription that supports chat plugins. Chec
 
 ### My team uses Azure DevOps. Does DevSquad work?
 
-Yes. The framework auto-detects your platform from the git remote URL and supports Agile, Scrum, Basic, and CMMI process templates. See [Work Items](/devsquad-copilot/work-items/).
+Yes. The framework auto-detects your platform from the git remote URL and supports Agile, Scrum, Basic, and CMMI process templates. See [Work Items](/work-items/).
 
 ### How do I know when to make a new ADR vs update an existing one?
 
@@ -45,11 +45,11 @@ Yes. Use `@devsquad.init` to add framework files, then `@devsquad.kickoff` to ma
 
 ### I keep getting flagged for comprehension checkpoints but I want to move faster
 
-Impact classification is based on risk, not opinion. A "simple" change to a public API is still high impact. Low-impact tasks (typos, logs) skip all checkpoints automatically. See [Impact Classification](/devsquad-copilot/concepts/impact-classification/).
+Impact classification is based on risk, not opinion. A "simple" change to a public API is still high impact. Low-impact tasks (typos, logs) skip all checkpoints automatically. See [Impact Classification](/concepts/impact-classification/).
 
 ### Why does the agent refuse to debug without context?
 
-Generating code to fix poorly defined problems frequently introduces new problems. The agent requires: expected vs observed behavior, error messages, and what you have already tried. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
+Generating code to fix poorly defined problems frequently introduces new problems. The agent requires: expected vs observed behavior, error messages, and what you have already tried. See [Comprehension Checkpoints](/concepts/comprehension-checkpoints/).
 
 ### What happens if the agent and I disagree on a decision?
 
@@ -59,16 +59,16 @@ The agent presents options with trade-offs but does not make autonomous decision
 
 ### How do I add project-specific coding conventions?
 
-Create an instruction file at `.github/instructions/your-language.instructions.md` with an `applyTo` glob pattern. See [Extension Recipes](/devsquad-copilot/extensibility/recipes/) for examples.
+Create an instruction file at `.github/instructions/your-language.instructions.md` with an `applyTo` glob pattern. See [Extension Recipes](/extensibility/recipes/) for examples.
 
 ### When should I create a skill vs an instruction?
 
-**Instructions** are under 50 lines, deterministic (always loaded for matching files), and best for coding conventions. **Skills** are 50-200 lines, loaded semantically when relevant, and best for reusable workflow knowledge. See [Extensibility](/devsquad-copilot/extensibility/).
+**Instructions** are under 50 lines, deterministic (always loaded for matching files), and best for coding conventions. **Skills** are 50-200 lines, loaded semantically when relevant, and best for reusable workflow knowledge. See [Extensibility](/extensibility/).
 
 ## Troubleshooting
 
-For technical issues (installation, hooks, MCP connections, agent errors), see the dedicated [Troubleshooting](/devsquad-copilot/troubleshooting/) page.
+For technical issues (installation, hooks, MCP connections, agent errors), see the dedicated [Troubleshooting](/troubleshooting/) page.
 
 <Aside type="tip">
-  Can't find your answer? [Open an issue on GitHub](https://github.com/microsoft/devsquad-copilot/issues) or check the [Troubleshooting](/devsquad-copilot/troubleshooting/) page.
+  Can't find your answer? [Open an issue on GitHub](https://github.com/microsoft/issues) or check the [Troubleshooting](/troubleshooting/) page.
 </Aside>

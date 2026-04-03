@@ -7,6 +7,21 @@ import { Card, CardGrid, Aside, Tabs, TabItem } from '@astrojs/starlight/compone
 
 This page explains how the framework is organized: how agents collaborate, how context moves between phases, and how traceability is maintained from vision to code.
 
+<CardGrid>
+  <Card title="13 Agents" icon="rocket">
+    One conductor, 12 specialists, and nested worker sub-agents for parallel execution.
+  </Card>
+  <Card title="18 Skills" icon="puzzle">
+    Reusable knowledge packages loaded on demand by context relevance.
+  </Card>
+  <Card title="7 Instructions" icon="document">
+    Path-specific behavioral rules applied automatically by file type.
+  </Card>
+  <Card title="5 Lifecycle Hooks" icon="setting">
+    Deterministic scripts for validation, tagging, and platform detection.
+  </Card>
+</CardGrid>
+
 ## Design Principles
 
 <CardGrid stagger>
@@ -203,7 +218,7 @@ flowchart TD
   agents -->|"tool calls to<br/>external systems"| mcpservers["MCP Servers<br/>(external system access)"]
 ```
 
-Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows: agent-initiated. See [Extensibility](/devsquad-copilot/extensibility/) for the full decision tree.
+Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows: agent-initiated. See [Extensibility](/extensibility/) for the full decision tree.
 
 ## Usage Scenarios
 
@@ -254,10 +269,10 @@ Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows:
 </Aside>
 
 :::note
-Changes to upstream artifacts (specs, ADRs, priorities) are not automatically propagated to downstream work items. See [Team Coordination](/devsquad-copilot/guardrails/team-coordination/#change-propagation-limitations) for the full limitation matrix and recommended manual steps.
+Changes to upstream artifacts (specs, ADRs, priorities) are not automatically propagated to downstream work items. See [Team Coordination](/guardrails/team-coordination/#change-propagation-limitations) for the full limitation matrix and recommended manual steps.
 :::
 
-See [Team Coordination](/devsquad-copilot/guardrails/team-coordination/) for multi-developer guardrails.
+See [Team Coordination](/guardrails/team-coordination/) for multi-developer guardrails.
 
 ## Versioning
 

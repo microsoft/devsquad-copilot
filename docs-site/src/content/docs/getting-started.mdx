@@ -5,168 +5,177 @@ description: Install DevSquad Copilot, initialize your project, and run your fir
 
 import { Steps, Tabs, TabItem, Aside, Card, CardGrid, LinkCard, LinkButton, FileTree } from '@astrojs/starlight/components';
 
-By the end of this page, you'll have DevSquad installed and running your first guided workflow.
+By the end of this page, you'll have all artifacts installed and running your first guided workflow.
 
-## Prerequisites
+<Steps>
 
-<Tabs>
-  <TabItem label="VS Code">
-    | Requirement | Version | Notes |
-    |:------------|:--------|:------|
-    | VS Code | 1.113.0+ | Required for nested sub-agent workflows |
-    | GitHub Copilot | Active subscription | Copilot extension installed and signed in |
-    | Node.js | 18+ | Required for MCP servers |
-    | VS Code setting | `chat.subagents.allowInvocationsFromSubagents` | Required for nested sub-agent workflows |
-  </TabItem>
-  <TabItem label="GitHub Copilot CLI">
-    | Requirement | Version | Notes |
-    |:------------|:--------|:------|
-    | GitHub CLI | Latest | With the Copilot extension installed |
-    | GitHub Copilot | Active subscription | Authenticated via `gh auth login` |
-    | Node.js | 18+ | Required for MCP servers |
-  </TabItem>
-</Tabs>
+1. **Prerequisites**
 
-## Installation
+   <Tabs syncKey="platform">
+     <TabItem label="VS Code">
+       - [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+       - GitHub Copilot active subscription, signed in via the Copilot extension
+       - Node.js 18+ (required for MCP servers)
+       - Enable nested sub-agent workflows:
 
-<Tabs>
-  <TabItem label="VS Code">
-    <Steps>
-      1. Install **DevSquad Copilot** by clicking the button below. It will open VS Code and install the plugin automatically.
+         <LinkButton href="vscode://settings/chat.subagents.allowInvocationsFromSubagents" variant="secondary" icon="setting" iconPlacement="start" class="sl-text-xs" style="padding: 0.25rem 0.75rem;">chat.subagents.allowInvocationsFromSubagents</LinkButton>
+     </TabItem>
+     <TabItem label="GitHub Copilot CLI">
+       - [GitHub Copilot CLI](https://github.com/features/copilot/cli) 1.0.6+
+       - GitHub Copilot active subscription, authenticated via `gh auth login`
+       - Node.js 18+ (required for MCP servers)
+     </TabItem>
+   </Tabs>
 
-         <LinkButton href="vscode://chat-plugin/install?source=microsoft/devsquad-copilot" variant="primary" icon="rocket" iconPlacement="start">Install in VS Code</LinkButton>
+2. **Installation**
 
-         <Aside type="note">
-           Make sure you are signed in with your GitHub account via the Copilot extension before using DevSquad.
-         </Aside>
+   <Tabs syncKey="platform">
+     <TabItem label="VS Code">
+       <LinkButton href="vscode://chat-plugin/install?source=microsoft/devsquad-copilot" variant="primary" icon="rocket" iconPlacement="start" class="sl-text-sm" style="padding: 0.35rem 1rem;">Install</LinkButton>
 
-      2. Use `devsquad` as the default entry point in the chat panel. Use `devsquad.<agent>` for direct invocation.
-    </Steps>
-  </TabItem>
-  <TabItem label="GitHub Copilot CLI">
-    <Steps>
-      1. Install the plugin:
+       If you see an error, check the [Troubleshooting](/troubleshooting/) page.
+     </TabItem>
+     <TabItem label="GitHub Copilot CLI">
+       ```bash
+       copilot plugin install microsoft/devsquad-copilot
+       ```
+
+       <Aside type="tip" title="Unattended Mode">
+         The `--yolo` flag enables unattended mode, where the agent operates autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation.
 
          ```bash
-         copilot plugin install microsoft/devsquad-copilot
+         copilot --agent devsquad:devsquad --yolo
+         ```
+       </Aside>
+
+       If you see an error, check the [Troubleshooting](/troubleshooting/) page.
+     </TabItem>
+   </Tabs>
+
+3. **Select an Agent**
+
+   <Tabs syncKey="platform">
+     <TabItem label="VS Code">
+       - **Guided** (recommended for new users): open the Chat panel and type `/agents devsquad`. The conductor walks through each phase in sequence, asking Socratic questions and delegating to the right specialist.
+
+         ```
+         /agents devsquad
          ```
 
-         <Aside type="note">
-           Make sure you are authenticated before using DevSquad. Run `gh auth login` if you have not already.
-         </Aside>
+       - **Direct**: select a specific agent for targeted work.
 
-      2. Use `devsquad` as the entry point via the `--agent` flag:
+         ```
+         /agents devsquad.implement    # Go directly to implementation
+         /agents devsquad.specify      # Go directly to specification
+         /agents devsquad.security     # Run a security assessment
+         ```
+
+       Both modes use the same agents, skills, and quality gates. Guided mode adds orchestration and phase transitions.
+     </TabItem>
+     <TabItem label="GitHub Copilot CLI">
+       - **Guided** (recommended for new users): use the conductor as the entry point. It walks through each phase in sequence, asking Socratic questions and delegating to the right specialist.
 
          ```bash
          copilot --agent devsquad:devsquad
          ```
 
-         For direct agent invocation, use `devsquad:<agent>` (e.g., `devsquad:devsquad.implement`).
+       - **Direct**: invoke a specific agent for targeted work using `devsquad:<agent>`.
 
-         <Aside type="tip" title="Unattended Mode">
-           The `--yolo` flag enables unattended mode, where the agent operates autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation. Use only when you accept autonomous file edits, terminal commands, and tool calls without individual confirmation.
+         ```bash
+         copilot --agent devsquad:devsquad.implement    # Go directly to implementation
+         copilot --agent devsquad:devsquad.specify      # Go directly to specification
+         copilot --agent devsquad:devsquad.security     # Run a security assessment
+         ```
 
-           ```bash
-           copilot --agent devsquad:devsquad --yolo
-           ```
-         </Aside>
-    </Steps>
-  </TabItem>
-</Tabs>
+       Both modes use the same agents, skills, and quality gates. Guided mode adds orchestration and phase transitions.
+     </TabItem>
+   </Tabs>
 
-### Verify Installation
+4. **Project Initialization**
 
-After installation, open VS Code and type `@devsquad` in Copilot Chat. You should see the conductor agent respond with phase detection. If using the CLI, run `copilot --agent devsquad:devsquad` and confirm the agent responds. If you see an error, check the [Troubleshooting](/devsquad-copilot/troubleshooting/) page.
+   <Tabs syncKey="platform">
+     <TabItem label="VS Code">
+       If you selected the conductor (`devsquad`), it will detect a new project and guide you through initialization automatically.
 
-## Project Initialization
+       Alternatively, select `devsquad.init` directly to scaffold your project.
+     </TabItem>
+     <TabItem label="GitHub Copilot CLI">
+       If you selected the conductor, it will detect a new project and guide you through initialization automatically.
 
-Run `@devsquad.init` to set up SDD Framework files in your repository:
+       Alternatively, run the init agent directly:
 
-<Steps>
-1. **Config files**: `copilot-instructions.md`, instruction files for specs/ADRs/tasks, coding guidelines, markdownlint config.
-2. **Documentation templates**: Templates for features, migrations, envisioning, and ADRs.
-3. **Community files** (optional): `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
-</Steps>
+       ```bash
+       copilot --agent devsquad:devsquad.init
+       ```
+     </TabItem>
+   </Tabs>
 
-After initialization, your project structure will look like this:
+   The init agent creates:
 
-<FileTree>
-- .github/
-  - instructions/
-    - specs.instructions.md
-    - adrs.instructions.md
-    - tasks.instructions.md
-    - envisioning.instructions.md
-    - migration-specs.instructions.md
-    - migration-tasks.instructions.md
-    - documentation-style.instructions.md
-  - copilot-instructions.md
-- docs/
-  - envisioning/ (vision artifacts)
-  - features/
-    - feature-name/
-      - spec.md (specification)
-      - plan.md (technical design)
-      - tasks.md (task decomposition)
-  - architecture/
-    - decisions/ (ADRs)
-  - migrations/ (migration specs)
-- .markdownlint.yaml
-</FileTree>
+   - **Config files**: `copilot-instructions.md`, instruction files for specs/ADRs/tasks, coding guidelines, markdownlint config.
+   - **Documentation templates**: Templates for features, migrations, envisioning, and ADRs.
+   - **Community files** (optional): `SECURITY.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
 
-## Your First Workflow
+   After initialization, your project structure will look like this:
 
-<Steps>
-1. **Envision**: `@devsquad.envision`
-   Capture the strategic vision through structured questions about customer, pain points, and goals.
+   <FileTree>
+   - .github/
+     - docs/
+       - coding-guidelines.md
+     - instructions/
+       - adrs.instructions.md
+       - documentation-style.instructions.md
+       - envisioning.instructions.md
+       - migration-specs.instructions.md
+       - migration-tasks.instructions.md
+       - specs.instructions.md
+       - tasks.instructions.md
+     - copilot-instructions.md
+   - docs/
+     - architecture/
+       - decisions/
+         - ADR-TEMPLATE.md
+     - envisioning/
+       - TEMPLATE.md
+     - features/
+       - TEMPLATE.md
+     - migrations/
+       - TEMPLATE.md
+   - .markdownlint.yaml
+   </FileTree>
 
-2. **Kickoff**: `@devsquad.kickoff`
-   Structure the project hierarchy with epics and features. Sync with GitHub Issues or Azure DevOps.
+5. **Your First Workflow**
 
-3. **Specify**: `@devsquad.specify`
-   Write feature specifications with user stories, acceptance criteria, and compliance requirements.
+   <Tabs syncKey="platform">
+     <TabItem label="VS Code">
+       Open the Chat panel and select agents via `/agents`:
 
-4. **Plan**: `@devsquad.plan`
-   Generate technical design artifacts. Create Architecture Decision Records for significant choices.
+       1. **Envision** (`/agents devsquad.envision`): Capture the strategic vision through structured questions about customer, pain points, and goals.
+       2. **Kickoff** (`/agents devsquad.kickoff`): Structure the project hierarchy with epics and features. Sync with GitHub Issues, Azure DevOps, or store locally in tasks.md.
+       3. **Specify** (`/agents devsquad.specify`): Write feature specifications with user stories, acceptance criteria, and compliance requirements.
+       4. **Plan** (`/agents devsquad.plan`): Generate technical design artifacts. Create Architecture Decision Records for significant choices.
+       5. **Decompose** (`/agents devsquad.decompose`): Break specifications into user stories and tasks. Create work items on GitHub Issues, Azure DevOps, or store locally in tasks.md.
+       6. **Implement** (`/agents devsquad.implement`): Execute implementation from a task, issue, or work item. Quality gates and branch management included.
+       7. **Review** (`/agents devsquad.review`): Validate the implementation against specs, ADRs, and the plan with independent context.
+     </TabItem>
+     <TabItem label="GitHub Copilot CLI">
+       Use agents via the `--agent` flag:
 
-5. **Decompose**: `@devsquad.decompose`
-   Break specifications into user stories and tasks. Create work items on the board.
+       1. **Envision** (`devsquad:devsquad.envision`): Capture the strategic vision through structured questions about customer, pain points, and goals.
+       2. **Kickoff** (`devsquad:devsquad.kickoff`): Structure the project hierarchy with epics and features. Sync with GitHub Issues, Azure DevOps, or store locally in tasks.md.
+       3. **Specify** (`devsquad:devsquad.specify`): Write feature specifications with user stories, acceptance criteria, and compliance requirements.
+       4. **Plan** (`devsquad:devsquad.plan`): Generate technical design artifacts. Create Architecture Decision Records for significant choices.
+       5. **Decompose** (`devsquad:devsquad.decompose`): Break specifications into user stories and tasks. Create work items on GitHub Issues, Azure DevOps, or store locally in tasks.md.
+       6. **Implement** (`devsquad:devsquad.implement`): Execute implementation from a task, issue, or work item. Quality gates and branch management included.
+       7. **Review** (`devsquad:devsquad.review`): Validate the implementation against specs, ADRs, and the plan with independent context.
+     </TabItem>
+   </Tabs>
 
-6. **Implement**: `@devsquad.implement`
-   Execute implementation from a task, issue, or work item. Quality gates and branch management included.
-
-7. **Review**: `@devsquad.review`
-   Validate the implementation against specs, ADRs, and the plan with independent context.
 </Steps>
 
 ## Usage Scenarios
 
-The framework supports multiple entry points depending on your workflow: feature-first, architecture-first, board-first, or iterative. See [Usage Scenarios](/devsquad-copilot/framework/#usage-scenarios) for patterns like greenfield projects, feature additions, and migrations.
-
-## Guided vs Direct Mode
-
-<Tabs>
-  <TabItem label="Guided">
-    Invoke `@devsquad` without specifying an agent. The conductor walks through each phase in sequence, asking Socratic questions and delegating to the right specialist.
-
-    ```
-    @devsquad
-    ```
-  </TabItem>
-  <TabItem label="Direct">
-    Invoke a specific agent for targeted work. Both modes use the same agents, skills, and quality gates.
-
-    ```
-    @devsquad.implement    # Go directly to implementation
-    @devsquad.specify      # Go directly to specification
-    @devsquad.security     # Run a security assessment
-    ```
-  </TabItem>
-</Tabs>
-
-<Aside type="tip">
-  Both modes have access to the same agents, skills, and quality gates. Guided mode adds orchestration and phase transitions. Direct mode gives immediate access to a specific capability.
-</Aside>
+The framework supports multiple entry points depending on your workflow: feature-first, architecture-first, board-first, or iterative. See [Usage Scenarios](/framework/#usage-scenarios) for patterns like greenfield projects, feature additions, and migrations.
 
 ## Next Steps
 

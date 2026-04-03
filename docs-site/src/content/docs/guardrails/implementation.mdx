@@ -24,7 +24,7 @@ The default limit is 3 tasks in progress. The developer can ignore it, but the s
 
 ## Impact-Based Ceremony
 
-Not every change needs all guardrails. The framework classifies tasks by [impact](/devsquad-copilot/concepts/impact-classification/) and adjusts the level of ceremony:
+Not every change needs all guardrails. The framework classifies tasks by [impact](/concepts/impact-classification/) and adjusts the level of ceremony:
 
 | Impact | Criteria | Ceremony |
 |--------|----------|----------|
@@ -64,7 +64,7 @@ Isolated numerical estimates (story points, hours) are of little use without con
 
 When multiple phases run in the same session without cleanup, assumptions from the previous phase can contaminate the next one:
 
-Each phase transition includes a structured cleanup that preserves key decisions while resetting working context. See [Phase Cleanup Points](/devsquad-copilot/core-components/context-management/) for the full sequence.
+Each phase transition includes a structured cleanup that preserves key decisions while resetting working context. See [Phase Cleanup Points](/core-components/context-management/) for the full sequence.
 
 ## Sprint Planning with Overload Protection
 
@@ -78,15 +78,15 @@ The `devsquad.sprint` agent prepares planning by presenting **scope options, not
 
 <CardGrid>
   <Card title="Team Coordination" icon="group">
-    Multi-developer guardrails for parallel sessions and ADR synchronization. See [Team Coordination](/devsquad-copilot/guardrails/team-coordination/).
+    Multi-developer guardrails for parallel sessions and ADR synchronization. See [Team Coordination](/guardrails/team-coordination/).
   </Card>
   <Card title="Comprehension Checkpoints" icon="approve-check">
-    How the agent verifies understanding before and after code generation. See [Comprehension Checkpoints](/devsquad-copilot/concepts/comprehension-checkpoints/).
+    How the agent verifies understanding before and after code generation. See [Comprehension Checkpoints](/concepts/comprehension-checkpoints/).
   </Card>
 </CardGrid>
 
 ## What to Read Next
 
-- [Team Coordination](/devsquad-copilot/guardrails/team-coordination/) for multi-developer workflows
-- [Impact Classification](/devsquad-copilot/concepts/impact-classification/) for how changes are classified
-- [Context Management](/devsquad-copilot/core-components/context-management/) for how context flows between phases
+- [Team Coordination](/guardrails/team-coordination/) for multi-developer workflows
+- [Impact Classification](/concepts/impact-classification/) for how changes are classified
+- [Context Management](/core-components/context-management/) for how context flows between phases
