@@ -32,7 +32,7 @@ Versioned files on disk that serve as the source of truth for the framework. Inc
 ## H
 
 **Handoff Envelope**
-A structured context-passing contract between agent phases (ADR 0003). Contains four sections: relevant artifacts, inherited assumptions, pending decisions, and discarded information. See [Reasoning and Handoff](/concepts/reasoning-and-handoff/).
+A structured context-passing contract between agent phases ([ADR 0003](/decisions/#adr-0003-context-management-)). Contains four sections: relevant artifacts, inherited assumptions, pending decisions, and discarded information. See [Reasoning and Handoff](/concepts/reasoning-and-handoff/).
 
 ## I
 
@@ -68,7 +68,7 @@ A record of decisions made during agent execution. Each entry includes: the deci
 The development approach where specifications drive all downstream work: planning, decomposition, implementation, and review. Specifications define WHAT and WHY; implementation artifacts define HOW.
 
 **Socratic AI**
-An adaptive approach where agents ask clarifying questions, surface trade-offs, and present options rather than making autonomous decisions. Low-impact tasks are fast-tracked; high-impact tasks require comprehension verification. Based on ADR 0005.
+An adaptive approach where agents ask clarifying questions, surface trade-offs, and present options rather than making autonomous decisions. Low-impact tasks are fast-tracked; high-impact tasks require comprehension verification. Based on [ADR 0005](/decisions/#adr-0005-socratic-ai-).
 
 **Specialist Agent**
 An agent that owns the logic for a specific delivery phase (e.g., `devsquad.specify` for specifications, `devsquad.implement` for code). Can be invoked directly or through the conductor.
@@ -79,7 +79,7 @@ A threat modeling methodology (Spoofing, Tampering, Repudiation, Information Dis
 ## T
 
 **Tool Extension**
-A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview, ADR 0010). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
+A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview, [ADR 0010](/decisions/#adr-0010-agent-tool-extension-)). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
 
 ## W
 

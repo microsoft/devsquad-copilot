@@ -13,7 +13,11 @@ Phase structuring (vision, spec, plan, decompose, implement) ensures developers 
 
 <CardGrid>
   <Card title="Impact Classification" icon="warning">
-    **Low** (typo): direct action. **Medium** (function change): plan + confirm. **High** (service/API): ADR + explicit approval. See [Impact Classification](/concepts/impact-classification/).
+    - **Low** (typo, log, formatting): direct action
+    - **Medium** (new function, refactoring): plan + confirm
+    - **High** (service, schema, public API): ADR + approval
+
+    See [Impact Classification](/concepts/impact-classification/).
   </Card>
   <Card title="Comprehension Checkpoint" icon="approve-check">
     Before executing medium/high impact tasks, the agent requests confirmation of understanding. See [Comprehension Checkpoints](/concepts/comprehension-checkpoints/).
@@ -48,7 +52,7 @@ If comprehension is low, effective velocity is too, regardless of how many lines
 
 ## Socratic AI Approach
 
-Based on ADR 0005, the framework uses adaptive Socratic methods:
+Based on [ADR 0005](/decisions/#adr-0005-socratic-ai-), the framework uses adaptive Socratic methods:
 
 | Impact Level | Behavior |
 |-------------|----------|

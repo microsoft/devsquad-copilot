@@ -162,7 +162,7 @@ flowchart TD
 
 ## Conductor Pattern
 
-The central `devsquad` agent implements a **Mediated Coordinator-Worker** pattern (ADR 0001):
+The central `devsquad` agent implements a **Mediated Coordinator-Worker** pattern ([ADR 0001](/decisions/#adr-0001-agent-orchestration-)):
 
 - Detects user intent and delegates to the appropriate specialist agent
 - Allows coordinator specialists to continue delegation to focused worker sub-agents
@@ -172,7 +172,7 @@ The central `devsquad` agent implements a **Mediated Coordinator-Worker** patter
 
 ## Communication Protocol
 
-Sub-agents operate in two modes via a prefix-based protocol (ADR 0002):
+Sub-agents operate in two modes via a prefix-based protocol ([ADR 0002](/decisions/#adr-0002-communication-protocol-)):
 
 | Mode | Trigger | Behavior |
 |------|---------|----------|
@@ -183,7 +183,7 @@ Single codebase handles both modes; the prefix check determines the output forma
 
 ## Context Management
 
-Phases execute sequentially or across sessions. Context isolation prevents assumption contamination (ADR 0003):
+Phases execute sequentially or across sessions. Context isolation prevents assumption contamination ([ADR 0003](/decisions/#adr-0003-context-management-)):
 
 - **Disk artifacts** are the source of truth (`spec.md`, `plan.md`, ADRs, `tasks.md`)
 - Each phase starts with **clean context** and reads artifacts from disk
@@ -204,7 +204,7 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
 
 ### Extension Mechanisms
 
-Four mechanisms extend agent capabilities without modifying agent code. Each has a different activation model (ADR 0004):
+Four mechanisms extend agent capabilities without modifying agent code. Each has a different activation model ([ADR 0004](/decisions/#adr-0004-activation-model-)):
 
 ```mermaid
 flowchart TD
