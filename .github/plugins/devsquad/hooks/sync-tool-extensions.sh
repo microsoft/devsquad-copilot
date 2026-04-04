@@ -382,7 +382,7 @@ main() {
       echo ""
       echo "Generated agent overrides will take effect on next Copilot session."
       echo "Ensure MCP servers are configured in .vscode/mcp.json (required even"
-      echo "for plugin-provided servers). See: docs/framework/extensibility.md"
+      echo "for plugin-provided servers). See: https://microsoft.github.io/devsquad-copilot/extensibility/"
     fi
   fi
 }

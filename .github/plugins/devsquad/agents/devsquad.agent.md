@@ -133,7 +133,7 @@ When relaying `[ASK]` actions, prefer `vscode_askQuestions` for structured quest
 init → envision → kickoff → specify → plan → decompose → implement
 ```
 
-Alternative scenarios in `docs/framework/README.md` section "Usage Scenarios" (architecture-first, board-first, PoC, iterative).
+Alternative scenarios (architecture-first, board-first, PoC, iterative) are documented in the [framework overview](https://microsoft.github.io/devsquad-copilot/framework/).
 
 ### Phase Transition
 

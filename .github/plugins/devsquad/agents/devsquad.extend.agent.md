@@ -21,8 +21,7 @@ Without `[CONDUCTOR]`, use normal interactive flow.
 ## References
 
 - `.github/copilot-instructions.md`, section "Desenvolvimento do Framework SDD": rules, naming conventions, and official references for each mechanism
-- `docs/framework/extensibility.md`: decision tree, usage scenarios, extension rules
-- `docs/framework/core-components/custom-agents.md`: table of existing agents and sub-agents
+- Mechanism selection criteria and extension rules are defined inline in this agent (sections "Recommend mechanism", "Scaffold", and "Rules")
 - Skills: `documentation-style`, `reasoning`
 
 ### Reference examples by mechanism
@@ -35,7 +34,7 @@ Before scaffolding, read the corresponding example to replicate the structure:
 | Skill | `.github/skills/board-config/SKILL.md` | `.github/skills/{name}/` |
 | Agent | `.github/agents/devsquad.review.agent.md` | `.github/agents/` |
 | Hook | `.github/hooks/detect-repo-platform.sh` + `hooks.json` | `.github/hooks/` |
-| Tool Extension | `docs/framework/extensibility.md` section "Tool Extensions" | `.github/devsquad/tool-extensions/` |
+| Tool Extension | See "Tool Extension" scaffold section below | `.github/devsquad/tool-extensions/` |
 
 ## User Input: `$ARGUMENTS`
 
@@ -58,7 +57,7 @@ Otherwise, ask what kind of knowledge the user wants to add: code conventions, d
 | Volume > 200 lines or requires its own tools | **Agent** |
 | Deterministic post-action validation | **Hook** (script) |
 | Inject MCP server tools into existing agents | **Tool Extension** (overlay generation) [Preview] |
-| Access to external system via API (standalone) | **MCP Server** (direct to `docs/framework/core-components/mcp-servers.md`) |
+| Access to external system via API (standalone) | **MCP Server** (see [MCP Servers docs](https://microsoft.github.io/devsquad-copilot/core-components/mcp-servers/)) |
 
 **Tool Extension vs. direct MCP Server**: If the consumer wants tools from an MCP server to be usable by existing plugin agents (e.g., `devsquad.implement`), they need a Tool Extension. Adding the MCP server to `.vscode/mcp.json` alone is not enough because the agent's `tools:` array does not include the new tools. The Tool Extension mechanism generates workspace agent overrides with the merged tools list.
 
@@ -90,7 +89,7 @@ description: Python implementation patterns for the project. Use when
   pytest. Do not use for CI/CD configuration (use engineering-practices).
 ```
 
-**Agent**: minimal tools (do not use `["*"]`). Include "Conductor Mode" section if applicable. If parent is editable, edit the parent's frontmatter and update `docs/framework/core-components/custom-agents.md`. If parent is read-only, create as a direct agent.
+**Agent**: minimal tools (do not use `["*"]`). Include "Conductor Mode" section if applicable. If parent is editable, edit the parent's frontmatter. If parent is read-only, create as a direct agent.
 
 **Hook**: Hooks execute shell scripts at specific points in the agent lifecycle. Choose the right event for the use case:
 
@@ -278,4 +277,4 @@ When writing content for skills, agents, and instructions:
 3. Skills are the most powerful mechanism for plugin consumers.
 4. Never suggest editing plugin files that are not locally editable.
 5. Detect name collisions before creating. Override must be explicit.
-6. MCP Servers are out of scope. Direct to `docs/framework/core-components/mcp-servers.md`.
+6. MCP Servers are out of scope. Direct to the [MCP Servers documentation](https://microsoft.github.io/devsquad-copilot/core-components/mcp-servers/).

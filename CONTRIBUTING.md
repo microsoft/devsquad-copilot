@@ -58,7 +58,7 @@ We use GitHub Issues to track bugs and errors. If you run into an issue:
 #### Before Submitting an Enhancement
 
 * Make sure that you are using the latest version.
-* Read the [README](./README.md) and [framework documentation](./docs/framework/README.md) carefully to check if the functionality is already covered.
+* Read the [README](./README.md) and [framework documentation](https://microsoft.github.io/devsquad-copilot/framework/) carefully to check if the functionality is already covered.
 * Search existing [Issues](https://github.com/microsoft/devsquad-copilot/issues) to see if the enhancement has already been suggested.
 
 #### How Do I Submit a Good Enhancement Suggestion?
@@ -88,11 +88,14 @@ Documentation improvements follow the same process as code contributions. If you
   hooks/           # Session hooks (hooks.json + scripts)
   docs/            # Internal documentation
 docs/
-  framework/       # Framework architecture and decisions
+  framework/
+    decisions/     # Architecture Decision Records
+    images/        # Framework diagrams
   templates/       # Templates distributed to consumer repos
   features/        # Feature specifications
   architecture/    # Architecture Decision Records
   envisioning/     # Vision documents
+docs-site/         # Published documentation site (source of truth for guides)
 ```
 
 ### Contribution Areas
@@ -104,7 +107,8 @@ docs/
 | Instructions | `.github/instructions/` | Path-specific rules applied automatically by glob pattern |
 | Hooks | `.github/plugins/devsquad/hooks/` | Session lifecycle scripts (sessionStart, preToolUse, etc.) |
 | Templates | `docs/templates/` | Files distributed to consumer projects via `devsquad.init` |
-| Documentation | `docs/framework/` | Architecture decisions, component guides, extensibility |
+| Documentation | [docs-site](https://microsoft.github.io/devsquad-copilot/) | Framework architecture, component guides, extensibility |
+| ADRs | `docs/framework/decisions/` | Architecture Decision Records |
 
 ## Style Guides
 

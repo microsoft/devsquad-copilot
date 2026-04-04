@@ -39,7 +39,7 @@ You can also invoke a specific agent directly:
 
 ## Skills
 
-Skills are reusable knowledge packages that agents load automatically behind the scenes to enforce conventions and best practices. They cover architecture decisions, work item management, complexity analysis, documentation style, engineering practices, git workflows, quality gates, and more. See the [full skill catalog](https://github.com/microsoft/devsquad-copilot/blob/main/docs/framework/core-components/custom-agents.md) for details.
+Skills are reusable knowledge packages that agents load automatically behind the scenes to enforce conventions and best practices. They cover architecture decisions, work item management, complexity analysis, documentation style, engineering practices, git workflows, quality gates, and more. See the [full skill catalog](https://microsoft.github.io/devsquad-copilot/skills/) for details.
 
 ## Extensibility
 
@@ -50,7 +50,7 @@ Want to adapt the framework to your stack, domain, or team conventions? Use `dev
 - **Hooks**: lifecycle scripts that run on session start, after tool use, or on session end
 - **Instructions**: path-scoped rules applied automatically when editing matching files
 
-Extensions live in the project repository and are picked up automatically. See the [extensibility guide](https://github.com/microsoft/devsquad-copilot/blob/main/docs/framework/extensibility.md) for details.
+Extensions live in the project repository and are picked up automatically. See the [extensibility guide](https://microsoft.github.io/devsquad-copilot/extensibility/) for details.
 
 ## Prerequisites
 

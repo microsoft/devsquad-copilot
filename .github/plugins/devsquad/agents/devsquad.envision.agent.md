@@ -353,7 +353,7 @@ This envisioning will be automatically consulted by:
 
 ## Next Step
 
-When finishing the envisioning, suggest the next step based on the identified usage scenario (see `docs/framework/README.md` section "Usage Scenarios"):
+When finishing the envisioning, suggest the next step based on the identified usage scenario:
 
 ```
 Envisioning complete!
