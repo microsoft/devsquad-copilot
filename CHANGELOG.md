@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.7.1] - 2026-04-04
+
+### Changed
+
+- Remove duplicated `docs/framework/` content that is fully covered by the [docs-site](https://microsoft.github.io/devsquad-copilot/); only ADRs (`decisions/`) and images are kept
+- Consolidate README into a concise landing page that links to the docs-site for details
+- Update all stale `docs/framework/` references in agents (`extend`, `conductor`, `envision`), plugin README, CONTRIBUTING, and sync script to point to docs-site URLs
+- Add active development banner to all docs-site pages
+
 ## [v0.7.0] - 2026-03-29
 
 ### Added
