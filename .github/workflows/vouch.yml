@@ -7,7 +7,7 @@ on:
     types: [created]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   vouch:
@@ -32,9 +32,6 @@ jobs:
         env:
           COMMENT_BODY: ${{ github.event.comment.body }}
 
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
       - name: Get author (issue or discussion)
         id: author
         run: |
@@ -51,23 +48,17 @@ jobs:
           DISCUSSION_AUTHOR: ${{ github.event.discussion.user.login }}
           ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
 
-      - name: Add to VOUCHED.md
+      - name: Print manual action required
         run: |
-          USER="@$AUTHOR"
-          FILE=".github/VOUCHED.md"
-
-          if ! grep -q "$USER" $FILE; then
-            echo "- $USER" >> $FILE
-          fi
+          echo "### Vouch detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Commenter **$COMMENTER** approved a vouch for **@$AUTHOR**." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Manual action required:** add the following line to \`.github/VOUCHED.md\` via a direct commit or PR:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "- @$AUTHOR" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
         env:
           AUTHOR: ${{ steps.author.outputs.author }}
-
-      - name: Commit changes
-        run: |
-          git config user.name "vouch-bot"
-          git config user.email "actions@github.com"
-          git add .github/VOUCHED.md
-          git commit -m "Add vouched user: $AUTHOR" || echo "No changes"
-          git push
-        env:
-          AUTHOR: ${{ steps.author.outputs.author }}
+          COMMENTER: ${{ github.event.comment.user.login }}

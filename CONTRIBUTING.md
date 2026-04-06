@@ -30,18 +30,18 @@ This project uses a **vouch system** to ensure that code contributions come from
 
 1. Open a [Discussion](https://github.com/microsoft/devsquad-copilot/discussions) using the **Vouch Request** template.
 2. Describe what you want to contribute and why.
-3. A maintainer reviews your request and, if approved, comments `!vouch`.
-4. Once vouched, you are added to the vouched contributors list and can open Pull Requests.
+3. A maintainer reviews your request and, if approved, adds your username to the vouched contributors list.
+4. Once vouched, you can open Pull Requests.
 
 ### What does not require a vouch
 
-* Opening issues (bug reports, bug reports, ideas)
+* Opening issues (bug reports, ideas)
 * Asking questions
 * Participating in discussions
 
 ### Pull Requests without a vouch
 
-PRs from non-vouched contributors are automatically closed with an explanation and a link to the Vouch Request discussion template. This is intentional and ensures that contributors have context about the project before submitting code.
+PRs from non-vouched contributors are automatically closed with an explanation and a pointer to the Vouch Request discussion template. This is intentional and ensures that contributors have context about the project before submitting code.
 
 ## I Have a Question
 
