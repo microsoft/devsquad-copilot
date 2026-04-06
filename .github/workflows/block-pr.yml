@@ -1,0 +1,35 @@
+name: Block Unvouched PRs
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip check for members and collaborators
+        run: |
+          if [[ "$ASSOCIATION" == "OWNER" || "$ASSOCIATION" == "MEMBER" || "$ASSOCIATION" == "COLLABORATOR" ]]; then
+            echo "User is $ASSOCIATION — skipping vouch check"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          fi
+        id: free-pass
+        env:
+          ASSOCIATION: ${{ github.event.pull_request.author_association }}
+
+      - uses: actions/checkout@v4
+        if: steps.free-pass.outputs.skip != 'true'
+
+      - name: Check vouched user
+        if: steps.free-pass.outputs.skip != 'true'
+        run: |
+          if ! grep -q "$ACTOR" .github/VOUCHED.md; then
+            echo "User not vouched"
+            exit 1
+          fi
+        env:
+          ACTOR: ${{ github.actor }}

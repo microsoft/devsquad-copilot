@@ -1,0 +1,72 @@
+name: Auto Close Unvouched PR
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Skip check for members and collaborators
+        run: |
+          if [[ "$ASSOCIATION" == "OWNER" || "$ASSOCIATION" == "MEMBER" || "$ASSOCIATION" == "COLLABORATOR" ]]; then
+            echo "User is $ASSOCIATION — skipping vouch check"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          fi
+        id: free-pass
+        env:
+          ASSOCIATION: ${{ github.event.pull_request.author_association }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        if: steps.free-pass.outputs.skip != 'true'
+
+      - name: Check if user is vouched
+        if: steps.free-pass.outputs.skip != 'true'
+        id: check
+        run: |
+          if grep -q "@$ACTOR" .github/VOUCHED.md; then
+            echo "vouched=true" >> $GITHUB_OUTPUT
+          else
+            echo "vouched=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          ACTOR: ${{ github.actor }}
+
+      - name: Comment and close PR
+        if: steps.free-pass.outputs.skip != 'true' && steps.check.outputs.vouched == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const author = context.payload.pull_request.user.login;
+
+            const message =
+              "Obrigado pela contribuição, @" + author + "!\n\n" +
+              "Este repositório utiliza um sistema de vouch.\n\n" +
+              "PRs de usuários não-vouched são automaticamente fechados.\n\n" +
+              "Para contribuir:\n" +
+              "1. Abra uma Discussion em Vouch Request\n" +
+              "2. Aguarde aprovação\n" +
+              "3. Depois abra PR\n\n" +
+              "Obrigado 🙏";
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: message
+            });
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              state: "closed"
+            });

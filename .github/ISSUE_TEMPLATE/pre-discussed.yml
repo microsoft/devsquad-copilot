@@ -1,0 +1,17 @@
+name: Pre-Discussed Topic
+description: For topics that have already been discussed and approved
+title: "[ISSUE] "
+body:
+  - type: input
+    attributes:
+      label: Discussion Link
+      description: Link to the related discussion
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Context
+      description: Provide a clear description of the issue or task
+    validations:
+      required: true

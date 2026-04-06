@@ -1,0 +1,45 @@
+title: "Vouch Request"
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > [!IMPORTANT]
+        > This form is intended for **first-time contributors** who want to propose changes to this project.
+        >
+        > Before submitting, please review the Contributing Guide and make sure you understand how the project works.
+        >
+        > Keep your request **clear and concise**, and write it **in your own words**. Submissions that lack context or understanding may not be approved.
+        >
+        > Once reviewed, a maintainer may approve your request. After that, you'll be able to move forward with a pull request.
+
+  - type: textarea
+    attributes:
+      label: What do you want to change?
+      description: |
+        Describe the change you'd like to propose. If relevant, include links to related discussions or issues.
+      placeholder: |
+        I'd like to improve X because...
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Why does this change matter?
+      description: |
+        Explain why this change is needed. What problem does it solve or improve?
+      placeholder: |
+        This would help by...
+    validations:
+      required: true
+  
+  - type: checkboxes
+    attributes:
+      label: "I acknowledge that:"
+      options:
+        - label: >-
+            I have read the [Contributing Guide](https://github.com/microsoft/devsquad-copilot/blob/main/CONTRIBUTING.md) and understand the contribution process.
+          required: true
+        - label: >-
+            I wrote this request in my own words and understand the change I'm proposing.
+          required: true
