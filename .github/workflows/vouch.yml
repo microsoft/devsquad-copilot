@@ -1,0 +1,73 @@
+name: Vouch User
+
+on:
+  issue_comment:
+    types: [created]
+  discussion_comment:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  vouch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if commenter is authorized
+        run: |
+          ASSOCIATION="$COMMENT_AUTHOR_ASSOCIATION"
+          if [[ "$ASSOCIATION" != "OWNER" && "$ASSOCIATION" != "MEMBER" && "$ASSOCIATION" != "COLLABORATOR" ]]; then
+            echo "User is not authorized to vouch (association: $ASSOCIATION)"
+            exit 1
+          fi
+        env:
+          COMMENT_AUTHOR_ASSOCIATION: ${{ github.event.comment.author_association }}
+
+      - name: Check if comment contains !vouch
+        run: |
+          if [[ "$COMMENT_BODY" != *"!vouch"* ]]; then
+            exit 1
+          fi
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get author (issue or discussion)
+        id: author
+        run: |
+          if [ "$EVENT_NAME" = "discussion_comment" ]; then
+            AUTHOR="$DISCUSSION_AUTHOR"
+          else
+            AUTHOR="$ISSUE_AUTHOR"
+          fi
+
+          echo "author=$AUTHOR"
+          echo "author=$AUTHOR" >> $GITHUB_OUTPUT
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISCUSSION_AUTHOR: ${{ github.event.discussion.user.login }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+
+      - name: Add to VOUCHED.md
+        run: |
+          USER="@$AUTHOR"
+          FILE=".github/VOUCHED.md"
+
+          if ! grep -q "$USER" $FILE; then
+            echo "- $USER" >> $FILE
+          fi
+        env:
+          AUTHOR: ${{ steps.author.outputs.author }}
+
+      - name: Commit changes
+        run: |
+          git config user.name "vouch-bot"
+          git config user.email "actions@github.com"
+          git add .github/VOUCHED.md
+          git commit -m "Add vouched user: $AUTHOR" || echo "No changes"
+          git push
+        env:
+          AUTHOR: ${{ steps.author.outputs.author }}

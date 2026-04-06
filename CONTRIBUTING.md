@@ -7,6 +7,7 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 ## Table of Contents
 
 * [Code of Conduct](#code-of-conduct)
+* [Vouch System](#vouch-system)
 * [I Have a Question](#i-have-a-question)
 * [I Want To Contribute](#i-want-to-contribute)
   * [Reporting Bugs](#reporting-bugs)
@@ -20,6 +21,27 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the [Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## Vouch System
+
+This project uses a **vouch system** to ensure that code contributions come from people who understand the project and have been reviewed by a maintainer.
+
+### How it works
+
+1. Open a [Discussion](https://github.com/microsoft/devsquad-copilot/discussions) using the **Vouch Request** template.
+2. Describe what you want to contribute and why.
+3. A maintainer reviews your request and, if approved, comments `!vouch`.
+4. Once vouched, you are added to the vouched contributors list and can open Pull Requests.
+
+### What does not require a vouch
+
+* Opening issues (bug reports, bug reports, ideas)
+* Asking questions
+* Participating in discussions
+
+### Pull Requests without a vouch
+
+PRs from non-vouched contributors are automatically closed with an explanation and a link to the Vouch Request discussion template. This is intentional and ensures that contributors have context about the project before submitting code.
 
 ## I Have a Question
 
@@ -70,6 +92,7 @@ We use GitHub Issues to track bugs and errors. If you run into an issue:
 
 ### Your First Code Contribution
 
+* **You must be vouched before opening a Pull Request.** See [Vouch System](#vouch-system) for details.
 * Assign an issue to yourself before beginning any effort.
 * If an issue for your contribution does not exist, [file an issue](https://github.com/microsoft/devsquad-copilot/issues/new) first.
 * Commits should reference related issues for traceability (e.g., "Fixes #123").
@@ -147,13 +170,14 @@ docs-site/         # Published documentation site (source of truth for guides)
 
 ## Pull Request Process
 
-1. Create a branch from `main` with a descriptive name.
-2. Make your changes following the style guides above.
-3. Ensure your changes do not break existing functionality.
-4. Update relevant documentation if your changes affect it.
-5. Open a pull request with a clear title and description.
-6. Link related issues using GitHub closing keywords (e.g., "Fixes #42").
-7. Wait for review. All PRs require at least one reviewer approval before merge.
+1. Confirm you have been [vouched](#vouch-system). PRs from non-vouched contributors are automatically closed.
+2. Create a branch from `main` with a descriptive name.
+3. Make your changes following the style guides above.
+4. Ensure your changes do not break existing functionality.
+5. Update relevant documentation if your changes affect it.
+6. Open a pull request with a clear title and description.
+7. Link related issues using GitHub closing keywords (e.g., "Fixes #42").
+8. Wait for review. All PRs require at least one reviewer approval before merge.
 
 ## Attribution
 
