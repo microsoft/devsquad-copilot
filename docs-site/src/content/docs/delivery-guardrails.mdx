@@ -20,10 +20,10 @@ Phase structuring (vision, spec, plan, decompose, implement) ensures developers 
     - **Medium** (new function, refactoring): plan + confirm
     - **High** (service, schema, public API): ADR + approval
 
-    See [Impact Classification](/concepts/impact-classification/).
+    See [Impact Classification](../concepts/impact-classification/).
   </Card>
   <Card title="Comprehension Checkpoint" icon="approve-check">
-    Before executing medium/high impact tasks, the agent requests confirmation of understanding. See [Comprehension Checkpoints](/concepts/comprehension-checkpoints/).
+    Before executing medium/high impact tasks, the agent requests confirmation of understanding. See [Comprehension Checkpoints](../concepts/comprehension-checkpoints/).
   </Card>
   <Card title="Trade-off Explanation" icon="information">
     Mandatory for non-trivial decisions: what is gained, what is lost, why this choice.
@@ -49,13 +49,13 @@ If comprehension is low, effective velocity is too, regardless of how many lines
     Questions, not answers. Guide developers to find solutions rather than handing them out.
   </Card>
   <Card title="Reasoning Log" icon="document">
-    Every decision recorded with principle, alternatives, justification, and confidence level. See [Reasoning and Handoff](/concepts/reasoning-and-handoff/).
+    Every decision recorded with principle, alternatives, justification, and confidence level. See [Reasoning and Handoff](../concepts/reasoning-and-handoff/).
   </Card>
 </CardGrid>
 
 ## Socratic AI Approach
 
-Based on [ADR 0005](/decisions/#adr-0005-socratic-ai-), the framework uses adaptive Socratic methods:
+Based on [ADR 0005](../decisions/#adr-0005-socratic-ai-), the framework uses adaptive Socratic methods:
 
 | Impact Level | Behavior |
 |-------------|----------|
@@ -79,22 +79,22 @@ Based on [ADR 0005](/decisions/#adr-0005-socratic-ai-), the framework uses adapt
 ## Deep Dives
 
 <CardGrid>
-  <LinkCard title="Implementation Guardrails" href="/guardrails/implementation/" description="Capacity verification, phase structuring, risk analysis, context cleanup, and sprint protection." />
-  <LinkCard title="Team Coordination" href="/guardrails/team-coordination/" description="ADRs as sync points, duplicate detection, inconsistency analysis, and change propagation." />
-  <LinkCard title="Comprehension Checkpoints" href="/concepts/comprehension-checkpoints/" description="Before/after verification, anti-pattern detection, code churn detection, and Socratic guidance." />
-  <LinkCard title="Impact Classification" href="/concepts/impact-classification/" description="Low/Medium/High classification, decision flow, and ceremony requirements by level." />
+  <LinkCard title="Implementation Guardrails" href="../guardrails/implementation/" description="Capacity verification, phase structuring, risk analysis, context cleanup, and sprint protection." />
+  <LinkCard title="Team Coordination" href="../guardrails/team-coordination/" description="ADRs as sync points, duplicate detection, inconsistency analysis, and change propagation." />
+  <LinkCard title="Comprehension Checkpoints" href="../concepts/comprehension-checkpoints/" description="Before/after verification, anti-pattern detection, code churn detection, and Socratic guidance." />
+  <LinkCard title="Impact Classification" href="../concepts/impact-classification/" description="Low/Medium/High classification, decision flow, and ceremony requirements by level." />
 </CardGrid>
 
 ## What to Read Next
 
-- [Implementation Guardrails](/guardrails/implementation/) for specific enforcement mechanisms
-- [Team Coordination](/guardrails/team-coordination/) for multi-developer workflows
-- [Comprehension Checkpoints](/concepts/comprehension-checkpoints/) for the checkpoint mechanism
+- [Implementation Guardrails](../guardrails/implementation/) for specific enforcement mechanisms
+- [Team Coordination](../guardrails/team-coordination/) for multi-developer workflows
+- [Comprehension Checkpoints](../concepts/comprehension-checkpoints/) for the checkpoint mechanism
 
 ## Coming from a Different Angle?
 
 <CardGrid>
-  <LinkCard title="For Developers" href="/getting-started/" description="Install the plugin and run your first guided workflow." />
-  <LinkCard title="For Architects" href="/framework/" description="Design principles, decision records, and technical design structure." />
-  <LinkCard title="For Platform Teams" href="/extensibility/" description="Customize with your own instructions, skills, agents, and hooks." />
+  <LinkCard title="For Developers" href="../getting-started/" description="Install the plugin and run your first guided workflow." />
+  <LinkCard title="For Architects" href="../framework/" description="Design principles, decision records, and technical design structure." />
+  <LinkCard title="For Platform Teams" href="../extensibility/" description="Customize with your own instructions, skills, agents, and hooks." />
 </CardGrid>

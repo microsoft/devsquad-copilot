@@ -11,15 +11,15 @@ import { Aside } from '@astrojs/starlight/components';
 ## A
 
 **ADR (Architecture Decision Record)**
-A document that records a significant technical decision, including context, priorities, options evaluated, and the chosen approach with trade-offs. ADRs follow the lifecycle: `Proposed`, then `Accepted`, then `Superseded by NNNN`. See [Decisions](/decisions/).
+A document that records a significant technical decision, including context, priorities, options evaluated, and the chosen approach with trade-offs. ADRs follow the lifecycle: `Proposed`, then `Accepted`, then `Superseded by NNNN`. See [Decisions](../../decisions/).
 
 ## C
 
 **Comprehension Checkpoint**
-A verification step triggered before medium or high impact tasks. The agent asks the developer to describe what will happen in their own words, ensuring active understanding rather than passive delegation. Generic responses ("ok", "go") trigger deeper questions. See [Comprehension Checkpoints](/concepts/comprehension-checkpoints/).
+A verification step triggered before medium or high impact tasks. The agent asks the developer to describe what will happen in their own words, ensuring active understanding rather than passive delegation. Generic responses ("ok", "go") trigger deeper questions. See [Comprehension Checkpoints](../../concepts/comprehension-checkpoints/).
 
 **Conductor**
-The central `devsquad` agent that detects user intent and delegates to specialist agents. It contains no domain logic, only routing and orchestration. See [Conductor](/agents/conductor/).
+The central `devsquad` agent that detects user intent and delegates to specialist agents. It contains no domain logic, only routing and orchestration. See [Conductor](../../agents/conductor/).
 
 **Conformance Criteria**
 Testable conditions (identified by CC-XXX format) that verify a specification requirement is met. Each includes a scenario, input, and expected output.
@@ -35,7 +35,7 @@ Versioned files on disk that serve as the source of truth for the framework. Inc
 ## H
 
 **Handoff Envelope**
-A structured context-passing contract between agent phases ([ADR 0003](/decisions/#adr-0003-context-management-)). Contains four sections: relevant artifacts, inherited assumptions, pending decisions, and discarded information. See [Reasoning and Handoff](/concepts/reasoning-and-handoff/).
+A structured context-passing contract between agent phases ([ADR 0003](../../decisions/#adr-0003-context-management-)). Contains four sections: relevant artifacts, inherited assumptions, pending decisions, and discarded information. See [Reasoning and Handoff](../../concepts/reasoning-and-handoff/).
 
 ## I
 
@@ -43,12 +43,12 @@ A structured context-passing contract between agent phases ([ADR 0003](/decision
 The methodology that structures vision, specification, and architecture decisions before code generation. Built on three pillars: Intent (Why), Specification (What), and Architecture Decisions (How). IDD is the overarching methodology. SDD (Spec-Driven Development) describes the execution model within it, where specifications drive all downstream work.
 
 **Impact Classification**
-A three-level system for classifying changes before acting. **Low** (typo, log) means direct action. **Medium** (function change) means plan + confirm. **High** (service, API, schema) means ADR + explicit approval. See [Impact Classification](/concepts/impact-classification/).
+A three-level system for classifying changes before acting. **Low** (typo, log) means direct action. **Medium** (function change) means plan + confirm. **High** (service, API, schema) means ADR + explicit approval. See [Impact Classification](../../concepts/impact-classification/).
 
 ## M
 
 **MCP (Model Context Protocol)**
-A protocol for providing tools to AI agents. MCP servers expose capabilities (GitHub, Azure DevOps, Azure, Microsoft Learn, Draw.io) that agents call to interact with external systems. See [MCP Servers](/core-components/mcp-servers/).
+A protocol for providing tools to AI agents. MCP servers expose capabilities (GitHub, Azure DevOps, Azure, Microsoft Learn, Draw.io) that agents call to interact with external systems. See [MCP Servers](../../core-components/mcp-servers/).
 
 ## O
 
@@ -63,7 +63,7 @@ An automated validation checkpoint that verifies artifact completeness and consi
 ## R
 
 **Reasoning Log**
-A record of decisions made during agent execution. Each entry includes: the decision, principles applied, alternatives considered, justification, and confidence level (High/Medium/Low). Used for auditability and handoff between phases. See [Reasoning and Handoff](/concepts/reasoning-and-handoff/).
+A record of decisions made during agent execution. Each entry includes: the decision, principles applied, alternatives considered, justification, and confidence level (High/Medium/Low). Used for auditability and handoff between phases. See [Reasoning and Handoff](../../concepts/reasoning-and-handoff/).
 
 ## S
 
@@ -71,7 +71,7 @@ A record of decisions made during agent execution. Each entry includes: the deci
 The development approach where specifications drive all downstream work: planning, decomposition, implementation, and review. Specifications define WHAT and WHY; implementation artifacts define HOW.
 
 **Socratic AI**
-An adaptive approach where agents ask clarifying questions, surface trade-offs, and present options rather than making autonomous decisions. Low-impact tasks are fast-tracked; high-impact tasks require comprehension verification. Based on [ADR 0005](/decisions/#adr-0005-socratic-ai-).
+An adaptive approach where agents ask clarifying questions, surface trade-offs, and present options rather than making autonomous decisions. Low-impact tasks are fast-tracked; high-impact tasks require comprehension verification. Based on [ADR 0005](../../decisions/#adr-0005-socratic-ai-).
 
 **Specialist Agent**
 An agent that owns the logic for a specific delivery phase (e.g., `devsquad.specify` for specifications, `devsquad.implement` for code). Can be invoked directly or through the conductor.
@@ -82,7 +82,7 @@ A threat modeling methodology (Spoofing, Tampering, Repudiation, Information Dis
 ## T
 
 **Tool Extension**
-A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview, [ADR 0010](/decisions/#adr-0010-agent-tool-extension-)). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
+A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview, [ADR 0010](../../decisions/#adr-0010-agent-tool-extension-)). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
 
 ## W
 
@@ -92,5 +92,5 @@ A specialized agent invoked by a coordinator agent to perform a focused subtask 
 ---
 ## What to Read Next
 
-- [Impact Classification](/concepts/impact-classification/) for how changes are categorized
-- [Framework Architecture](/framework/) for the full system overview
+- [Impact Classification](../../concepts/impact-classification/) for how changes are categorized
+- [Framework Architecture](../../framework/) for the full system overview

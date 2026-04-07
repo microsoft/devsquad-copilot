@@ -140,7 +140,7 @@ flowchart TD
 
 ## Conductor Pattern
 
-The central `devsquad` agent implements a **Mediated Coordinator-Worker** pattern ([ADR 0001](/decisions/#adr-0001-agent-orchestration-)):
+The central `devsquad` agent implements a **Mediated Coordinator-Worker** pattern ([ADR 0001](../decisions/#adr-0001-agent-orchestration-)):
 
 - Detects user intent and delegates to the appropriate specialist agent
 - Allows coordinator specialists to continue delegation to focused worker sub-agents
@@ -150,7 +150,7 @@ The central `devsquad` agent implements a **Mediated Coordinator-Worker** patter
 
 ## Communication Protocol
 
-Sub-agents operate in two modes via a prefix-based protocol ([ADR 0002](/decisions/#adr-0002-communication-protocol-)):
+Sub-agents operate in two modes via a prefix-based protocol ([ADR 0002](../decisions/#adr-0002-communication-protocol-)):
 
 | Mode | Trigger | Behavior |
 |------|---------|----------|
@@ -161,7 +161,7 @@ Single codebase handles both modes; the prefix check determines the output forma
 
 ## Context Management
 
-Phases execute sequentially or across sessions. Context isolation prevents assumption contamination ([ADR 0003](/decisions/#adr-0003-context-management-)):
+Phases execute sequentially or across sessions. Context isolation prevents assumption contamination ([ADR 0003](../decisions/#adr-0003-context-management-)):
 
 - **Disk artifacts** are the source of truth (`spec.md`, `plan.md`, ADRs, `tasks.md`)
 - Each phase starts with **clean context** and reads artifacts from disk
@@ -182,7 +182,7 @@ Phases execute sequentially or across sessions. Context isolation prevents assum
 
 ### Extension Mechanisms
 
-Four mechanisms extend agent capabilities without modifying agent code. Each has a different activation model ([ADR 0004](/decisions/#adr-0004-activation-model-)):
+Four mechanisms extend agent capabilities without modifying agent code. Each has a different activation model ([ADR 0004](../decisions/#adr-0004-activation-model-)):
 
 ```mermaid
 flowchart TD
@@ -196,7 +196,7 @@ flowchart TD
   agents -->|"tool calls to<br/>external systems"| mcpservers["MCP Servers<br/>(external system access)"]
 ```
 
-Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows: agent-initiated. See [Extensibility](/extensibility/) for the full decision tree.
+Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows: agent-initiated. See [Extensibility](../extensibility/) for the full decision tree.
 
 ## Usage Scenarios
 
@@ -247,10 +247,10 @@ Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows:
 </Aside>
 
 :::note
-Changes to upstream artifacts (specs, ADRs, priorities) are not automatically propagated to downstream work items. See [Team Coordination](/guardrails/team-coordination/#change-propagation-limitations) for the full limitation matrix and recommended manual steps.
+Changes to upstream artifacts (specs, ADRs, priorities) are not automatically propagated to downstream work items. See [Team Coordination](../guardrails/team-coordination/#change-propagation-limitations) for the full limitation matrix and recommended manual steps.
 :::
 
-See [Team Coordination](/guardrails/team-coordination/) for multi-developer guardrails.
+See [Team Coordination](../guardrails/team-coordination/) for multi-developer guardrails.
 
 ## Versioning
 
@@ -265,7 +265,7 @@ The framework uses **Semantic Versioning** with git tags (`vMAJOR.MINOR.PATCH`):
 ## Coming from a Different Angle?
 
 <CardGrid>
-  <LinkCard title="For Developers" href="/getting-started/" description="Install the plugin and run your first guided workflow." />
-  <LinkCard title="For Leadership" href="/delivery-guardrails/" description="How guardrails keep delivery predictable and traceable." />
-  <LinkCard title="For Platform Teams" href="/extensibility/" description="Customize with your own instructions, skills, agents, and hooks." />
+  <LinkCard title="For Developers" href="../getting-started/" description="Install the plugin and run your first guided workflow." />
+  <LinkCard title="For Leadership" href="../delivery-guardrails/" description="How guardrails keep delivery predictable and traceable." />
+  <LinkCard title="For Platform Teams" href="../extensibility/" description="Customize with your own instructions, skills, agents, and hooks." />
 </CardGrid>

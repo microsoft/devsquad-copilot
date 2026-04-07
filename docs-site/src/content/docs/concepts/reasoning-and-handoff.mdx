@@ -26,7 +26,7 @@ The reasoning log prevents decisions from becoming tribal knowledge. When a new 
 
 ## Handoff Envelope
 
-When work moves between phases (e.g., specify to plan), context is transferred via a structured envelope ([ADR 0003](/decisions/#adr-0003-context-management-)):
+When work moves between phases (e.g., specify to plan), context is transferred via a structured envelope ([ADR 0003](../../decisions/#adr-0003-context-management-)):
 
 <CardGrid>
   <Card title="Relevant Artifacts" icon="document">
@@ -53,11 +53,11 @@ Each phase starts with **clean context** and reads artifacts from disk. This iso
 
 ## Phase Cleanup Points
 
-Phase transitions include structured cleanup points that preserve decisions while resetting context. See [Context Management](/core-components/context-management/) for the full cleanup sequence.
+Phase transitions include structured cleanup points that preserve decisions while resetting context. See [Context Management](../../core-components/context-management/) for the full cleanup sequence.
 
 ## Artifacts as Source of Truth
 
-The framework relies on disk artifacts as the canonical source of design decisions. See [Context Management](/core-components/context-management/) for the complete artifact authority model.
+The framework relies on disk artifacts as the canonical source of design decisions. See [Context Management](../../core-components/context-management/) for the complete artifact authority model.
 
 ## End-to-End Traceability
 
@@ -76,12 +76,12 @@ Work items include hierarchy and tags (`copilot-generated`, `ai-model:MODEL`). T
 
 ## Related
 
-- [Context Management](/core-components/context-management/): Technical details of memory and session management
-- [Comprehension Checkpoints](/concepts/comprehension-checkpoints/): How understanding is verified at each phase
-- [Impact Classification](/concepts/impact-classification/): Determines the level of reasoning documentation required
+- [Context Management](../../core-components/context-management/): Technical details of memory and session management
+- [Comprehension Checkpoints](../../concepts/comprehension-checkpoints/): How understanding is verified at each phase
+- [Impact Classification](../../concepts/impact-classification/): Determines the level of reasoning documentation required
 
 ---
 ## What to Read Next
 
-- [Context Management](/core-components/context-management/) for the full context lifecycle
-- [Conductor Agent](/agents/conductor/) for how the conductor uses handoff envelopes
+- [Context Management](../../core-components/context-management/) for the full context lifecycle
+- [Conductor Agent](../../agents/conductor/) for how the conductor uses handoff envelopes
