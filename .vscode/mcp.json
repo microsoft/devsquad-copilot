@@ -1,11 +1,4 @@
 {
-  "inputs": [
-    {
-      "id": "ado_org",
-      "type": "promptString",
-      "description": "Azure DevOps organization name  (e.g. 'contoso')"
-    }
-  ],
   "servers": {
     "github": {
       "type": "http",
@@ -16,9 +9,11 @@
       }
     },
     "ado": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@azure-devops/mcp@next", "${input:ado_org}"]
+      "type": "http",
+      "url": "https://mcp.dev.azure.com/",
+      "headers": {
+        "X-MCP-Toolsets": "wit,work,search,repos"
+      }
     },
     "azure": {
       "type": "stdio",

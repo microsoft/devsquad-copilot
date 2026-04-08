@@ -21,9 +21,18 @@ MCP (Model Context Protocol) servers provide tools that agents call to interact 
     **Used by**: Most agents (envision, kickoff, specify, decompose, implement, sprint, refine, review, security)
   </Card>
   <Card title="Azure DevOps" icon="list-format">
-    **Transport**: stdio (`npx @azure-devops/mcp@next`)
+    **Transport**: HTTP (`https://mcp.dev.azure.com/`)
 
-    Work item CRUD, hierarchy management (parent-child), traceability links, board management. Requires organization name input.
+    Remote MCP server (public preview). Authenticates via Microsoft Entra ID (OAuth). No local installation required.
+
+    Toolsets enabled via `X-MCP-Toolsets` header:
+
+    | Toolset | Purpose |
+    |---------|---------|
+    | `wit` | Work item CRUD, hierarchy management, traceability links, board management |
+    | `work` | Sprint planning, team iterations, team capacity |
+    | `search` | Duplicate detection, backlog queries |
+    | `repos` | PR creation, review threads, branch management for ADO-hosted repos |
 
     **Used by**: envision, kickoff, specify, decompose, implement, sprint, refine
   </Card>

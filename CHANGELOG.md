@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.7.2] - 2026-04-08
+
+### Changed
+
+- **Azure DevOps MCP migration**: Replaced local stdio server (`npx @azure-devops/mcp@next`) with the remote HTTP server (`https://mcp.dev.azure.com/`). Authentication now uses Microsoft Entra ID (OAuth) instead of PAT. No local Node.js or `npx` required. Toolsets (`wit`, `work`, `search`, `repos`) are declared via `X-MCP-Toolsets` header. The `ado_org` prompt input has been removed.
+
 ## [v0.7.1] - 2026-04-04
 
 ### Changed

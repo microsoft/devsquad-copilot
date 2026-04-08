@@ -8,7 +8,14 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.7.1 <Badge text="Latest" variant="success" />
+## v0.7.2 <Badge text="Latest" variant="success" />
+
+- Replaced local Azure DevOps MCP server (`npx @azure-devops/mcp@next`) with the remote HTTP server (`https://mcp.dev.azure.com/`)
+- Authentication now uses Microsoft Entra ID (OAuth); PAT-based auth removed
+- Toolsets (`wit`, `work`, `search`, `repos`) declared via `X-MCP-Toolsets` header
+- Removed `ado_org` prompt input; no local Node.js or `npx` required
+
+## v0.7.1
 
 - Removed duplicated `docs/framework/` content fully covered by the docs-site; only ADRs and images are kept
 - Consolidated README into a concise landing page that links to the docs-site for details

@@ -9,9 +9,11 @@
       }
     },
     "ado": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@azure-devops/mcp@next"]
+      "type": "http",
+      "url": "https://mcp.dev.azure.com/",
+      "headers": {
+        "X-MCP-Toolsets": "wit,work,search,repos"
+      }
     },
     "azure": {
       "type": "stdio",
