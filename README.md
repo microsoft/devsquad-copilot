@@ -27,3 +27,5 @@ See the [Getting Started guide](https://microsoft.github.io/devsquad-copilot/get
 | [Changelog](CHANGELOG.md) | Release notes |
 | [Contributing](CONTRIBUTING.md) | How to contribute |
 | [Acknowledgments](ACKNOWLEDGMENTS.md) | Inspirations and credits |
+
+TESTE
