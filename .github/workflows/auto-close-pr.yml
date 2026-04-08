@@ -13,19 +13,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Skip check for members, collaborators, and trusted bots
+      - name: Skip check for members, collaborators, and contributors
         run: |
-          if [[ "$ACTOR" == "dependabot[bot]" ]]; then
-            echo "User is a trusted bot — skipping vouch check"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          elif [[ "$ASSOCIATION" == "OWNER" || "$ASSOCIATION" == "MEMBER" || "$ASSOCIATION" == "COLLABORATOR" ]]; then
+          if [[ "$ASSOCIATION" == "OWNER" || "$ASSOCIATION" == "MEMBER" || "$ASSOCIATION" == "COLLABORATOR" || "$ASSOCIATION" == "CONTRIBUTOR" ]]; then
             echo "User is $ASSOCIATION — skipping vouch check"
             echo "skip=true" >> $GITHUB_OUTPUT
           fi
         id: free-pass
         env:
           ASSOCIATION: ${{ github.event.pull_request.author_association }}
-          ACTOR: ${{ github.actor }}
 
       - name: Checkout repo
         uses: actions/checkout@v4

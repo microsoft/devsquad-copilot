@@ -11,9 +11,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Skip check for members and collaborators
+      - name: Skip check for members, collaborators, and contributors
         run: |
-          if [[ "$ASSOCIATION" == "OWNER" || "$ASSOCIATION" == "MEMBER" || "$ASSOCIATION" == "COLLABORATOR" ]]; then
+          if [[ "$ASSOCIATION" == "OWNER" || "$ASSOCIATION" == "MEMBER" || "$ASSOCIATION" == "COLLABORATOR" || "$ASSOCIATION" == "CONTRIBUTOR" ]]; then
             echo "User is $ASSOCIATION — skipping vouch check"
             echo "skip=true" >> $GITHUB_OUTPUT
           fi
