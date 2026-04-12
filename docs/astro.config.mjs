@@ -20,7 +20,7 @@ light: './src/assets/logos/devsquad-logo-medium-transparent.png',
 replacesTitle: false,
 },
 editLink: {
-baseUrl: 'https://github.com/microsoft/devsquad-copilot/edit/main/docs-site/',
+baseUrl: 'https://github.com/microsoft/devsquad-copilot/edit/main/docs/',
 },
 head: [
 {

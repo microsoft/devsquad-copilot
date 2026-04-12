@@ -118,7 +118,7 @@ docs/
   features/        # Feature specifications
   architecture/    # Architecture Decision Records
   envisioning/     # Vision documents
-docs-site/         # Published documentation site (source of truth for guides)
+  site/           # Published documentation site (Starlight/Astro, source of truth for guides)
 ```
 
 ### Contribution Areas
@@ -130,7 +130,7 @@ docs-site/         # Published documentation site (source of truth for guides)
 | Instructions | `.github/instructions/` | Path-specific rules applied automatically by glob pattern |
 | Hooks | `.github/plugins/devsquad/hooks/` | Session lifecycle scripts (sessionStart, preToolUse, etc.) |
 | Templates | `docs/templates/` | Files distributed to consumer projects via `devsquad.init` |
-| Documentation | [docs-site](https://microsoft.github.io/devsquad-copilot/) | Framework architecture, component guides, extensibility |
+| Documentation | `docs/` ([site](https://microsoft.github.io/devsquad-copilot/)) | Framework architecture, component guides, extensibility |
 | ADRs | `docs/framework/decisions/` | Architecture Decision Records |
 
 ## Style Guides
