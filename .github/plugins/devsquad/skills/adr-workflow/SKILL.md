@@ -62,3 +62,13 @@ Before considering the ADR complete, verify:
 - Pros and cons for each option
 
 If there are missing fields, request information from the user.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "ADRs are overhead" | A 10-minute ADR prevents a 2-hour debate about the same decision six months later. |
+| "The code is self-documenting" | Code shows what was built. It does not show why, what alternatives were rejected, or what constraints applied. |
+| "We will document the decision later" | Decisions made without records get re-debated. Later never comes. |
+| "Nobody reads ADRs" | Future agents read them to avoid re-deciding. Future engineers read them to understand context. |
+| "This decision is obvious, no ADR needed" | Obvious decisions still have alternatives. Recording the reasoning prevents someone from proposing the discarded alternative later. |

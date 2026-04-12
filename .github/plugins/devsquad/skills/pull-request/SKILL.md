@@ -212,3 +212,13 @@ git push -u origin <branch-name>
 ```
 
 Inform that the PR can be opened later by invoking the skill again.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "It works in staging, it will work in production" | Production has different data, traffic patterns, and edge cases. Monitor after deploy. |
+| "We do not need feature flags for this" | Every non-trivial feature benefits from a kill switch. Even "simple" changes can break things. |
+| "Monitoring is overhead" | Not having monitoring means discovering problems from user complaints instead of dashboards. |
+| "The review is a formality" | Reviews that rubber-stamp changes miss bugs, security issues, and architectural drift. |
+| "Rolling back is admitting failure" | Rolling back is responsible engineering. Shipping a broken feature to users is the failure. |

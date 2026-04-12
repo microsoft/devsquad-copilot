@@ -206,3 +206,13 @@ Practices accepted as convention ([R]) are recorded in `plan.md`:
 ```
 
 If no practices were discussed (mature project with everything defined), omit this section.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "CI is too slow, skip it for now" | Optimize the pipeline, do not skip it. A 5-minute pipeline prevents hours of debugging broken integrations. |
+| "Manual testing is enough" | Manual testing does not scale, is not repeatable, and cannot guard against regressions. Automate what you can. |
+| "We will add CI later" | Projects without CI accumulate broken states. Set it up on day one. |
+| "This change is trivial, skip the pipeline" | Trivial changes break builds. CI is fast for trivial changes anyway. |
+| "We do not need observability yet" | By the time you need it, you will wish you had set it up months ago. Instrumentation is cheapest to add early. |

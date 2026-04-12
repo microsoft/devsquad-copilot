@@ -46,13 +46,13 @@ AI-generated code produces specific anti-patterns that are hard to catch in larg
 
 ## Output Format
 
-Return a structured result:
+Return a structured result. Use severity prefixes consistently: `Critical:`, *(no prefix for Major)*, `Minor:`, `Suggestion:`.
 
 ```
 Worker: code-consistency
 
 Findings:
-- [ID]: [Title] ([Severity]) - [File:line]
+- [ID]: [Title] ([Critical/Major/Minor/Suggestion]) - [File:line]
   Found: [what the code does]
   Suggested fix: [how to resolve]
 
@@ -70,3 +70,4 @@ Codebase Consistency Table:
 - Every finding must reference a file/line.
 - Do not flag style issues already handled by linters/formatters.
 - Do not inflate severity. Minor is minor, even if it is "ugly".
+- Apply Chesterton's Fence: before flagging code for removal or simplification, verify why it exists (check git blame if needed). Do not recommend removing code you do not fully understand.

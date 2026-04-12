@@ -29,15 +29,16 @@ The coordinator passes:
 
 ### 2. Bug Fix Flow (when applicable)
 
-When the task describes a bug fix, apply mandatory test-first:
+When the task describes a bug fix, apply the Prove-It pattern:
 
-1. Reproduce: Understand the incorrect vs expected behavior
-2. Test first: Write a test that fails demonstrating the bug
-3. Verify failure: Run the test and confirm it fails for the correct reason
-4. Fix: Implement the minimal fix
-5. Verify fix: Run the test and confirm it passes
+1. **Reproduce**: Understand the incorrect vs expected behavior
+2. **Test first**: Write a test that demonstrates the bug
+3. **Verify failure**: Run the test and confirm it fails for the **correct reason** (not a setup error or unrelated failure)
+4. **Fix**: Implement the minimal fix targeting the root cause, not the symptom
+5. **Verify fix**: Run the test and confirm it passes
+6. **Full suite**: Run the complete test suite to check for regressions
 
-The test must fail BEFORE the fix and pass AFTER.
+The test must fail BEFORE the fix and pass AFTER. If the test passes before the fix, it is not testing the bug.
 
 ### 3. Execute Implementation
 
@@ -59,6 +60,17 @@ When implementing code that uses Microsoft/Azure SDKs:
 - Verify API/method exists via `microsoft_docs_search`
 - Search for official code samples via `microsoft_code_sample_search`
 - Get complete reference via `microsoft_docs_fetch` when needed
+
+### 5b. Source Verification (non-Microsoft stacks)
+
+When implementing code that uses version-sensitive frameworks or libraries (React, Django, Rails, Spring, etc.):
+
+1. **Detect stack and versions**: Read the project's dependency file to identify exact versions
+2. **Verify against official docs**: For first-use or high-risk API calls, verify the API/method exists in the detected version's official documentation
+3. **Flag unverified patterns**: If official documentation cannot be found, mark with `UNVERIFIED:` comment and inform the user
+4. **Surface conflicts**: If official docs contradict existing project code, surface the discrepancy instead of silently choosing one approach
+
+Source hierarchy: official documentation > official blog/changelog > web standards (MDN) > compatibility tables. Stack Overflow, blog posts, and training data are not authoritative sources.
 
 ### 6. IDE Tools
 
@@ -86,6 +98,15 @@ Tasks completed: [list of task IDs]
 Files modified: [list]
 Tests written: [list of test files/names]
 
+Changes made:
+- [file]: [what changed and why]
+
+Not touched (intentionally):
+- [file or area]: [reason it was out of scope]
+
+Potential concerns:
+- [anything the reviewer should know: new dependencies, assumptions, trade-offs]
+
 Pending commits:
 - [task ID]: [commit scope and message]
 
@@ -97,5 +118,7 @@ Issues encountered:
 
 - Each task or [P] group should be a logical commit unit
 - Do not accumulate all changes for a single commit at the end
-- If tests fail after implementation, fix regressions (max 2 attempts) then escalate
+- **Save-point protocol**: Commit after each passing task or [P] group. If tests fail after the next change, revert to the last committed state before investigating — do not debug on top of broken state
+- If tests fail after implementation, use the `debugging-recovery` skill: reproduce, localize, fix root cause, guard with test (max 2 attempts then escalate)
+- Do not modify code outside the scope of the current task. If you notice issues in adjacent code, report them in the "Not touched" section
 - Report final status with work summary

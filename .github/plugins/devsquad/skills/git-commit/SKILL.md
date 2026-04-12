@@ -214,3 +214,21 @@ feat(api)!: migrate endpoints from v1 to v2 (#120)
 BREAKING CHANGE: all /api/v1/* endpoints have been removed.
 Clients must migrate to /api/v2/* per the migration guide.
 ```
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I will commit when the feature is done" | One giant commit is impossible to review, debug, or revert. Commit each logical slice. |
+| "The message does not matter" | Messages are documentation. Future developers and agents need to understand what changed and why. |
+| "I will squash it all later" | Squashing destroys the development narrative. Prefer clean incremental commits from the start. |
+| "These changes are too small to commit separately" | Small commits are free. Large commits hide bugs and make rollbacks painful. |
+| "Formatting changes can go with behavior changes" | Mixed concerns make review harder, reverts riskier, and history less useful. Separate them. |
+
+## Red Flags
+
+- Large uncommitted changes accumulating across multiple files
+- Commit messages like "fix", "update", "misc", or "WIP"
+- Formatting changes mixed with behavior changes in the same commit
+- Secrets or credentials appearing in the staged diff
+- No work item reference when one is available

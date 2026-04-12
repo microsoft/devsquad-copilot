@@ -119,6 +119,24 @@ Deliver the artifact with documented failures.
 - Artifact is a declared draft: "draft", "WIP", "exploratory"
 - Re-evaluation of an artifact that already passed (unless it has been modified)
 
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "AI-generated code is probably fine" | AI code needs more scrutiny, not less. It is confident and plausible, even when wrong. |
+| "The tests pass, so it is good" | Tests are necessary but not sufficient. They do not catch architecture problems, security issues, or readability concerns. |
+| "It works, that is good enough" | Working code that is unreadable, insecure, or architecturally wrong creates debt that compounds. |
+| "This is a simple change, skip validation" | Simple changes break builds. Validation is fast for simple artifacts anyway. |
+| "We will clean it up later" | Later never comes. The quality gate is the enforcement point. Use it. |
+
+## Red Flags
+
+- Artifacts approved without evidence of actual evaluation
+- Review that only checks if tests pass (ignoring other dimensions)
+- Accepting "I will fix it later" without a concrete work item
+- Security-sensitive changes without security-focused evaluation
+- No regression tests accompanying bug fix implementations
+
 ## Anti-patterns
 
 - Do not invent problems to seem useful. If the artifact is good, say "OK" and move on.

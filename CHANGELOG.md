@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.8.0] - 2026-04-12
+
+### Added
+
+- **`debugging-recovery` skill**: Structured debugging with stop-the-line rule, 6-step triage checklist (reproduce, localize, reduce, fix, guard, verify), error-specific decision trees, and untrusted error output safety principle
+- **Anti-rationalization tables**: Added "Common Rationalizations" sections to 6 skills (`security-review`, `quality-gate`, `git-commit`, `adr-workflow`, `pull-request`, `engineering-practices`) with domain-specific excuses and rebuttals that counter agent shortcut behavior
+- **Red Flags sections**: Added observable warning signs to `security-review`, `quality-gate`, and `git-commit` skills for self-monitoring during execution
+- **Source verification protocol**: `implement.execute` now verifies version-sensitive framework APIs against official documentation for non-Microsoft stacks, with explicit `UNVERIFIED:` labels when docs cannot be found
+- **Scope discipline output**: `implement.execute` output format now includes "Changes made", "Not touched (intentionally)", and "Potential concerns" sections for visible scope tracking
+
+### Changed
+
+- **Prove-It bug fix flow**: Enhanced `implement.execute` bug fix flow to require confirming test failure for the correct reason before fixing, and running full test suite after fix
+- **Save-point protocol**: `implement.execute` now commits after each passing task group and reverts to last committed state on failure instead of debugging on top of broken state
+- **Review severity labels**: Standardized 4-tier severity system (Critical/Major/Minor/Suggestion) with explicit author actions and finding prefixes across `devsquad.review` coordinator and `devsquad.review.code` worker
+- **Chesterton's Fence rule**: `devsquad.review.code` now requires verifying why code exists (via git blame) before recommending removal or simplification
+- **`debugging-recovery` reference**: `implement.execute` now references the debugging skill for structured triage instead of unguided "max 2 attempts then escalate"
+
 ## [v0.7.2] - 2026-04-08
 
 ### Changed

@@ -332,6 +332,26 @@ Best practices identified:
 - Rate limiting implemented on public endpoints
 ```
 
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "This is an internal tool, security does not matter" | Internal tools get compromised. Attackers target the weakest link in the chain. |
+| "We will add security later" | Retrofitting security is 10x harder than building it in. Add controls now. |
+| "The framework handles security" | Frameworks provide tools, not guarantees. You still need to use them correctly. |
+| "No one would try to exploit this" | Automated scanners will find it. Security by obscurity is not security. |
+| "It is just a prototype" | Prototypes become production. Security habits from day one prevent emergency retrofits. |
+
+## Red Flags
+
+- User input passed directly to database queries, shell commands, or HTML rendering
+- Secrets in source code or commit history
+- API endpoints without authentication or authorization checks
+- Missing CORS configuration or wildcard origins
+- No rate limiting on authentication endpoints
+- Stack traces or internal error details exposed to users
+- Dependencies with known critical vulnerabilities not addressed
+
 ## Constraints
 
 - **Does NOT implement code**: Provides guidance and remediation

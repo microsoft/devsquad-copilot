@@ -226,13 +226,16 @@ After all workers complete, **merge their results**:
 
 ### Phase 3: Finding Classification
 
-Classify each finding by severity:
+Classify each finding by severity. Use these prefixes consistently across all review workers:
 
-| Severity | Criterion | Action |
-|----------|-----------|--------|
-| **Critical** | Incorrect functionality, unmet requirement, security vulnerability | Blocks PR/merge |
-| **Major** | Spec/ADR deviation, pattern not followed, missing test for documented scenario | Requires fix before PR |
-| **Minor** | Style, inline documentation, optimization, readability improvement | Log it, does not block |
+| Severity | Criterion | Author Action | Prefix in Finding |
+|----------|-----------|---------------|-------------------|
+| **Critical** | Incorrect functionality, unmet requirement, security vulnerability, data loss risk | Must fix. Blocks PR/merge. | `Critical:` |
+| **Major** | Spec/ADR deviation, pattern not followed, missing test for documented scenario | Must fix before PR. | *(no prefix)* |
+| **Minor** | Readability improvement, optimization opportunity, non-blocking consistency issue | May address. Does not block. | `Minor:` |
+| **Suggestion** | Alternative approach worth considering, future improvement | Optional. No action required. | `Suggestion:` |
+
+Label every finding with its severity so the author knows what is required vs optional. Unlabeled findings default to Major.
 
 ### Phase 4: Review Log
 

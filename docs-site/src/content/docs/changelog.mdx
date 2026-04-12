@@ -8,7 +8,19 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.7.2 <Badge text="Latest" variant="success" />
+## v0.8.0 <Badge text="Latest" variant="success" />
+
+- Added `debugging-recovery` skill with stop-the-line rule, 6-step triage checklist, error-specific decision trees, and untrusted error output safety principle
+- Added anti-rationalization tables ("Common Rationalizations") to 6 skills: `security-review`, `quality-gate`, `git-commit`, `adr-workflow`, `pull-request`, `engineering-practices`
+- Added Red Flags sections to `security-review`, `quality-gate`, and `git-commit` for self-monitoring
+- Added source verification protocol to `implement.execute` for non-Microsoft stacks with `UNVERIFIED:` labels
+- Added scope discipline output format to `implement.execute` ("Changes made", "Not touched", "Potential concerns")
+- Enhanced Prove-It bug fix flow with correct-reason failure verification and full suite regression check
+- Added save-point protocol: commit after each passing task group, revert on failure
+- Standardized 4-tier review severity labels (Critical/Major/Minor/Suggestion) across review agents
+- Added Chesterton's Fence rule to `devsquad.review.code`
+
+## v0.7.2
 
 - Replaced local Azure DevOps MCP server (`npx @azure-devops/mcp@next`) with the remote HTTP server (`https://mcp.dev.azure.com/`)
 - Authentication now uses Microsoft Entra ID (OAuth); PAT-based auth removed
