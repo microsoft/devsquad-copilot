@@ -1,6 +1,15 @@
 ---
 name: diagram-design
-description: Design and review guidance for software architecture diagrams (Mermaid, Draw.io). Use when creating, reviewing, or editing diagrams in documentation, specs, or ADRs. Covers readability, accessibility, notation, abstraction levels, and tool selection (mermaid vs drawio). Do not use for markdown formatting rules (use documentation-style) or for code visualization/debugging.
+description: >-
+  Design and review guidance for software architecture diagrams (Mermaid, Draw.io).
+  Use when creating, reviewing, or editing diagrams in any markdown documentation.
+  Triggered by: diagram, flowchart, sequence diagram, mermaid, drawio,
+  architecture diagram, data flow, state machine, ER diagram, class diagram,
+  C4 model, system context, high-level overview.
+  Covers readability, accessibility, notation, abstraction levels, tool selection
+  (mermaid vs drawio), and platform-specific rendering rules (GitHub vs Azure DevOps).
+  Do not use for markdown text formatting rules (use documentation-style)
+  or for code visualization/debugging.
 ---
 
 # Diagram Design

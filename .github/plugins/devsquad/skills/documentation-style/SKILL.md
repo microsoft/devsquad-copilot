@@ -1,6 +1,6 @@
 ---
 name: documentation-style
-description: Formatting and style rules for markdown documentation. Use when generating or editing specs, ADRs, envisioning, tasks, or any project markdown document. Do not use for source code, code comments, commit messages, or work item content.
+description: Formatting and style rules for markdown documentation. Use when generating or editing any project markdown document. Do not use for source code, code comments, commit messages, or work item content.
 ---
 
 # Documentation Style Guide
