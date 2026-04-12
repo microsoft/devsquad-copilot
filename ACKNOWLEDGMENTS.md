@@ -33,6 +33,7 @@ This project was shaped by ideas, patterns, and prior art from many sources acro
 | [A practical guide to AI-assisted development](https://blog.lpains.net/posts/2026-03-23-ai-dev-guide/) by lpains | Practical guidance on AI-assisted development workflows |
 | [AI fatigue is real](https://siddhantkhare.com/writing/ai-fatigue-is-real) by Siddhant Khare | Perspectives on sustainable AI-assisted development and developer experience |
 | [How I estimate work](https://www.seangoedecke.com/how-i-estimate-work/) by Sean Goedecke | Work estimation approach that informed complexity analysis |
+| [Chesterton's Fence: A Lesson in Thinking](https://fs.blog/chestertons-fence/) (Farnam Street) | Principle adopted in code review: understand why code exists before recommending removal |
 
 ## Design Patterns and Standards
 
