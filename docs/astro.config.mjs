@@ -56,6 +56,7 @@ customCss: ['./src/styles/custom.css'],
 lastUpdated: true,
 sidebar: [
 { label: 'Home', slug: 'index' },
+{ label: 'How it Works', slug: 'how-it-works' },
 {
 label: 'Start Here',
 collapsed: true,

@@ -1,0 +1,51 @@
+---
+title: How it Works
+description: A narrative walkthrough of the DevSquad Copilot delivery framework, from initial vision to merged code.
+---
+
+import { Steps, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+The framework makes structured thinking a prerequisite to action. Before any code is written, by a developer or an agent, it surfaces what matters first. The whole system is orchestrated by a coordinator agent that guides developers and agents through each phase with Socratic questions, delegates to 13 specialized sub-agents, and keeps every decision traceable from business intent to merged code.
+
+<Steps>
+
+1. **Envision**
+
+   What are the pain points, what are the business objectives, what does success look like. The framework starts by asking *why this matters* and produces a short document the whole team can align on before anything else happens.
+
+2. **Specify**
+
+   The framework turns that vision into a specification through structured conversation: user stories with priorities, conformance criteria with concrete inputs and expected outputs, non-functional requirements with actual numbers. Not "make it fast", but "p95 latency under 200ms". The spec uses language that the whole team can read and validate, regardless of role. It captures *what* and *why*, never *how*.
+
+3. **Plan**
+
+   Architecture decisions get recorded as ADRs (evaluated against ranked priorities, not generic pros/cons lists), engineering practices are discussed through Socratic questions, and a technical design emerges. Each decision is a persistent artifact that future developers and agents can trace back to.
+
+4. **Decompose**
+
+   The spec gets broken into user stories and tasks, organized by priority and dependency. Tasks are granular enough for a single implementation session, each with clear acceptance criteria. These flow into GitHub Issues or Azure DevOps as real work items, not just a checklist in a markdown file.
+
+5. **Implement**
+
+   The implement agent picks up a task, validates it against the spec, classifies its impact, writes code following TDD discipline, runs the build and tests, and commits with conventional commit messages.
+
+6. **Review**
+
+   A separate review agent validates the implementation against the spec, ADRs, and plan in an independent context, catching drift before it compounds. A security agent runs architectural assessments during design and code-level scans during implementation.
+
+7. **Refine**
+
+   Between sprints, a refine agent scans the backlog for staleness, spec/board inconsistencies, and items that need attention. Because the framework is built on persistent artifacts (specs, ADRs, plans, tasks), any developer or agent can pick up where someone else left off.
+
+</Steps>
+
+And because it's extensible, you can add your own instructions, skills, agents, and hooks for your specific stack, domain, or organization. The framework adapts to how your team works, not the other way around.
+
+## Next Steps
+
+<CardGrid>
+  <LinkCard title="Get Started" href="./getting-started/" description="Install the plugin and run your first workflow." />
+  <LinkCard title="Framework Architecture" href="./framework/" description="Design principles, agent topology, and usage scenarios." />
+  <LinkCard title="Agents Reference" href="./agents/overview/" description="All 13 agents and when to use each one." />
+  <LinkCard title="Extensibility" href="./extensibility/" description="Add custom instructions, skills, agents, and hooks." />
+</CardGrid>
