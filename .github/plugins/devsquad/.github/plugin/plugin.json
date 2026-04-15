@@ -1,7 +1,7 @@
 {
   "name": "devsquad",
   "description": "A GitHub Copilot delivery framework with guardrails to make AI-assisted development consistent, traceable, and maintainable.",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": {
     "name": "Microsoft CSU DevSquad"
   },

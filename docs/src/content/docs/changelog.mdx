@@ -8,7 +8,12 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.8.0 <Badge text="Latest" variant="success" />
+## v0.8.1 <Badge text="Latest" variant="success" />
+
+- Fixed MCP config format: renamed `servers` to `mcpServers` in plugin `.mcp.json` after Copilot CLI dropped `.vscode/mcp.json` support
+- Updated CLI install docs with the new two-step marketplace install flow and deprecated the direct install method
+
+## v0.8.0
 
 - Added `debugging-recovery` skill with stop-the-line rule, 6-step triage checklist, error-specific decision trees, and untrusted error output safety principle
 - Added anti-rationalization tables ("Common Rationalizations") to 6 skills: `security-review`, `quality-gate`, `git-commit`, `adr-workflow`, `pull-request`, `engineering-practices`

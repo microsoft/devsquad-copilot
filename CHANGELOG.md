@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.8.1] - 2026-04-15
+
+### Fixed
+
+- **MCP config format**: Renamed `servers` to `mcpServers` in plugin `.mcp.json` to match the Copilot CLI schema after `.vscode/mcp.json` support was removed
+- **CLI install docs**: Updated getting-started guide with the new two-step marketplace install flow (`copilot plugin marketplace add` + `copilot plugin install`) and deprecated the direct install method
+
 ## [v0.8.0] - 2026-04-12
 
 ### Added
