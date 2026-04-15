@@ -39,16 +39,15 @@ Install the plugin, initialize your project, and start building.
        If you see an error, check the [Troubleshooting](../troubleshooting/) page.
      </TabItem>
      <TabItem label="GitHub Copilot CLI" icon="github">
+       Register the plugin from the marketplace, then install it:
+
        ```bash
-       copilot plugin install microsoft/devsquad-copilot
+       copilot plugin marketplace add microsoft/devsquad-copilot
+       copilot plugin install devsquad@devsquad-copilot
        ```
 
-       <Aside type="tip" title="Unattended Mode">
-         The `--yolo` flag enables unattended mode, where the agent operates autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation.
-
-         ```bash
-         copilot --agent devsquad:devsquad --yolo
-         ```
+       <Aside type="note" title="Direct Install (Deprecated)">
+         Older CLI versions support direct install via `copilot plugin install microsoft/devsquad-copilot`. This method is deprecated and will be removed in a future release.
        </Aside>
 
        If you see an error, check the [Troubleshooting](../troubleshooting/) page.
@@ -56,6 +55,8 @@ Install the plugin, initialize your project, and start building.
    </Tabs>
 
 3. **Start the Conductor**
+
+   The conductor is your single entry point agent. It detects your project state, asks questions, and delegates to specialist agents as needed.
 
    <Tabs syncKey="platform">
      <TabItem label="VS Code" icon="vscode">
@@ -69,10 +70,16 @@ Install the plugin, initialize your project, and start building.
        ```bash
        copilot --agent devsquad:devsquad
        ```
+
+       <Aside type="tip" title="Unattended Mode">
+         The `--yolo` flag enables unattended mode, where the agent operates autonomously by automatically approving terminal commands, file changes, and tool usage without requiring user confirmation.
+
+         ```bash
+         copilot --agent devsquad:devsquad --yolo
+         ```
+       </Aside>
      </TabItem>
    </Tabs>
-
-   The conductor is your single entry point. It detects your project state, asks Socratic questions, and delegates to specialist agents as needed.
 
    <Aside type="note">
      Once familiar with the workflow, you can invoke agents directly (e.g., `devsquad.implement`, `devsquad.security`). See [Agents Overview](../agents/overview/) for the full catalog.
