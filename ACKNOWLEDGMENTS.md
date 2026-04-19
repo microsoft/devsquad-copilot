@@ -34,6 +34,7 @@ This project was shaped by ideas, patterns, and prior art from many sources acro
 | [AI fatigue is real](https://siddhantkhare.com/writing/ai-fatigue-is-real) by Siddhant Khare | Perspectives on sustainable AI-assisted development and developer experience |
 | [How I estimate work](https://www.seangoedecke.com/how-i-estimate-work/) by Sean Goedecke | Work estimation approach that informed complexity analysis |
 | [Chesterton's Fence: A Lesson in Thinking](https://fs.blog/chestertons-fence/) (Farnam Street) | Principle adopted in code review: understand why code exists before recommending removal |
+| [Compatibility is a Feature](https://yusufaytas.com/compatibility-is-a-feature) by Yusuf Aytas | Mixed-version coexistence, rollback-against-state, and boundary-drift thinking that shaped the Compatibility and Transition section in feature specs |
 
 ## Design Patterns and Standards
 

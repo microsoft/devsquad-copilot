@@ -1,8 +1,8 @@
 # Migration Specification: [SYSTEM_NAME]
 
-**Created on**: [DATE]
-**Status**: Draft
-**Type**: [Lift-and-Shift | Rehost | Replatform-Lite]
+- **Created on**: [DATE]
+- **Status**: Draft
+- **Type**: [Lift-and-Shift | Rehost | Replatform-Lite]
 
 ## Executive Summary
 

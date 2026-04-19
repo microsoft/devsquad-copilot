@@ -1,7 +1,7 @@
 # Feature Specification: [FEATURE_NAME]
 
-**Created on**: [DATE]  
-**Status**: Draft  
+- **Created on**: [DATE]
+- **Status**: Draft
 
 ## Executive Summary
 
@@ -15,6 +15,7 @@
 - **Primary user**: [Who uses it]
 - **Value delivered**: [Why it matters]
 - **Scope**: [What is included / excluded]
+- **Change type**: [new surface | additive to existing | modifies existing boundary | removes existing surface]
 - **Primary success criterion**: [Most important metric]
 
 ## Non-Scope *(required)*
@@ -111,14 +112,18 @@
 <!--
   Document how the system should behave under real-world failure conditions.
   Required when the feature involves: external APIs, databases, message queues,
-  concurrent users, or distributed state.
-  Omit for purely local, single-user, stateless features.
+  concurrent users, distributed state, or modifies an existing boundary
+  (API, event schema, stored data shape).
+  Omit for purely local, single-user, stateless features with no prior version.
 -->
 
 - What happens when [external dependency] is unavailable or times out?
 - What happens when two users perform [action] concurrently on the same resource?
 - What happens when [operation] partially fails (e.g., payment charged but confirmation not sent)?
 - What consistency model is required? (immediate, eventual, or best-effort)
+- What happens during a partial rollout when some consumers still run the prior version?
+- What happens when a delayed consumer (queue backlog, cached client, mobile app) catches up after the producer has advanced?
+- What happens if rollback is triggered after state has been written in the new shape?
 
 ## Requirements *(required)*
 
@@ -175,12 +180,16 @@
 | CC-002 | [Error scenario] | [Invalid or incomplete data] | [Error message or behavior] |
 | CC-003 | [Edge case] | [Boundary or extreme condition] | [Expected behavior] |
 | CC-004 | [Must NOT happen] | [Input that could trigger wrong behavior] | [Behavior that must not occur, e.g.: "Must NOT create duplicate records"] |
+| CC-C01 | [Mixed-version coexistence or rollback against state] | [Payload written or action taken by new version] | [Prior version still processes without error, or rollback restores prior behavior against existing data] |
 
 <!--
   These criteria serve as a contract between spec and implementation.
   The agent must verify the implementation against these cases.
   Include at least one negative case (CC-XXX with "Must NOT" scenario)
   to define what the system must never do.
+  When the Change type is not "new surface", include at least one CC-C*
+  (compatibility) case covering mixed-version coexistence, delayed consumer
+  behavior, or rollback against state written by the new version.
 -->
 
 ## Invariants
@@ -196,6 +205,25 @@
 - [Property that must always hold, e.g.: "Each idempotency key maps to at most one transaction"]
 - [Safety constraint, e.g.: "Account balance must never go negative"]
 - [Consistency rule, e.g.: "Sum of line items must equal order total"]
+- [Compatibility invariant when applicable, e.g.: "Events written by version N+1 must remain deserializable by version N for one release cycle"]
+
+## Compatibility and Transition *(required when Change type is not "new surface")*
+
+<!--
+  Required when the feature modifies, replaces, or removes an existing boundary:
+  public or internal API, event payload, stored data shape, user-facing contract,
+  CLI flag, configuration key, or any observable behavior consumed by other teams
+  or long-lived clients.
+  For a purely additive new surface, write "N/A: purely additive new surface"
+  and skip the rest of this section.
+-->
+
+- **Existing consumers**: [Known producers, consumers, or clients of the current behavior that must be considered. Include delayed consumers such as queue backlogs, cached clients, or mobile apps.]
+- **Backward compatibility stance**: [strict (no break), tolerant window (old and new coexist for N releases), or break with deprecation period of at least X]
+- **Coexistence requirement**: [Whether version N and N+1 must run simultaneously against shared state, and for how long. State the minimum coexistence window in business terms, not implementation terms.]
+- **Rollback requirement**: [Whether the prior version must be able to safely read state written by the new version, or whether forward-fix is acceptable. Include the maximum acceptable rollback time window.]
+- **Deprecation signal**: [How consumers of the old path are informed that it will be removed. Stated as a requirement, not as an implementation mechanism.]
+- **Telemetry requirement**: [What signal confirms that old consumers have stopped using the old path. Required before any destructive removal step is authorized.]
 
 ## Related Specs
 
