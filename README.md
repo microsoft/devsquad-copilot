@@ -1,8 +1,10 @@
 <h1 align="center">DevSquad GitHub Copilot</h1>
 
-A delivery framework for GitHub Copilot that guides teams from **intent** to **implementation**: starting with a clearly defined business purpose and expected outcomes (**why**), translating it into explicit specifications and architecture decisions (**what**), and continuously ensuring the **how** (the code) remains aligned with that intent through ongoing validation.
+<p align="center">
+  <img src="./docs/src/assets/logos/devsquad-logo-medium-transparent.png" alt="DevSquad logo" width="320" />
+</p>
 
-<img src="./docs/framework/images/overview.png" alt="Overview" width="900" />
+A delivery framework for GitHub Copilot with agents that guides teams from **business intent** to **implementation**, keeping the **why**, **what**, and **how** aligned through persistent artifacts and continuous feedback loops.
 
 > [!WARNING]
 > This project is under active development. It follows [semantic versioning](https://semver.org/); breaking changes may occur in minor releases until 1.0. See the [changelog](CHANGELOG.md) for release notes.
@@ -24,6 +26,19 @@ A delivery framework for GitHub Copilot that guides teams from **intent** to **i
 7. The whole system is orchestrated by a coordinator agent that guides developers and agents through each phase with Socratic questions, delegates to 13 specialized sub-agents, and keeps every decision traceable from business intent to merged code. Because the framework is built on persistent artifacts (specs, ADRs, plans, tasks), any developer or agent can pick up where someone else left off.
 
 8. And because it's extensible, you can add your own instructions, skills, agents, and hooks for your specific stack, domain, or organization. The framework adapts to how your team works, not the other way around.
+
+## Design Principles
+
+The framework is shaped by a few deliberate choices about how agents behave, how they're engineered, and how they fit into an existing codebase.
+
+- **Socratic over prescriptive**: agents ask before they act. Scope, engineering practices, and architectural choices are surfaced as questions, not defaults silently applied on the user's behalf.
+- **Human-in-the-loop by impact**: autonomy scales with risk. Low-impact changes execute directly, medium ones require a plan, and high-impact changes require explicit approval plus an ADR.
+- **Context isolation by default**: sub-agents run in their own context windows and return only structured results, keeping the main conversation small and decisions traceable.
+- **Principle of least privilege**: each agent exposes only the granular tools it needs, not full access to every MCP server. This reduces blast radius and cuts model overhead from oversized tool catalogs during selection.
+- **Trusted MCP servers only**: the framework ships with a curated set of [first-party MCP servers](https://microsoft.github.io/devsquad-copilot/core-components/mcp-servers/). No opaque third-party servers are required, which keeps the tool surface reliable and makes enterprise security review straightforward.
+- **Decisions as transparent artifacts**: every core architectural choice is documented as an [ADR](https://microsoft.github.io/devsquad-copilot/decisions/) with ranked priorities, evaluated options, and trade-offs, so contributors can trace *why* the framework behaves the way it does.
+- **Extensibility without forking**: custom instructions, skills, agents, and hooks layer on top of the framework, so stack or domain adaptations don't require modifying core.
+- **Minimal dependencies**: no framework-specific CLI, no Python runtime, no language-specific toolchain. Node.js is the only prerequisite, so onboarding and CI setup stay simple across stacks.
 
 ## Who is this for?
 

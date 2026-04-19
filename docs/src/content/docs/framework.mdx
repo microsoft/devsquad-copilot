@@ -12,24 +12,35 @@ This page explains how the framework is organized: how agents collaborate, how c
 
 ## Design Principles
 
+The framework is shaped by a few deliberate choices about how agents behave, how they're engineered, and how they fit into an existing codebase.
+
 <CardGrid stagger>
-  <Card title="1. Flexibility" icon="random">
-    Users choose between guided mode (through the conductor) or direct mode (invoking specialist agents individually). Both paths produce the same artifacts.
+  <Card title="Socratic by Design" icon="approve-check">
+    Agents ask before they act. Scope, engineering practices, and architectural choices are surfaced as questions, not defaults silently applied on the user's behalf. Teams learn the *why*, not just the steps.
   </Card>
-  <Card title="2. Socratic by Design" icon="approve-check">
-    Ask before assuming. Verify understanding before acting. Explain the *why* behind recommendations so teams learn the principles, beyond following steps.
+  <Card title="Human-in-the-loop by Impact" icon="warning">
+    Autonomy scales with risk. Low-impact changes execute directly, medium ones require a plan, and high-impact changes require explicit approval plus an ADR. The developer decides; the AI accelerates.
   </Card>
-  <Card title="3. Artifacts as Source of Truth" icon="document">
-    Specs, ADRs, and contracts live in files on disk. Session context is ephemeral; the artifacts in the repository are the permanent reference.
+  <Card title="Flexibility" icon="random">
+    Use the conductor for a guided flow, or invoke specialist agents directly when the task is clear. Both paths produce the same artifacts.
   </Card>
-  <Card title="4. Programming Language-Agnostic" icon="translate">
-    The framework does not prescribe a tech stack. Users add context via instructions, skills, hooks, and tool extensions.
+  <Card title="Context Isolation by Default" icon="document">
+    Sub-agents run in their own context windows and return only structured results, keeping the main conversation small and decisions traceable across long-running work.
   </Card>
-  <Card title="5. AI Model-Agnostic" icon="setting">
-    Does not prescribe which AI models to use. Organizations choose per their policies and requirements.
+  <Card title="Principle of Least Privilege" icon="setting">
+    Each agent exposes only the granular tools it needs, not full access to every MCP server. This reduces blast radius and cuts model overhead from oversized tool catalogs during selection.
   </Card>
-  <Card title="6. Human in Control" icon="warning">
-    No medium or high impact decision is executed without explicit approval. The developer decides; the AI accelerates.
+  <Card title="Trusted MCP Servers Only" icon="approve-check">
+    Ships with a curated set of first-party MCP servers. No opaque third-party servers are required, which keeps the tool surface reliable and makes enterprise security review straightforward.
+  </Card>
+  <Card title="Decisions as Transparent Artifacts" icon="document">
+    Every core architectural choice is recorded as an ADR with ranked priorities, evaluated options, and trade-offs. Specs, plans, and contracts live as files on disk; session context is ephemeral, the repository is the permanent reference.
+  </Card>
+  <Card title="Extensibility without Forking" icon="translate">
+    Custom instructions, skills, agents, hooks, and tool extensions layer on top of the framework, so stack or domain adaptations don't require modifying core.
+  </Card>
+  <Card title="Stack and Model Agnostic" icon="setting">
+    No prescribed tech stack or AI model. Node.js is the only prerequisite; organizations pick languages, frameworks, and models per their policies.
   </Card>
 </CardGrid>
 
