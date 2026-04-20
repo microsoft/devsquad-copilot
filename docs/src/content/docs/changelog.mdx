@@ -8,7 +8,15 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.8.1 <Badge text="Latest" variant="success" />
+## v0.9.0 <Badge text="Latest" variant="success" />
+
+- Added spec amendment during implementation: implement agent flags spec/ADR drift and proposes a scoped amendment; developer confirms, rejects, or defers. See the [concept doc](/devsquad-copilot/concepts/spec-amendment/)
+- `devsquad.refine` is now invocable mid-implementation via the `[AMEND]` prompt prefix for scoped spec/ADR edits
+- Renamed Usage Scenarios tab `Feature-first` to `Scope-stable`; iterative scenario is now the first tab (breaking for anyone automating against tab labels)
+- Updated spec authoring guidance: specs describe the smallest vertical slice that delivers user-visible value and are treated as living artifacts that can be amended mid-flight; affects what `devsquad.specify` produces
+- Known limitations (v1): whole-feature task regeneration after amendment, design artifacts (`plan.md`, `data-model.md`, `contracts/`) flagged but not auto-updated on high-impact amendments, no multi-developer concurrency guard, no strict mode for regulated contexts
+
+## v0.8.1
 
 - Fixed MCP config format: renamed `servers` to `mcpServers` in plugin `.mcp.json` after Copilot CLI dropped `.vscode/mcp.json` support
 - Updated CLI install docs with the new two-step marketplace install flow and deprecated the direct install method

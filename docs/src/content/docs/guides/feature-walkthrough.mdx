@@ -41,6 +41,7 @@ flowchart LR
   P["Plan<br/>design architecture"]
   D["Decompose<br/>break into tasks"]
   I["Implement<br/>write code"]
+  A["Amend<br/>(when drift detected)"]
   R["Review<br/>validate quality"]
 
   E -->|"envisioning.md"| S
@@ -48,6 +49,8 @@ flowchart LR
   P -->|"plan.md + ADRs"| D
   D -->|"tasks.md"| I
   I -->|"PR"| R
+  I -.->|"spec-drift"| A
+  A -.->|"scoped update"| S
 ```
 
 ## What Happens at Each Phase
@@ -84,9 +87,19 @@ flowchart LR
 
    **Artifacts produced**: Source code files, test files, commits
 
-6. **Review** (delegates to `devsquad.review`)
+6. **Amend the spec when reality disagrees** (delegates to `devsquad.refine` in amendment mode)
 
-   After implementation, the conductor triggers review. The agent runs 5 parallel workers checking: spec compliance, ADR adherence, code quality, security, and test coverage. Each finding requires evidence and is classified by severity.
+   Mid-implementation, the agent realizes "notification channels" is behaving less like a user preference and more like a first-class entity: multiple channels per user, channel-specific failure policies, per-channel rate limits. This is a *what* change, not a *how* change, so the implement agent raises a `spec-drift` flag and pauses.
+
+   It presents the discrepancy (what the spec says, what the code is telling us, which section would need amending) and asks the developer to confirm, reject, or defer. On confirmation, it hands off to `devsquad.refine` with `[AMEND]` and the scope. Refine updates only the affected user story and conformance cases, `devsquad.decompose` regenerates tasks derived from that section, and implementation resumes against the amended spec.
+
+   **Artifacts produced**: Amended `spec.md` section, regenerated task subset, reasoning log entry
+   
+   Reject and defer are valid outcomes: reject when the surprise is an implementation detail (then continue the task), defer when the amendment belongs in the next refine cycle (then log it and continue under the current spec). See [Spec Amendment During Implementation](../../concepts/spec-amendment/) for the full flow.
+
+7. **Review** (delegates to `devsquad.review`)
+
+   After implementation, the conductor triggers review. The agent runs 5 parallel workers checking: spec compliance, ADR adherence, code quality, security, and test coverage. Each finding requires evidence and is classified by severity. Review validates against the *amended* spec, not the original.
 
    **Artifact produced**: Review log with findings
 

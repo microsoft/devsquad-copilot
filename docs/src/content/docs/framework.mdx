@@ -21,6 +21,9 @@ The framework is shaped by a few deliberate choices about how agents behave, how
   <Card title="Human-in-the-loop by Impact" icon="warning">
     Autonomy scales with risk. Low-impact changes execute directly, medium ones require a plan, and high-impact changes require explicit approval plus an ADR. The developer decides; the AI accelerates.
   </Card>
+  <Card title="Specs are Living Artifacts" icon="pencil">
+    Specs and ADRs are refined as implementation reveals new understanding. The framework has a named seam for amending them mid-flight, so discoveries made during the work update the shared model instead of being silently absorbed or lost. See [Spec Amendment](../concepts/spec-amendment/).
+  </Card>
   <Card title="Flexibility" icon="random">
     Use the conductor for a guided flow, or invoke specialist agents directly when the task is clear. Both paths produce the same artifacts.
   </Card>
@@ -40,7 +43,7 @@ The framework is shaped by a few deliberate choices about how agents behave, how
     Custom instructions, skills, agents, hooks, and tool extensions layer on top of the framework, so stack or domain adaptations don't require modifying core.
   </Card>
   <Card title="Stack and Model Agnostic" icon="setting">
-    No prescribed tech stack or AI model. Node.js is the only prerequisite; organizations pick languages, frameworks, and models per their policies.
+    Engineering discipline travels with your stack. Agents bake in test-first implementation, ADRs, security review, quality gates, and source verification against official docs regardless of the language or AI model. Team- and stack-specific coding guidelines live in a file you own (`.github/docs/coding-guidelines.md`) and can be rewritten any time.
   </Card>
 </CardGrid>
 
@@ -212,8 +215,20 @@ Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows:
 ## Usage Scenarios
 
 <Tabs>
-  <TabItem label="Feature-first">
-    Start with a clear product idea and work through the full lifecycle.
+  <TabItem label="Iterative">
+    Discover scope incrementally as you specify and plan. The framework's default posture: each pass through the loop produces a thin slice, and what you learn shapes the next one.
+
+    `specify > plan > discover B > specify > plan > decompose > implement`
+  </TabItem>
+  <TabItem label="Emergent scope">
+    Clear vision, undefined scope. Features emerge during specification while exploring solutions.
+
+    `envision > kickoff (epic only) > specify (features emerge) > plan > decompose > implement`
+
+    Kickoff generates only the epic. Specify is used for brainstorming and exploring features incrementally.
+  </TabItem>
+  <TabItem label="Scope-stable">
+    Start with a clear product idea and work through the full lifecycle. Use when the slice boundary is known up front (regulated contexts, migrations, contractually fixed scope).
 
     `envision > kickoff > specify > plan > decompose > implement > review`
 
@@ -235,18 +250,6 @@ Dashed arrows: auto-activated (agent does not explicitly request). Solid arrows:
     Map an existing board structure and fill in specs.
 
     `kickoff (map existing) > specify > plan > decompose > implement`
-  </TabItem>
-  <TabItem label="Emergent scope">
-    Clear vision, undefined scope. Features emerge during specification while exploring solutions.
-
-    `envision > kickoff (epic only) > specify (features emerge) > plan > decompose > implement`
-
-    Kickoff generates only the epic. Specify is used for brainstorming and exploring features incrementally.
-  </TabItem>
-  <TabItem label="Iterative">
-    Discover scope incrementally as you specify and plan.
-
-    `specify > plan > discover B > specify > plan > decompose > implement`
   </TabItem>
 </Tabs>
 

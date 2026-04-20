@@ -72,6 +72,7 @@ items: [
 { label: 'Philosophy & Approach', slug: 'delivery-guardrails' },
 { label: 'Impact Classification', slug: 'concepts/impact-classification', badge: { text: 'Core', variant: 'tip' } },
 { label: 'Comprehension Checkpoints', slug: 'concepts/comprehension-checkpoints', badge: { text: 'Core', variant: 'tip' } },
+{ label: 'Spec Amendment', slug: 'concepts/spec-amendment', badge: { text: 'Core', variant: 'tip' } },
 { label: 'Implementation Rules', slug: 'guardrails/implementation' },
 { label: 'Team Coordination', slug: 'guardrails/team-coordination' },
 ],

@@ -87,6 +87,20 @@ After each edit cycle:
 - Interrupt execution if any non-parallel task fails
 - Provide clear error messages for debugging
 
+### 8. Mid-Execution Drift Escalation
+
+Spec drift discovered mid-execution (not pre-flight) must be surfaced, not absorbed. Stop and escalate when implementation reveals that the spec, ADR, or conformance criterion is wrong in a way that changes observable behavior, persisted data shape, RF/CC/NFR text, story boundaries, or ADR priority ordering.
+
+Do NOT escalate for internal refactor opportunities, naming, or non-observable performance tuning within stated NFRs.
+
+On drift detection:
+
+1. Stop the current task. Do not work around a stale spec.
+2. Commit or stash any partial work to a save-point as appropriate.
+3. Return `spec-drift` in the output with the structured payload below. The coordinator handles the amendment loop; this worker does not edit specs directly.
+
+Low-impact fast-track tasks are not exempt: if execution uncovers drift, escalate regardless of the original classification.
+
 ## Output Format
 
 Return a structured result:
@@ -112,6 +126,14 @@ Pending commits:
 
 Issues encountered:
 - [any problems, regressions, or decisions made]
+
+Spec drift (if any):
+- Artifact: [path to spec.md or ADR, with section anchor]
+- Original statement: [verbatim quote from artifact]
+- Observed reality: [what the code/data revealed]
+- Impacted IDs: [RF-XXX, CC-XXX, user story, ADR-NNNN]
+- Recommended scope: [section to amend]
+- Confidence: [high | medium | low]
 ```
 
 ## Rules

@@ -93,17 +93,22 @@ Operating principles: Options not recommendations. Dependencies visible. Gaps vi
 
 ---
 
-## devsquad.refine <Badge text="Health" variant="note" />
+## devsquad.refine <Badge text="Health" variant="note" /> <Badge text="Amendment" variant="tip" />
 
-Analyze backlog health and detect inconsistencies between specs, ADRs, and work items.
+Analyze backlog health, detect inconsistencies between specs, ADRs, and work items, and apply scoped spec/ADR amendments when implementation reveals drift.
 
 | | |
 |---|---|
-| **Produces** | Analysis report with fixes |
+| **Produces** | Analysis report with fixes, or scoped spec/ADR amendment |
 | **Handoff** | to specify, plan, decompose, or kickoff |
 | **Skills** | documentation-style, reasoning, work-item-creation |
 
-Six analysis categories:
+Two modes:
+
+- **Backlog health** (default): between-sprint analysis across six categories.
+- **Spec Amendment** (triggered by `[AMEND]` prompt prefix from `devsquad.implement`): scoped, surgical update to a single spec/ADR section when the implement agent raises a `spec-drift` flag. See [Spec Amendment During Implementation](../../concepts/spec-amendment/).
+
+Six backlog-health analysis categories:
 1. **Spec-Board Mismatch**: Specs updated after tasks were created
 2. **ADR-Implementation Gap**: Decisions made but not reflected in code
 3. **Missing Tasks**: User story without task coverage
@@ -111,7 +116,7 @@ Six analysis categories:
 5. **Stale PRs**: Open, unreviewed, or failing CI
 6. **Unfinished Dependencies**: Blocking tasks still open
 
-Principles: Read-first with surgical edits. Facts, not opinions. No false positives. Configurable scope.
+Principles: Read-first with surgical edits. Facts, not opinions. No false positives. Configurable scope. In Spec Amendment mode, suggest-only: the developer confirms every amendment via the implement coordinator; the agent never auto-rewrites specs on its own judgment.
 
 Execution model: `devsquad.refine` can fan out artifact analysis and backlog health checks into parallel workers, then merge the results into a single report.
 

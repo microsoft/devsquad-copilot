@@ -14,4 +14,5 @@ When editing task lists, follow these rules:
 - Each phase must be a complete and independently testable increment.
 - DO NOT generate separate test tasks. Tests are part of each task's acceptance criteria — the implement agent verifies coverage upon completion.
 - Missing ADRs must be blocking tasks in the Foundational phase.
+- Task lists are re-generated scope-by-scope when the spec is amended mid-implementation (see `concepts/spec-amendment`). Only tasks derived from the amended user story or section should change; tasks outside the amended scope must be preserved verbatim, along with their completion status on the board.
 - When creating work items on the board, apply the checklist from the `work-item-creation` skill.

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.9.0] - 2026-04-20
+
+### Added
+
+- **Spec amendment during implementation**: when implementation reveals that a spec or ADR no longer matches reality, the implement agent now surfaces a drift flag and offers a scoped amendment instead of silently continuing. The developer confirms, rejects, or defers. See the [concept doc](https://microsoft.github.io/devsquad-copilot/concepts/spec-amendment/).
+- **`devsquad.refine` is now invocable mid-implementation** via the `[AMEND]` prompt prefix for scoped spec/ADR edits, in addition to its existing backlog-health role.
+
+### Changed
+
+- **Usage Scenarios tab renamed**: `Feature-first` is now `Scope-stable`. The iterative scenario is now the first tab. Anyone automating against tab labels will need to update.
+- **Spec authoring guidance updated**: specs should describe the smallest vertical slice that delivers user-visible value and are now explicitly treated as living artifacts that can be amended mid-flight. Affects what `devsquad.specify` produces.
+
+### Known Limitations (v1 of the amendment seam)
+
+Documented in the concept doc. Relevant if you plan to rely on the new amendment flow:
+
+- After an amendment, `devsquad.decompose` regenerates tasks for the whole feature. Expect task IDs and board items to churn.
+- Design artifacts (`plan.md`, `data-model.md`, `contracts/`) are flagged but not auto-updated on high-impact amendments. A manual `devsquad.plan` pass is required before resume.
+- Multi-developer concurrency is not guarded. Coordinate manually when another developer is mid-implementation on an amended story.
+- No strict mode for regulated contexts. Reject and defer allow continuation under a known-stale spec.
+
 ## [v0.8.1] - 2026-04-15
 
 ### Fixed

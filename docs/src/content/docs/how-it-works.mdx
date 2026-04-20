@@ -5,41 +5,51 @@ description: A narrative walkthrough of the DevSquad Copilot delivery framework,
 
 import { Steps, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-The framework makes structured thinking a prerequisite to action. Before any code is written, by a developer or an agent, it surfaces what matters first. The whole system is orchestrated by a coordinator agent that guides developers and agents through each phase with Socratic questions, delegates to 13 specialized sub-agents, and keeps every decision traceable from business intent to merged code.
+The framework treats delivery as a loop, not a ladder. Each turn through the loop produces a small, reviewable increment and refines the shared understanding captured in persistent artifacts. Specs are sliced thin and revised as you learn, not written in full before the work begins. The whole system is orchestrated by a coordinator agent that guides developers and agents with Socratic questions, delegates to 13 specialized sub-agents, and keeps every decision traceable from business intent to merged code.
 
 <Steps>
 
 1. **Envision**
 
-   What are the pain points, what are the business objectives, what does success look like. The framework starts by asking *why this matters* and produces a short document the whole team can align on before anything else happens.
+   What are the pain points, what are the business objectives, what does success look like. The framework starts by asking *why this matters* and produces a short document the whole team can align on. Signed off once, revisited when reality shifts.
 
-2. **Specify**
+2. **Specify the next slice**
 
-   The framework turns that vision into a specification through structured conversation: user stories with priorities, conformance criteria with concrete inputs and expected outputs, non-functional requirements with actual numbers. Not "make it fast", but "p95 latency under 200ms". The spec uses language that the whole team can read and validate, regardless of role. It captures *what* and *why*, never *how*.
+   The framework turns the vision into a specification through structured conversation: user stories with priorities, conformance criteria with concrete inputs and expected outputs, non-functional requirements with actual numbers. Not "make it fast", but "p95 latency under 200ms". A slice, in this framework, means something concrete:
 
-3. **Plan**
+   - It has at least one conformance case that runs end-to-end, not a unit-level check.
+   - It can be demoed, called, or observed by someone outside the implementing team without referring to a future spec.
+   - It touches every layer the feature requires (data, logic, and surface).
 
-   Architecture decisions get recorded as ADRs (evaluated against ranked priorities, not generic pros/cons lists), engineering practices are discussed through Socratic questions, and a technical design emerges. Each decision is a persistent artifact that future developers and agents can trace back to.
+   The spec uses language the whole team can validate and captures *what* and *why*, never *how*. P2 and P3 stories stay as short placeholders until P1 is implemented and reviewed; sizing gets checked during decomposition, not here.
+
+3. **Plan what the slice needs**
+
+   Architecture decisions for the current slice get recorded as ADRs (evaluated against ranked priorities, not generic pros/cons lists), engineering practices are discussed through Socratic questions, and a technical design emerges. Each decision is a persistent artifact that future developers and agents can trace back to.
 
 4. **Decompose**
 
-   The spec gets broken into user stories and tasks, organized by priority and dependency. Tasks are granular enough for a single implementation session, each with clear acceptance criteria. These flow into GitHub Issues or Azure DevOps as real work items, not just a checklist in a markdown file.
+   The slice gets broken into tasks granular enough for a single implementation session, each with clear acceptance criteria. These flow into GitHub Issues or Azure DevOps as real work items, not just a checklist in a markdown file.
 
 5. **Implement**
 
    The implement agent picks up a task, validates it against the spec, classifies its impact, writes code following TDD discipline, runs the build and tests, and commits with conventional commit messages.
 
-6. **Review**
+6. **Learn in the open**
 
-   A separate review agent validates the implementation against the spec, ADRs, and plan in an independent context, catching drift before it compounds. A security agent runs architectural assessments during design and code-level scans during implementation.
+   When implementation reveals that the spec or an ADR no longer matches reality (a data-model shift, a user-research insight, a technical constraint), the framework treats this as a first-class event. The implement agent suggests amending the affected section, the refine agent applies a scoped update, affected tasks are re-decomposed, and the loop continues. See [Spec Amendment During Implementation](../concepts/spec-amendment/).
 
-7. **Refine**
+7. **Review**
 
-   Between sprints, a refine agent scans the backlog for staleness, spec/board inconsistencies, and items that need attention. Because the framework is built on persistent artifacts (specs, ADRs, plans, tasks), any developer or agent can pick up where someone else left off.
+   A separate review agent validates the implementation against the (amended) spec, ADRs, and plan in an independent context, catching drift before it compounds. A security agent runs architectural assessments during design and code-level scans during implementation.
+
+8. **Refine**
+
+   Between slices and between sprints, a refine agent scans the backlog for staleness, spec/board inconsistencies, and items that need attention. Because the framework is built on persistent artifacts (specs, ADRs, plans, tasks), any developer or agent can pick up where someone else left off.
 
 </Steps>
 
-And because it's extensible, you can add your own instructions, skills, agents, and hooks for your specific stack, domain, or organization. The framework adapts to how your team works, not the other way around.
+The loop is the unit of delivery. And because the framework is extensible, you can add your own instructions, skills, agents, and hooks for your specific stack, domain, or organization. The framework adapts to how your team works, not the other way around.
 
 ## Next Steps
 

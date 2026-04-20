@@ -2,11 +2,15 @@
 name: devsquad.implement
 description: Execute implementation from tasks.md, GitHub issue, or Azure DevOps work item
 tools: ['agent', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/add_issue_comment', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/wit_update_work_item', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'memory']
-agents: ['devsquad.review', 'devsquad.implement.validate', 'devsquad.implement.execute', 'devsquad.implement.verify', 'devsquad.implement.finalize']
+agents: ['devsquad.review', 'devsquad.refine', 'devsquad.implement.validate', 'devsquad.implement.execute', 'devsquad.implement.verify', 'devsquad.implement.finalize']
 handoffs:
   - label: Review Implementation
     agent: devsquad.review
     prompt: Validate implementation against spec and ADRs
+    send: true
+  - label: Amend Spec (drift detected)
+    agent: devsquad.refine
+    prompt: Mid-flight amendment for spec drift detected during implementation
     send: true
 ---
 
@@ -183,6 +187,26 @@ When implementing code that uses Microsoft/Azure SDKs, APIs, or libraries, **bef
 4. If spec.md does not exist, ask whether to continue, open spec for review, or abort
 
 Use the `quality-gate` skill (spec rubric) if the spec appears incomplete.
+
+## Spec Drift Handling (Mid-Flight Amendment)
+
+Spec drift occurs when implementation reveals that the spec or an ADR no longer matches reality. It can be surfaced by two workers:
+
+- `devsquad.implement.validate` raises drift **pre-flight**, while mapping the task to the spec.
+- `devsquad.implement.execute` raises drift **mid-execution**, when code or data reveals a contract mismatch. Low-impact fast-track tasks are not exempt; if execute uncovers drift, escalate regardless of original classification.
+
+When a `spec-drift` flag appears from either worker:
+
+1. **Pause the task.** Do not proceed against a stale spec. If execute is mid-work, preserve partial progress via save-point before pausing.
+2. **Present the structured drift payload** to the developer: affected artifact and section, original statement, observed reality, impacted IDs, recommended scope, confidence.
+3. **Suggest amendment; never silently apply.** Ask the developer to confirm, reject, or defer:
+   - **Confirm**: hand off to `devsquad.refine` with `[AMEND]` prefix and the drift payload as amendment scope. Refine updates only the affected spec/ADR section and returns control. Re-decomposition is explicitly triggered next: invoke `devsquad.decompose` for the feature or slice so tasks reflect the amended artifacts. Resume implementation against the amended spec.
+   - **Reject**: the discrepancy is an implementation detail, not a spec concern. Continue the task and note the decision in the reasoning log with rationale.
+   - **Defer**: record the drift for the next `devsquad.refine` cycle and continue under the current spec, with an explicit comment in the reasoning log. In regulated/high-compliance contexts, defer is not acceptable; in that case, force confirm or abort.
+
+Amendment ceremony follows impact classification: terminology fixes are low, scoped conformance or story-boundary changes are medium, new entities or NFR changes are high (require ADR update plus explicit approval). See [Spec Amendment During Implementation](https://microsoft.github.io/devsquad-copilot/concepts/spec-amendment/).
+
+**Known limitation (v1)**: re-decomposition is currently a full feature-level regeneration via `devsquad.decompose`, not scoped to the amended section. Developers should expect the task list for the feature to be rewritten; stable task IDs and supersede semantics are tracked as follow-up work.
 
 ## Impact Classification
 
