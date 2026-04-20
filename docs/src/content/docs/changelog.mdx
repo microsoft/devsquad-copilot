@@ -8,7 +8,14 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.9.0 <Badge text="Latest" variant="success" />
+## v0.10.0 <Badge text="Latest" variant="success" />
+
+- Added `harness-learnings` skill: agents capture codebase-specific patterns (correction loops, test prerequisites, review findings) in `.memory/harness-learnings.md` with confidence scoring and two-tier maturation (local capture, then promotion to permanent controls). See [ADR-0013](https://github.com/microsoft/devsquad-copilot/blob/main/docs/framework/decisions/0013-harness-learnings.md)
+- Added hook output contract for postToolUse validation hooks: structured JSON with `decision`, `reason`, `instructions`, `files`, `severity` fields for agent self-correction
+- Updated `lint-markdown.sh` and `validate-work-item-tags.sh` to emit structured JSON with actionable fix instructions
+- Wired harness-learnings consult/capture into `implement.execute`, `implement.verify`, `review.code`, `refine.health`, `implement.finalize`, and `debugging-recovery`
+
+## v0.9.0
 
 - Added spec amendment during implementation: implement agent flags spec/ADR drift and proposes a scoped amendment; developer confirms, rejects, or defers. See the [concept doc](/devsquad-copilot/concepts/spec-amendment/)
 - `devsquad.refine` is now invocable mid-implementation via the `[AMEND]` prompt prefix for scoped spec/ADR edits

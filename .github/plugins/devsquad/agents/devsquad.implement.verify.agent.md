@@ -19,6 +19,10 @@ The coordinator passes:
 
 ## Verification Steps
 
+### 0. Consult Known Prerequisites
+
+Read `.memory/harness-learnings.md` (if it exists) and check for entries with Phase = verify whose Scope overlaps with the changed files. Apply high-confidence Guidance (e.g., required seed scripts, env vars, build order) before running tests.
+
 ### 1. Build and Lint Check
 
 - Use `read/problems` to check the Problems panel for compilation errors, lint, and warnings
@@ -77,3 +81,4 @@ Findings:
 - Execute only commands that already exist in the project
 - Build failures are Critical, test regressions are Major, coverage gaps are Major
 - If the test baseline already had failures, only flag NEW failures as regressions
+- If a prerequisite was discovered through trial and error (e.g., a seed script needed before tests), capture it via the `harness-learnings` skill so future sessions skip the discovery step

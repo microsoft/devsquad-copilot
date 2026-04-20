@@ -47,6 +47,7 @@ The test must fail BEFORE the fix and pass AFTER. If the test passes before the 
 - **Follow TDD**: Execute test tasks before corresponding implementation tasks
 - **ADR compliance**: Follow documented architectural decisions
 - **Traceability**: Add comment referencing spec/task in generated code
+- **Consult harness learnings**: Before coding, read `.memory/harness-learnings.md` (if it exists) and check for entries whose Scope overlaps with the task's files. Apply high-confidence Guidance proactively to avoid known pitfalls.
 
 ### 4. Azure Best Practices
 
@@ -142,5 +143,6 @@ Spec drift (if any):
 - Do not accumulate all changes for a single commit at the end
 - **Save-point protocol**: Commit after each passing task or [P] group. If tests fail after the next change, revert to the last committed state before investigating — do not debug on top of broken state
 - If tests fail after implementation, use the `debugging-recovery` skill: reproduce, localize, fix root cause, guard with test (max 2 attempts then escalate)
+- After a self-correction loop (test failure or lint failure that required fixes), capture a learning via the `harness-learnings` skill if the root cause was codebase-specific (not a typo or one-time error)
 - Do not modify code outside the scope of the current task. If you notice issues in adjacent code, report them in the "Not touched" section
 - Report final status with work summary

@@ -203,3 +203,5 @@ After fixing a bug:
 - [ ] All existing tests pass
 - [ ] Build succeeds
 - [ ] The original failure scenario is verified end-to-end
+
+If the triage revealed a non-obvious codebase-specific pattern (e.g., hidden prerequisite, undocumented dependency between modules, environment-specific behavior), capture it via the `harness-learnings` skill so future sessions avoid the same discovery process.

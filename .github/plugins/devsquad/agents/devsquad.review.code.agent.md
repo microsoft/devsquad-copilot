@@ -17,6 +17,10 @@ The coordinator passes:
 
 ## Validation Steps
 
+### 0. Consult Known Anti-patterns
+
+Read `.memory/harness-learnings.md` (if it exists) and check for entries with Phase = review whose Scope overlaps with the changed files. If a known anti-pattern from a previous review matches code in the current diff, include it as a finding with elevated confidence.
+
 ### 1. Codebase Consistency
 
 - Compare naming conventions with existing adjacent code
@@ -71,3 +75,4 @@ Codebase Consistency Table:
 - Do not flag style issues already handled by linters/formatters.
 - Do not inflate severity. Minor is minor, even if it is "ugly".
 - Apply Chesterton's Fence: before flagging code for removal or simplification, verify why it exists (check git blame if needed). Do not recommend removing code you do not fully understand.
+- After producing findings, if any Major or Critical finding represents a codebase-specific pattern (not a generic code quality issue), capture it via the `harness-learnings` skill so future reviews check proactively.

@@ -74,3 +74,4 @@ Tech Debt:
 - Do not invent problems. If the project is healthy, report clean.
 - For Azure DevOps projects, skip GitHub-specific checks (PRs, security alerts).
 - No duplicates: report each problem only once at highest severity.
+- If a drift pattern has been detected before (same type of staleness or recurring alert), capture it via the `harness-learnings` skill so future sessions anticipate it.

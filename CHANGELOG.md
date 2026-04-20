@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.10.0] - 2026-04-20
+
+### Added
+
+- **`harness-learnings` skill**: Capture and consult codebase-specific learnings across the lifecycle. Agents record patterns discovered through correction loops, review findings, and test prerequisites in `.memory/harness-learnings.md`. Two-tier maturation: fast local capture (Tier 1) with confidence scoring, promotion to permanent harness controls via `devsquad.extend` (Tier 2). See ADR-0013.
+- **Hook output contract**: PostToolUse validation hooks now emit structured JSON with `decision`, `reason`, `instructions`, `files`, and `severity` fields, enabling agents to self-correct from hook feedback without interpreting raw output.
+- **ADR-0013 (Harness Learnings)**: Architecture decision for `.memory`-based lifecycle learning mechanism, inspired by harness engineering (Fowler 2025, OpenAI 2025).
+- **Agent wiring for harness-learnings**: `implement.execute`, `implement.verify`, `review.code`, `refine.health`, `implement.finalize`, and `debugging-recovery` now consult and capture learnings at their natural feedback points.
+
+### Changed
+
+- **`lint-markdown.sh`**: Now emits structured JSON with per-violation fix instructions instead of raw markdownlint output.
+- **`validate-work-item-tags.sh`**: Now emits structured JSON with specific tag-addition instructions instead of plain text warnings.
+- **`lint-markdown.sh` grep safety**: Wrapped `grep -oE` in a conditional to prevent script termination under `set -e` on unexpected line formats.
+
 ## [v0.9.0] - 2026-04-20
 
 ### Added

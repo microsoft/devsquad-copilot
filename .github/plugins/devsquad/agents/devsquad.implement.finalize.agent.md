@@ -65,3 +65,4 @@ Next Task Suggestion: [task ID and title, or "none"]
 
 - This agent does NOT close issues/work items automatically. The PR uses `Closes #N` to close on merge.
 - If CI fails, provide error summary for the coordinator to decide next steps.
+- If human PR review feedback identifies a preventable issue (something the agent should have caught), capture it via the `harness-learnings` skill so future implementations avoid the same mistake.

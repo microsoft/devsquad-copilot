@@ -50,13 +50,37 @@ Configuration lives in `hooks.json` with command path and timeout (default 30 se
   </Card>
 </CardGrid>
 
-## Hook Output
+## Hook Output Contract
+
+PostToolUse validation hooks return structured JSON designed for agent self-correction. Hooks that validate or lint agent output must produce output following this contract:
+
+```json
+{
+  "decision": "block | warn | info",
+  "reason": "Human-readable summary of what was found",
+  "instructions": "Step-by-step fix instructions the agent should follow",
+  "files": ["path/to/affected/file"],
+  "severity": "critical | major | minor"
+}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `decision` | Yes | `block` = agent must fix before continuing. `warn` = agent should fix but may continue. `info` = informational only. |
+| `reason` | Yes | What was found, in plain language |
+| `instructions` | Yes | Actionable steps the agent should take to fix the issue. This is the key field: it tells the agent *how* to fix, not just *what* broke. |
+| `files` | No | Array of affected file paths (empty array if not file-specific) |
+| `severity` | No | `critical`, `major`, or `minor`. Defaults to `minor` if omitted. |
 
 Hooks return JSON on stdout with results. Stderr is used for descriptive error messages. All hooks must:
 - Include a bash shebang (`#!/bin/bash` or `#!/usr/bin/env bash`)
-- Output JSON on a single line
+- Output JSON on a single line (use `jq -nc` to construct)
 - Complete within their configured timeout. Built-in hooks use a 10-second timeout. The schema default is 30 seconds, configurable per hook via `timeoutSec`
 - Be idempotent (safe to run multiple times)
+
+<Aside type="note">
+  SessionStart hooks (detect-repo-platform, detect-branching-strategy, detect-tool-extensions) use a simpler format with `decision` and `reason` fields on stderr for warnings. The full output contract above applies to postToolUse validation hooks.
+</Aside>
 
 ---
 ## What to Read Next

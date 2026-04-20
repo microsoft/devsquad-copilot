@@ -35,6 +35,8 @@ This project was shaped by ideas, patterns, and prior art from many sources acro
 | [How I estimate work](https://www.seangoedecke.com/how-i-estimate-work/) by Sean Goedecke | Work estimation approach that informed complexity analysis |
 | [Chesterton's Fence: A Lesson in Thinking](https://fs.blog/chestertons-fence/) (Farnam Street) | Principle adopted in code review: understand why code exists before recommending removal |
 | [Compatibility is a Feature](https://yusufaytas.com/compatibility-is-a-feature) by Yusuf Aytas | Mixed-version coexistence, rollback-against-state, and boundary-drift thinking that shaped the Compatibility and Transition section in feature specs |
+| [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) by Martin Fowler | Feedforward/feedback taxonomy for coding agent controls that shaped the harness-learnings skill and hook output contract |
+| [Harness Engineering: Leveraging Codex in an Agent-First World](https://openai.com/index/harness-engineering/) (OpenAI) | Steering loop and layered architecture enforcement patterns that informed the two-tier learning mechanism in ADR-0013 |
 
 ## Design Patterns and Standards
 
