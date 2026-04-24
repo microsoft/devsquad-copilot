@@ -80,7 +80,7 @@ After each edit cycle:
 - **`search/usages`** when renaming or changing signatures
 - **`edit/rename`** for symbol renames (prefer over manual find-and-replace)
 
-**Prefer LSP tools** (`search/usages`, `edit/rename`) over grep for code symbols.
+**Prefer LSP tools** (`search/usages`, `edit/rename`) over grep for code symbols. LSP provides precise, compiler-backed results and reduces token consumption by returning structured data instead of raw file contents. When LSP tools return empty results unexpectedly, check `.memory/lsp-status.md`. If no LSP server is configured, fall back to grep but inform the developer that code navigation is less precise without LSP and recommend running `/lsp` to check status.
 
 ### 7. Progress Tracking
 

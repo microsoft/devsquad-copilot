@@ -471,6 +471,14 @@ After each edit cycle, use IDE tools to detect problems before running tests:
 
 ### LSP Tools vs Grep: When to Use Each
 
+LSP (Language Server Protocol) tools use the language's own compiler or analyzer to understand code structure. This gives three advantages over text-based search that directly improve agent effectiveness:
+
+- **Precision**: `search/usages` finds actual references to a symbol, not text matches with the same name. A grep for `handlePayment` matches comments, strings, and unrelated symbols in other scopes. LSP finds only the real call sites. Fewer false positives means fewer wrong edits.
+- **Token efficiency**: LSP returns compact, structured results (symbol name, location, type) instead of requiring the agent to read entire files into context to understand code relationships. This reduces token consumption and leaves more context budget for reasoning about the actual task.
+- **Safer refactoring**: `edit/rename` updates statically analyzable references across the project with correct scope awareness (imports, namespaces, re-exports). Grep-based rename cannot distinguish between symbols that share a name in different scopes. Note: dynamic references (reflection, string interpolation, metaprogramming) are not covered by LSP rename and still require manual verification.
+
+These tools are powered by LSP servers running in the background. When no LSP server is configured for the project's language, they silently fall back to less precise text search or return empty results. Run `/lsp` to check which servers are active.
+
 **Prefer LSP tools** (`search/usages`, `edit/rename`) when:
 - Renaming symbols (functions, classes, variables, methods, parameters)
 - Finding all references to a symbol across the codebase
@@ -481,7 +489,10 @@ After each edit cycle, use IDE tools to detect problems before running tests:
 - Searching for string literals, comments, or configuration values
 - Working with file types that have no LSP support (e.g., plain text, CSV, logs)
 - Searching across non-code files (documentation, templates)
-- The LSP tool returns no results (language server may not be available for the project's stack)
+
+When an LSP tool returns no results, distinguish two cases before falling back:
+- **Zero usages (legitimate)**: the symbol genuinely has no other references. Verify by checking the symbol exists and the file is saved.
+- **No LSP server running**: check `.memory/lsp-status.md`. If no LSP config exists, inform the developer that code navigation is operating in text-search mode with less precision and higher token usage, and recommend running `/lsp` to check status.
 
 **Rule**: Never use `search/textSearch` + manual `edit/editFiles` to rename a code symbol when `edit/rename` is available. LSP-based rename handles imports, namespaces, and scope correctly; grep-based rename does not.
 

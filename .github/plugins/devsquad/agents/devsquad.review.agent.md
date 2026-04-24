@@ -77,7 +77,7 @@ Checking artifacts for review...
 Before starting validation, collect IDE data to complement static analysis:
 
 1. **`read/changes`** — List all files with source control changes. This defines the actual review scope (which files were touched).
-2. **`search/usages`** — For each new or modified public symbol, check references to ensure the API is consumed correctly.
+2. **`search/usages`** — For each new or modified public symbol, check references to ensure the API is consumed correctly. This tool is powered by LSP; if it returns empty results unexpectedly, check `.memory/lsp-status.md` and note in the review log if LSP is unavailable (text-search fallback is less precise).
 3. **`read/problems`** — Query IDE errors and warnings. Any compilation or lint error is an automatic finding of Major severity.
 
 **If minimum artifacts do not exist** (spec or plan):
