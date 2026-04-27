@@ -38,7 +38,7 @@ Before presenting suggestions, check if there are open PRs in the repository tha
 ```bash
 # List open PRs in the repository
 # GitHub: github/list_pull_requests(owner, repo, state: "open")
-# Azure DevOps: ado/list_pull_requests (status: "Active")
+# Azure DevOps: ado/repo_pull_request(action: "list", status: "active")
 ```
 
 If there are open PRs, check if the suggested tasks depend on the code in those PRs (same user story, later phase, or explicit dependency in tasks.md).

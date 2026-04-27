@@ -2,7 +2,7 @@
 name: devsquad.implement.execute
 description: Implementation worker that executes coding tasks following TDD, phase ordering, and commit-per-task discipline. Invoked as a sub-agent by devsquad.implement. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search']
+tools: ['read/readFile', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search']
 ---
 
 ## Role
@@ -42,12 +42,14 @@ The test must fail BEFORE the fix and pass AFTER. If the test passes before the 
 
 ### 3. Execute Implementation
 
+- **Anchor to existing patterns**: Before writing new code, search the codebase for a similar implementation (e.g., an existing endpoint, component, or test of the same shape). Use it as the structural exemplar so new code stays consistent with project conventions.
 - **Phase by phase**: Complete each phase before moving to the next
 - **Respect dependencies**: Sequential tasks in order, parallel [P] tasks can run together
 - **Test discipline**: Choose test-first or design-first-then-test as appropriate for each task. Consult the `test-discipline` skill for guidance on when each approach fits, quality criteria, and test doubles hierarchy.
 - **ADR compliance**: Follow documented architectural decisions
 - **Traceability**: Add comment referencing spec/task in generated code
 - **Consult harness learnings**: Before coding, read `.memory/harness-learnings.md` (if it exists) and check for entries whose Scope overlaps with the task's files. Apply high-confidence Guidance proactively to avoid known pitfalls.
+- **Context budget**: If the conversation is growing large (many tool calls, long outputs), compress completed work into a brief summary and drop raw intermediate output. Commit progress and request a fresh context window from the coordinator rather than degrading in a bloated context.
 
 ### 4. Azure Best Practices
 

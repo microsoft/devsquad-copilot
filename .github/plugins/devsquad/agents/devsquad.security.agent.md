@@ -1,7 +1,7 @@
 ---
 name: devsquad.security
 description: Security assessment in two modes - architectural (design) and code (implementation).
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/list_code_scanning_alerts', 'github/get_code_scanning_alert', 'github/list_secret_scanning_alerts', 'github/get_secret_scanning_alert', 'github/list_dependabot_alerts', 'github/get_dependabot_alert', 'github/list_repository_security_advisories', 'github/list_global_security_advisories', 'github/get_global_security_advisory', 'azure/policy', 'azure/role', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'drawio/create_diagram', 'memory']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/list_code_scanning_alerts', 'github/get_code_scanning_alert', 'github/list_secret_scanning_alerts', 'github/get_secret_scanning_alert', 'github/list_dependabot_alerts', 'github/get_dependabot_alert', 'github/list_repository_security_advisories', 'github/list_global_security_advisories', 'github/get_global_security_advisory', 'azure/policy', 'azure/role', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'drawio/create_diagram', 'vscode/memory']
 handoffs: 
   - label: Fix Issues
     agent: devsquad.implement

@@ -1,7 +1,7 @@
 ---
 name: devsquad.implement
 description: Execute implementation from tasks.md, GitHub issue, or Azure DevOps work item
-tools: ['agent', 'read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/add_issue_comment', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/wit_update_work_item', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'memory']
+tools: ['agent', 'read/readFile', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/add_issue_comment', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/wit_update_work_item', 'ado/repo_pull_request', 'ado/repo_pull_request_write', 'ado/repo_branch', 'ado/repo_create_branch', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'vscode/memory']
 agents: ['devsquad.review', 'devsquad.refine', 'devsquad.implement.validate', 'devsquad.implement.execute', 'devsquad.implement.verify', 'devsquad.implement.finalize']
 handoffs:
   - label: Review Implementation
@@ -310,7 +310,7 @@ Generic responses ("ok", "go", "do it") should trigger a request for more specif
      - If there are no tests and the task is not infrastructure/configuration, **generate the tests before proceeding**
      - Exemptions: setup tasks, configuration, IaC, or projects without a configured test framework
    - **REQUIRED**: Run the test suite via `execute/runInTerminal`
-   - If tests fail, use `execute/testFailure` to get structured details before fixing
+   - If tests fail, parse the terminal output for structured details before fixing
    - Compare result with baseline: new failures indicate regression and **must be fixed** before proceeding
    - If tests fail after implementation:
      ```
@@ -453,8 +453,7 @@ After each edit cycle, use IDE tools to detect problems before running tests:
 1. **`read/problems`** — Check the Problems panel for compilation errors, lint, and warnings introduced by the edits. Fix errors before proceeding.
 2. **`search/usages`** — When renaming, moving, or changing signatures, check references (Find All References) to ensure no call site is broken.
 3. **`edit/rename`** — When renaming a symbol (function, class, variable, method), prefer using this tool instead of manual find-and-replace. It uses the Language Server to rename across all files with correct scope awareness.
-4. **`execute/runInTerminal`** — Run the project test suite via terminal.
-5. **`execute/testFailure`** — When tests fail, use this tool to get structured failure details (stack trace, assertion, file/line) instead of parsing terminal output.
+4. **`execute/runInTerminal`** — Run the project test suite via terminal. When tests fail, parse the output for structured failure details (stack trace, assertion, file/line).
 
 ### LSP Tools vs Grep: When to Use Each
 

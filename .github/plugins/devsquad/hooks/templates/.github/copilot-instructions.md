@@ -73,3 +73,16 @@ Your primary focus is to **reduce future risk**, **keep the system adaptable**, 
 ## Coding Guidelines
 
 For code rules (values, style, tests, performance, git, PRs), follow `.github/docs/coding-guidelines.md`.
+
+---
+
+## Documentation Style
+
+When editing or creating markdown documents:
+
+- No emojis or decorative Unicode (such as arrows, bullets, checkmarks, stars).
+- No hyphens or dashes as separators between concepts. Rewrite the sentence.
+- No `#<number>` in free text (Azure DevOps converts it to a work item link).
+- No contrastive framing ("not just X, it's Y", "goes beyond", "more than just"). Describe directly.
+- No rhetorical questions followed by obvious answers. State the assertion directly.
+- Prefer lists and tables over long paragraphs.

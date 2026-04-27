@@ -2,7 +2,7 @@
 name: devsquad.implement.verify
 description: Implementation worker that runs build, tests, coverage checks, and lint validation. Invoked as a sub-agent by devsquad.implement. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'read/problems', 'search/changes', 'execute/testFailure', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput']
+tools: ['read/readFile', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---
 
 ## Role
@@ -32,7 +32,7 @@ Read `.memory/harness-learnings.md` (if it exists) and check for entries with Ph
 
 - Detect the project's test command (via `package.json`, `Makefile`, `pom.xml`, `Cargo.toml`, `pyproject.toml`, or `plan.md`)
 - Run the existing test suite via `execute/runInTerminal`
-- If tests fail, use `execute/testFailure` to get structured failure details
+- If tests fail, parse the terminal output for structured failure details
 - Compare result with baseline: new failures indicate regression
 
 ### 3. Test Coverage Verification
@@ -45,7 +45,14 @@ Read `.memory/harness-learnings.md` (if it exists) and check for entries with Ph
 
 Exemptions: setup tasks, configuration, IaC, or projects without a configured test framework.
 
-### 4. Regression Analysis
+### 4. Spec Conformance Check
+
+Beyond green tests, verify the diff against the spec's acceptance criteria:
+- For each CC-XXX criterion mapped to this task, confirm the implementation satisfies the intent beyond test existence alone
+- Check that the change does not silently break backward compatibility unless the spec explicitly requires it
+- Identify behavioral paths in the diff that have no corresponding spec criterion or test and flag them as potential gaps
+
+### 5. Regression Analysis
 
 If tests fail after implementation:
 - Identify which tests are new failures vs pre-existing
@@ -70,7 +77,12 @@ Coverage:
   CC-XXX mapped to tests: [list]
   CC-XXX missing tests: [list or "none"]
 
-Verdict: [PASS | REGRESSION | COVERAGE_GAP]
+Spec Conformance:
+  CC-XXX satisfied by implementation: [list]
+  CC-XXX not satisfied: [list or "none"]
+  Untested behavioral paths: [list or "none"]
+
+Verdict: [PASS | REGRESSION | COVERAGE_GAP | CONFORMANCE_GAP]
 
 Findings:
 - [ID]: [Title] ([Severity]) - [Details]

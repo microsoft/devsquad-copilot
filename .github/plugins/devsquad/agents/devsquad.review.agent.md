@@ -1,7 +1,7 @@
 ---
 name: devsquad.review
 description: Validate implementation against spec, ADRs, and plan with independent context. Produces a review log with findings by severity.
-tools: ['read/readFile', 'search/changes', 'read/problems', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/pull_request_read', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'memory', 'agent']
+tools: ['read/readFile', 'search/changes', 'read/problems', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/pull_request_read', 'github/pull_request_review_write', 'github/add_comment_to_pending_review', 'ado/repo_pull_request', 'ado/repo_pull_request_thread', 'ado/repo_pull_request_thread_write', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'vscode/memory', 'agent']
 agents: ['devsquad.review.spec', 'devsquad.review.adr', 'devsquad.review.code', 'devsquad.review.security', 'devsquad.review.tests']
 handoffs:
   - label: Fix Issues

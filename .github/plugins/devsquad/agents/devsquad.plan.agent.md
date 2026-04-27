@@ -1,7 +1,7 @@
 ---
 name: devsquad.plan
 description: Execute the implementation planning flow using the plan template to generate design artifacts.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'memory', 'agent']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search', 'drawio/create_diagram', 'vscode/memory', 'agent']
 agents: ['devsquad.security', 'devsquad.plan.context', 'devsquad.plan.architecture', 'devsquad.plan.design']
 handoffs: 
   - label: Create Tasks

@@ -115,10 +115,18 @@ Use `Integration Branch` from the config. If it doesn't exist, use the repositor
 
 ## Create Pull Request
 
-Before creating, check if a PR already exists for the branch:
+### Detect Platform
+
+Read `.memory/board-config.md` to determine the repo platform. If it contains `Platform: azure-devops` or the git remote points to `dev.azure.com` or `visualstudio.com`, use ADO tools. Otherwise use GitHub tools.
+
+### Check for Existing PR
 
 ```
+# GitHub
 github/list_pull_requests(owner, repo, head: "<owner>:<branch>", state: "open")
+
+# Azure DevOps
+ado/repo_pull_request(action: "list", status: "active", sourceRefName: "refs/heads/<branch>")
 ```
 
 If an open PR already exists, inform and ask if they want to update the existing one.
@@ -153,6 +161,16 @@ Create PR with:
   - [ ] Documentation updated (if needed)
   ```
 - **Labels**: Inherit labels from the issue (feature, priority, etc.)
+
+Use the platform-appropriate tool:
+
+```
+# GitHub
+github/create_pull_request(owner, repo, title, body, head: "<branch>", base: "<target>")
+
+# Azure DevOps
+ado/repo_pull_request_write(action: "create", title, description, sourceRefName: "refs/heads/<branch>", targetRefName: "refs/heads/<target>")
+```
 
 After creating the PR, ask about reviewers:
 

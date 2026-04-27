@@ -2,7 +2,7 @@
 name: devsquad.implement.finalize
 description: Implementation worker that handles PR creation, board updates, and next task suggestion. Invoked as a sub-agent by devsquad.implement. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/changes', 'search/listDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/add_issue_comment', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/wit_update_work_item']
+tools: ['read/readFile', 'search/changes', 'search/listDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/create_pull_request', 'github/list_pull_requests', 'github/pull_request_read', 'github/update_pull_request', 'github/add_issue_comment', 'github/get_job_logs', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/repo_pull_request', 'ado/repo_pull_request_write']
 ---
 
 ## Role

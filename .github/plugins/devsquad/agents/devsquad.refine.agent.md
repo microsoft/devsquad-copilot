@@ -1,7 +1,7 @@
 ---
 name: devsquad.refine
 description: Analyze backlog health, detect inconsistencies between specs/ADRs and work items, and identify items that need attention. Also invocable mid-implementation for scoped spec/ADR amendment when drift is detected.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_list', 'github/search_code', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'ado/wit_get_work_item', 'ado/search_workitem', 'agent']
+tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_list', 'github/search_code', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/repo_pull_request', 'agent']
 agents: ['devsquad.refine.artifacts', 'devsquad.refine.health']
 handoffs:
   - label: Update Spec
