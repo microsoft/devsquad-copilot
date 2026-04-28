@@ -12,6 +12,7 @@ This project was shaped by ideas, patterns, and prior art from many sources acro
 | [mgechev/skills-best-practices](https://github.com/mgechev/skills-best-practices) | Best practices for authoring GitHub Copilot skills |
 | [bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) | Agent-driven development methodology and orchestration patterns |
 | [github/awesome-copilot](https://github.com/github/awesome-copilot) | Curated collection of GitHub Copilot resources and ecosystem references |
+| [walkinglabs/awesome-harness-engineering](https://github.com/walkinglabs/awesome-harness-engineering) | Curated harness engineering resources covering context management, evals, safe autonomy, and agent runtime design that informed enhancements to pattern anchoring, context backpressure, spec conformance verification, and failure capture |
 
 ## Research and Papers
 
