@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.11.0] - 2026-04-28
+
+### Added
+
+- **New skills**: `test-discipline` (pragmatic TDD), `deep-clarification` (decision-tree interview), `domain-glossary` (term extraction and consistency), `triage-workflow` (label-based state machine for issue triage).
+- **`devsquad.triage` agent**: orchestrates issue intake, bug reproduction, and state transitions.
+- **LSP server detection hook**: sessionStart hook checks for LSP config and seeds `.memory/lsp-status.md` so agents can adapt tool strategy.
+- **Pattern anchoring** in `implement.execute`: search the codebase for similar implementations before writing new code.
+- **Context budget awareness** in `implement.execute`: compress completed work and request fresh context when conversation grows large.
+- **Spec conformance check** in `implement.verify`: verify the diff against acceptance criteria beyond green tests, with `CONFORMANCE_GAP` verdict.
+- **Prompt injection guard** in `debugging-recovery`: untrusted content warning before the Localize step.
+- **Documentation style rules** in `copilot-instructions.md`: universal coverage for all agents, not only devsquad.
+- **Platform-aware PR creation** in `pull-request` skill: detects GitHub vs Azure DevOps from board-config and uses corresponding MCP tools.
+- **ADO repo tools** wired into `implement`, `implement.finalize`, `review`, and `refine` agents (`repo_pull_request`, `repo_pull_request_write`, `repo_branch`, `repo_create_branch`, `repo_pull_request_thread`, `repo_pull_request_thread_write`).
+- **Conductor routing** for artifact management: branch, commit, push, and PR operations for phase artifacts (envisioning, specs, ADRs) handled directly by the conductor without delegating to implement.
+- **Microsoft Clarity analytics** on docs site.
+
+### Changed
+
+- **Mandatory failure capture** in `debugging-recovery`: every resolved fix now captures a structured record to harness-learnings (previously conditional).
+- **`implement.execute`**: replaced dogmatic TDD with `test-discipline` skill reference, consolidated Bug Fix Flow.
+- **`devsquad.plan`**: added Refactor Mode with `deep-clarification` integration.
+- **`devsquad.specify`**: wired `domain-glossary` and `deep-clarification` skills.
+- **`devsquad.decompose`**: wired `domain-glossary`, added needs-human count.
+- **`work-item-creation` skill**: durability rules, HITL/AFK autonomy classification.
+- **Specs instruction**: added vertical slice (tracer bullet) terminology.
+- **Tasks instruction**: added tracer-bullet-first guidance.
+- **`next-task` skill**: updated ADO PR tool reference to `ado/repo_pull_request`.
+- **LSP guidance** in implement and review agents: educational guidance on LSP precision and degraded fallback when unavailable.
+
+### Fixed
+
+- Renamed `memory` to `vscode/memory` in 5 agents (conductor, implement, review, plan, security).
+- Removed stale `execute/testFailure` from 3 agents and body references.
+
 ## [v0.10.0] - 2026-04-20
 
 ### Added

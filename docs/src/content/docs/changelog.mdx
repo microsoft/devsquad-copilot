@@ -8,7 +8,21 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.10.0 <Badge text="Latest" variant="success" />
+## v0.11.0 <Badge text="Latest" variant="success" />
+
+- Added skills: `test-discipline`, `deep-clarification`, `domain-glossary`, `triage-workflow`
+- Added `devsquad.triage` agent for issue intake and bug reproduction
+- Added LSP server detection hook with `.memory/lsp-status.md` seeding
+- Added pattern anchoring, context budget awareness, and spec conformance check to implement agents
+- Added prompt injection guard in `debugging-recovery`
+- Added documentation style rules to `copilot-instructions.md` for universal coverage
+- Added platform-aware PR creation (GitHub vs Azure DevOps) in `pull-request` skill
+- Wired ADO repo MCP tools into implement, finalize, review, and refine agents
+- Added conductor routing for artifact management (branch/push/PR without delegating to implement)
+- Made failure capture mandatory in `debugging-recovery` (previously conditional)
+- Fixed stale tool references: `memory` renamed to `vscode/memory`, removed `execute/testFailure`
+
+## v0.10.0
 
 - Added `harness-learnings` skill: agents capture codebase-specific patterns (correction loops, test prerequisites, review findings) in `.memory/harness-learnings.md` with confidence scoring and two-tier maturation (local capture, then promotion to permanent controls). See [ADR-0013](https://github.com/microsoft/devsquad-copilot/blob/main/docs/framework/decisions/0013-harness-learnings.md)
 - Added hook output contract for postToolUse validation hooks: structured JSON with `decision`, `reason`, `instructions`, `files`, `severity` fields for agent self-correction
