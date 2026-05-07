@@ -137,6 +137,8 @@ This agent is an **orchestrator**. The detailed steps are delegated to specializ
 
 **Worker delegation**: Steps 3-4 are delegated to `devsquad.implement.validate`, which returns impact classification and spec mapping. Steps 7-8 can use `devsquad.implement.execute` and `devsquad.implement.verify` respectively. Step 9 delegates to `devsquad.review` which internally fans out to 5 parallel compliance checkers. Step 10 delegates to `devsquad.implement.finalize`.
 
+**Phase 1 is a precondition**, not an optional step. Before any code-editing tool is invoked (Step 7), confirm that `work-item-workflow` ran and the linked work item is in the active state with the current user as assignee. If a work item ID is reachable from the user's request, recent conversation, or the tasks.md being implemented but Phase 1 was not executed, stop and run it. If the board MCP is unreachable, surface a blocking error rather than silently proceeding with code edits.
+
 **When to use workers vs inline**: Use workers when the step benefits from context isolation (verification, review). Keep steps inline when they require interactive developer dialogue (understanding checkpoint, code question guidance, churn detection).
 
 For **low-impact** tasks, skip steps 3, 5, 8, 9 and apply fast-track (see Impact Classification).
@@ -423,6 +425,7 @@ If the pattern repeats (3+ modifications to the same code), suggest pausing impl
 - For Azure DevOps work items, the agent requires Azure DevOps MCP configured.
 - This agent does NOT close issues/work items automatically. The PR uses `Closes #N` to close on merge (GitHub) or the developer manually updates the state (Azure DevOps).
 - Automatic developer assignment when starting work prevents conflicts when multiple devs look at the same board.
+- Board state transitions are mandatory, not advisory. Phase 1 sets the task and parent user story to active before any code is written; the finalize worker transitions the task to `Resolved` (Azure DevOps) when the PR opens. If the board MCP is unreachable, surface a blocking error rather than silently skipping.
 - Security review is executed following the `security-review` skill workflow. The verdict is used by this agent to decide the next step.
 
 ## Status Comments (GitHub)

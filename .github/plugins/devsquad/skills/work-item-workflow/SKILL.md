@@ -7,11 +7,12 @@ description: "Work item workflow for implementation. Use when starting work on a
 
 ## Work Source Detection
 
-Analyze the user's input to determine the source:
+Classify the work source before any other action. Resolve in this priority order:
 
-- **GitHub Issue**: user mentions an issue (e.g., "implement issue #42", "#15")
-- **Azure DevOps Work Item**: user mentions a work item (e.g., "work item 1234", "task 5678")
-- **tasks.md**: no issue/work item mentioned, skip this skill
+1. **GitHub Issue or Azure DevOps Work Item** if a numeric ID is referenced anywhere in the user's message, the recent conversation, or the tasks.md being implemented (e.g., "implement issue #42", "#15", "work item 1234", "task 5678", or a tasks.md row that links to `#1690`). Any such reference activates board mode for the entire implementation, even if the user phrases the request as "implement the Terraform task" or "continue the work".
+2. **tasks.md only** if no issue or work item ID is reachable from the current context. Skip this skill.
+
+When in doubt between the two, choose board mode and read the work item. Reading is read-only and cheap; silently skipping board updates is the failure this skill exists to prevent.
 
 ### Reading the Work Item
 
@@ -35,12 +36,15 @@ Execute in order. If any check blocks, **STOP** and inform the user.
 
 ### 2. State update
 
-- Move the task to active state:
+State transitions are mandatory, not advisory. If the board MCP is unreachable, surface a blocking error rather than skipping the transition.
+
+- Move the task to the active state:
   - **GitHub**: Add label `status:in-progress`
-  - **Azure DevOps**: Change State per process template (invoke `board-config` skill for details)
+  - **Azure DevOps**: Change State per process template (invoke `board-config` skill for details; typical: `New` to `Active`)
 - Check the parent User Story:
-  - If the parent US is not in progress, update it as well
+  - If the parent is not yet in the active state, update it as well
   - Inform: "User Story #[ID] moved to In Progress."
+- Confirm the transition succeeded by re-reading the work item and verifying the new state. If the read shows the old state, retry once and then surface the failure to the user before any code is written.
 
 ### 3. Dependency check
 
