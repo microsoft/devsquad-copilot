@@ -8,7 +8,20 @@ banner:
 
 import { Badge, LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-## v0.11.1 <Badge text="Latest" variant="success" />
+## v0.12.0 <Badge text="Latest" variant="success" />
+
+- Renamed `Compliance Criteria` / `Compliance Cases` to `Conformance Criteria` / `Conformance Cases` in the feature spec template (consumers must run `sdd-init.sh update-all` to pick it up; existing specs keep the old heading until owners rename it)
+- Replaced `✅ / ❌ / ⚠️` symbols in the ADR template evaluation table with `meets` / `partially meets` / `fails` text values
+- Added template provenance and a `manifest.lock` to `sdd-init.sh`: each managed file carries a one-line provenance header and `.github/devsquad/manifest.lock` records `plugin_version`, `template_sha`, and `written_at` per file
+- Added `update-all --dry-run` to preview changes without writing, and timestamped `.pre-<version>-<unix>.bak` backups before overwriting
+- Added `version-parity.yml` workflow that fails a PR if the two `plugin.json` files and `marketplace.json` disagree on the plugin version
+- Added two CHANGELOG categories (`Breaking / Migration Required`, `Template changes (consumer action required)`) so compatibility impact is explicit per release
+- Fixed work item state transitions skipped during implement: `work-item-workflow` Phase 1 (assignee + Active) is now a precondition, names the exact MCP calls (`github/issue_write` with `assignees`, `ado/wit_update_work_item` with `System.AssignedTo`), and stops on assignment failure; `devsquad.implement.finalize` enforces an explicit state machine (`Active` on start, `Resolved` on PR open, `Closed` on merge)
+- Fixed harness learnings rarely captured automatically: `implement.execute`, `implement.verify`, `review.code`, and `implement.finalize` now have a `Learning Capture Checkpoint` with concrete numeric triggers (2+ correction attempts, REGRESSION/COVERAGE_GAP verdicts, Major/Critical findings, contradicted human PR feedback) and a `[Y]/[N]/[E]` prompt with `[Y]` as default
+- Fixed PR bodies silently failing to auto-close issues: `pull-request` skill now lists the recognized closing keywords (`close/closes/closed/fix/fixes/fixed/resolve/resolves/resolved`), distinguishes resolved (`Closes`) from referenced (`Refs`), covers the spike PR case, and adds a pre-flight check that verifies a closing keyword exists for every resolved work item before creating the PR
+- Fixed version drift: `marketplace.json` was at `0.11.0` while both `plugin.json` files were at `0.11.1`; bumped to match
+
+## v0.11.1
 
 - Fixed accidental pushes to integration branch: added integration branch guard to `git-commit` skill (checks before committing), `pull-request` skill (guards all push paths including PR creation), and `copilot-instructions.md` (framework-level rule). The agent now asks the user whether to create a feature branch when on `main`, `master`, or `develop`.
 

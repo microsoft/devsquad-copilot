@@ -14,8 +14,6 @@ compatibility-focused categories that always appear at the top of a release:
 
 See `CONTRIBUTING.md` for full conventions.
 
-## [Unreleased]
-
 ## [v0.12.0] - 2026-05-09
 
 ### Template changes (consumer action required)
