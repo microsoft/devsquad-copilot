@@ -16,7 +16,20 @@
 - **Value delivered**: [Why it matters]
 - **Scope**: [What is included / excluded]
 - **Change type**: [new surface | additive to existing | modifies existing boundary | removes existing surface]
+- **Describes AI capability**: [yes | no]
 - **Primary success criterion**: [Most important metric]
+
+<!--
+  Describes AI capability:
+    Answer "yes" when the feature embeds an AI agent that makes decisions,
+    invokes tools, or acts on behalf of a user. When "yes", complete the
+    "AI Cost Posture" section below. Behavioral constraints on the agent
+    (rules it must honor even when tools permit) belong in the general
+    Invariants section, not in a separate AI-specific block.
+    Answer "no" for product features that do not embed AI behavior.
+-->
+
+For features whose Change type is not "new surface", recovery semantics belong in the Compatibility and Transition section below.
 
 ## Non-Scope *(required)*
 
@@ -36,6 +49,66 @@
 -->
 
 - [Assumption and basis for making it]
+
+## AI Cost Posture *(required when "Describes AI capability" is "yes"; omit otherwise)*
+
+<!--
+  Complete this section only when the Executive Summary declares
+  "Describes AI capability: yes". This block captures the operational
+  cost commitments the feature makes about the embedded AI behavior.
+
+  Behavioral constraints on the agent (rules it must honor even when
+  tools permit otherwise) belong in the general Invariants section.
+  Service composition (how the AI capability decomposes into sub-services
+  or sub-agents) belongs in Requirements and User Scenarios.
+
+  Model-tier reference (commit one tier per AI step where relevant):
+    Reasoning  - highest reasoning capability, slow, expensive per call
+                 use for: multi-step planning, complex synthesis, hard refactoring
+    Frontier   - state-of-the-art general capability, balanced speed and cost
+                 use for: tool-heavy agents, code generation, conversational UX
+    Mid        - capable but cheaper and faster than frontier
+                 use for: routine summarization, classification with context, RAG
+    Fast       - small, fast, cheap, limited reasoning depth
+                 use for: high-volume classification, simple extraction, latency-critical UX
+
+  When the runtime chooses the model (a managed AI platform or hosted
+  developer assistant where model selection is governed by the platform,
+  not the spec author): set each field to "N/A - model chosen by runtime"
+  and add one line naming what runtime governs the choice. The block
+  still serves as a forcing function: "have we thought about what we
+  are committing to operationally?"
+
+  Placement note: this section appears before User Scenarios because the
+  cost envelope shapes which requirements are economically viable.
+-->
+
+- **Model-tier commitment** (per step where relevant): [step-name to tier (Reasoning / Frontier / Mid / Fast); one-line rationale]
+- **Latency budget**: p50=[value]; p95=[value]; p99=[value]. *Behavior on breach:* [degrade | alert | halt]
+- **Prompt-stability invariant**: [Which prompt elements are guaranteed stable across runs to support caching. What would break the invariant and trigger a spec amendment.]
+- **Per-call cost ceiling**: hard cap=[tokens or dollars]. *Behavior on breach:* [escalate | halt | degrade]
+- **Cost-incident escalation**: [What cost-side condition triggers a stop or human-review gate]
+
+<!--
+  Example (delete when filling this spec for a real feature):
+
+  - Model-tier commitment:
+    - "intent-classify" step -> Fast (high-volume, low-ambiguity classifier)
+    - "draft-summary" step -> Frontier (coherent multi-paragraph output)
+    - "escalation-decision" step -> Reasoning (routes to human; reasoning quality > cost)
+  - Latency budget: p50=400ms; p95=1.2s; p99=3s. Behavior on breach: degrade (skip draft-summary, return classifier output only)
+  - Prompt-stability invariant: system message and tool schema fixed across calls within a 24h window. Tool-schema change triggers a spec amendment.
+  - Per-call cost ceiling: hard cap=$0.05 per ticket. Behavior on breach: escalate (route to human, log incident).
+  - Cost-incident escalation: any 1-hour window where 5% of calls exceed the ceiling triggers a stop and post-mortem.
+
+  Runtime-managed example (use this shape when the platform picks the model):
+
+  - Model-tier commitment: N/A - model chosen by runtime ([platform name] picks per user plan and platform selection logic)
+  - Latency budget: N/A - governed by the runtime platform
+  - Prompt-stability invariant: agent body and tool list are versioned in this repo and changes trigger a CHANGELOG entry
+  - Per-call cost ceiling: N/A - billed via the runtime platform plan
+  - Cost-incident escalation: N/A - cost governed by the runtime platform plan
+-->
 
 ## User Scenarios & Tests *(required)*
 
@@ -235,3 +308,17 @@
 
 - [MS-001: Migration name](../migrations/<short-name>/spec.md) - [Relationship description]
 - [FS-001: Feature name](../features/<short-name>/spec.md) - [Relationship description]
+
+## Spec Evolution Log *(required)*
+
+<!--
+  Every change to this spec is recorded here with its trigger.
+  Captures the spec's version history. The top-level `Status` field
+  remains the source of truth for the spec's current overall lifecycle
+  state (Draft, Approved, In Progress, Validated, Superseded); the log's
+  latest row mirrors that state in its Change Summary column.
+-->
+
+| Version | Date | Change Summary | Trigger | Author |
+|---------|------|----------------|---------|--------|
+| 1.0 | [YYYY-MM-DD] | Initial draft | new work | [Name or role] |

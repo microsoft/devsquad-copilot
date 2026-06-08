@@ -16,6 +16,7 @@ When editing migration specifications, follow these rules:
 - Data Migration must include validation rules (row counts, checksums, referential integrity).
 - Cutover Plan must be an ordered sequence of steps, each with a clear success criterion.
 - Cutover Plan must address consumer redirection explicitly, including delayed consumers (cached DNS or connection strings, queue backlogs, lagging batch jobs) and the mechanism that prevents them from reaching the decommissioned source.
+- Every migration spec must contain a `Spec Evolution Log` section with at least one row recording the current version. Every subsequent change appends a row with version, date, change summary, trigger, and author. Valid trigger values are `new work`, `drift`, `external constraint`, one of the three `failure (<category>)` values defined in `debugging-recovery/references/failure-taxonomy.md` (`spec`, `validation`, `agent`), or `other (<short reason>)` as a transitional escape hatch.
 - Rollback Plan must specify trigger conditions, revert steps, and maximum rollback time.
 - Rollback Plan must state whether the source environment can safely read state produced by the target during the overlap window, or declare that rollback is only viable before a specific cutover step.
 - Success Criteria must include: data integrity metric, downtime metric, parity metric, and rollback test metric.

@@ -19,6 +19,7 @@ Use this skill **after generating an artifact and before presenting it to the us
 | `devsquad.plan` | ADRs, plan.md | ADR created or plan finalized |
 | `devsquad.decompose` | tasks.md, work items | Task decomposition completed |
 | `devsquad.implement` | Code | Medium or high impact task implemented |
+| `devsquad.extend` | `*.agent.md` | Custom agent created or modified |
 
 **Do not use for**: low impact tasks (typo, log, formatting), intermediate artifacts that will be reviewed manually, or when the user explicitly asks to skip validation.
 
@@ -118,6 +119,18 @@ Deliver the artifact with documented failures.
 - User explicitly asked to skip: "generate directly", "no validation"
 - Artifact is a declared draft: "draft", "WIP", "exploratory"
 - Re-evaluation of an artifact that already passed (unless it has been modified)
+
+## Recording Failure-Driven Amendments
+
+When `quality-gate` evaluates a spec, ADR, or agent file that was amended in response to a failure (rather than to add new scope), require the Spec Evolution Log Trigger column to use one of the three failure category names from `debugging-recovery/references/failure-taxonomy.md`:
+
+| Trigger value | Use when |
+|---|---|
+| `failure (spec)` | Amendment closes a case the spec did not previously cover, disambiguates a clause, or tightens Non-Scope |
+| `failure (validation)` | Amendment adds a conformance case, test, or rubric criterion the validation surface missed |
+| `failure (agent)` | Amendment fixes a misaligned agent body, composition declaration, tool config, or handoff |
+
+For non-failure triggers (new work, drift detected proactively, external constraint), use `new work`, `drift`, or `external constraint`. For a trigger that does not fit either set, use `other (<short reason>)` as a transitional escape hatch; this raises a quality alert prompting the maintainers to consider whether a new category is warranted.
 
 ## Common Rationalizations
 

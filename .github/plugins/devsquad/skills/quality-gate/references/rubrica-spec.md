@@ -10,6 +10,7 @@ Evaluate each dimension as PASS or FAIL. Each FAIL must include **what is wrong*
 | S2 | Conformance criteria | Minimum 3 cases: happy path, error, and edge. At least one negative case (must NOT happen). Each case has ID, scenario, input, and expected output. | Check CC-XXX table |
 | S3 | Prioritized user stories | Every user story has priority (P1/P2/P3) and is independently testable. | Check user stories section |
 | S4 | Defined scope | An out of scope section exists with at least 1 item. | Check section |
+| S13 | AI Cost Posture complete | When the Executive Summary declares `Describes AI capability: yes`, the AI Cost Posture section is present with all five fields populated (model-tier commitment, latency budget, prompt-stability invariant, per-call cost ceiling, cost-incident escalation). When the gate is `no`, this criterion is N/A. | Read AI Cost Posture section |
 
 ## Quality Criteria (FAIL generates alert, does not block)
 
@@ -21,6 +22,7 @@ Evaluate each dimension as PASS or FAIL. Each FAIL must include **what is wrong*
 | S8 | Executive summary | Contains: objective (1 sentence), primary user, delivered value, scope, main success criterion. | Check 5 points |
 | S9 | Invariants | For features with state mutations or external integrations, cross-cutting properties that must always hold are documented. | Check Invariants section |
 | S10 | Failure modes | For features with external dependencies or shared state, failure conditions (timeouts, partial failures, concurrency) are documented. | Check Failure Modes subsection |
+| S11 | Spec Evolution Log present | Spec contains a Spec Evolution Log section with at least one row (version, date, change summary, trigger, author). | Check Spec Evolution Log section |
 
 ## Cross-Verification (deep level)
 

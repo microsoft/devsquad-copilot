@@ -24,6 +24,7 @@ Evaluate each dimension as PASS or FAIL. Each FAIL must include **what is wrong*
 | MS11 | Scope boundaries clear | Out of Scope section exists with at least 1 item. Items explicitly prevent accidental modernization. | Check Out of Scope section |
 | MS12 | Executive summary complete | Contains: objective, source environment, target environment, scope, downtime target, primary success criterion. | Check 6 points |
 | MS13 | Clarification limit | Maximum 3 [NEEDS CLARIFICATION] markers. Each has a specific question and described impact. | Count markers |
+| MS14 | Spec Evolution Log present | Spec contains a Spec Evolution Log section with at least one row (version, date, change summary, trigger, author). | Check Spec Evolution Log section |
 
 ## Cross-Verification (deep level)
 

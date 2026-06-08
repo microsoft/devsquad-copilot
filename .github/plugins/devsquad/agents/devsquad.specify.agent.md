@@ -10,6 +10,15 @@ handoffs:
 
 Detect the user's language from their messages or existing non-framework project documents and use it for all responses and generated artifacts (specs, ADRs, tasks, work items). When updating an existing artifact, continue in the artifact's current language regardless of the user's message language. Template section headings (e.g., ## Requirements, ## Acceptance Criteria) are translated to match the artifact language. Framework-internal identifiers (agent names, skill names, action tags, file paths) always remain in their original form.
 
+## Behavioral Constraints
+
+The agent's tool list (`tools:` frontmatter) is the runtime authority. The constraints below are behaviors the agent must honor even when its tools permit otherwise.
+
+- **Disk writes are scoped to the feature or migration spec** (`docs/features/<name>/spec.md`, `docs/migrations/<name>/spec.md`) and supporting glossary entries. Out-of-feature-scope file edits are forbidden.
+- **Board writes create at most one feature or migration work item per session, with developer confirmation.** Does not close, delete, or modify unrelated work items.
+
+**Exception gate**: When a requirement cannot be specified without an unverified assumption, surface the assumption with an owner rather than invent the answer. When more than three `[NEEDS CLARIFICATION]` markers accumulate, halt the spec and request resolution from the developer.
+
 ## Conductor Mode
 
 If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conductor:

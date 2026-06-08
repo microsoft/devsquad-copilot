@@ -12,6 +12,7 @@ description: Systematic debugging with structured triage. Use when tests fail, b
 - Runtime behavior does not match expectations
 - An error appears in logs or console during implementation
 - Something worked before and stopped working
+- An agent did something its spec, manifest, or oversight model did not authorize (see "Agent-Originated Failures" below)
 
 ## Stop-the-Line Rule
 
@@ -25,6 +26,17 @@ When anything unexpected happens during implementation:
 6. **RESUME** only after verification passes
 
 Do not push past a failing test or broken build to work on the next feature. Errors compound. A bug in step 3 that goes unfixed makes steps 4-10 wrong.
+
+## Failure Source Classification
+
+Before running the triage checklist, decide whether the failure is **agent-originated** (the AI agent did something its spec, manifest, or oversight did not authorize) or **code-originated** (the code, build, or runtime behavior is wrong independently of agent action).
+
+- **Agent-originated** signals: an agent produced an output its spec or composition declaration did not authorize; a sub-agent step was skipped contrary to a coordination contract; a spec gap or ambiguity surfaced as hallucinated behavior; an agent body instruction contradicts a composition invariant.
+- **Code-originated** signals: tests fail without recent agent involvement; build breaks after a dependency upgrade; runtime error in production code; environmental drift between developer machines.
+
+If **agent-originated**, jump to the "Agent-Originated Failures" section below before running the triage checklist. Classify the failure into one of the three categories defined in `references/failure-taxonomy.md`. The upstream artifact (spec, validation surface, or agent file) is where the durable fix goes, not the prompt.
+
+If **code-originated**, proceed with the triage checklist below.
 
 ## Triage Checklist
 
@@ -164,6 +176,20 @@ Runtime error:
   Network error / CORS:   Check URLs, headers, server CORS config
   Unexpected behavior:    Add logging at key points, verify data at each step
 ```
+
+## Agent-Originated Failures
+
+When the failure involves an agent's action (wrong scope, hallucinated output, missed validation, unauthorized write, sub-agent inconsistency), classify the failure category first, then change the upstream artifact that owns the fix. Prompt patches that mask a symptom without reconciling the upstream contradiction are forbidden. Structural edits to the versioned agent body (reconciling a body instruction with a composition invariant, removing an obsolete branch) are not prompt patches; they are legitimate when the upstream artifact is the body itself.
+
+Read `references/failure-taxonomy.md` and select exactly one category:
+
+| Category | Upstream artifact |
+|---|---|
+| `failure (spec)` | `spec.md`, ADR, glossary, or Non-Scope section |
+| `failure (validation)` | Conformance criteria, tests, or quality-gate rubric |
+| `failure (agent)` | Agent file (body or `agents:` frontmatter), composition declaration, MCP/tool config, or handoff |
+
+After amending the upstream artifact, record the amendment in its Spec Evolution Log (or equivalent change log: ADR decision history, agent CHANGELOG entry) with `failure (<category>)` in the Trigger column. The taxonomy file's worked example shows the spec-vs-validation distinction end-to-end.
 
 ## Untrusted Error Output
 

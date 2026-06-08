@@ -1,0 +1,123 @@
+---
+title: AI Capability Specs
+description: How to write a feature spec that describes an AI agent capability, including the gated AI Cost Posture block with model-tier, latency, prompt-stability, cost-ceiling, and escalation commitments.
+banner:
+  content: |
+    This project is under active development and subject to breaking changes. See the <a href="/devsquad-copilot/changelog/">changelog</a> for release notes.
+---
+
+import { Aside, Card, CardGrid } from '@astrojs/starlight/components';
+
+Most consumer features are product features. Some features embed AI behavior: an agent that classifies, summarizes, plans, or acts on behalf of a user. AI features carry a class of commitments product features do not: which model tier the feature relies on, what latency it promises, what it costs per call, and what happens when those bounds break.
+
+The framework treats AI-capability specs as ordinary feature specs with one gated addition: the **AI Cost Posture** block.
+
+## The Executive Summary Gate
+
+Every feature spec declares this in the Executive Summary:
+
+```text
+- Describes AI capability: yes | no
+```
+
+- **Answer `no`** when the feature is a product feature with no embedded AI behavior. The AI Cost Posture section is omitted. The template looks the same as any non-AI spec.
+- **Answer `yes`** when the feature embeds an AI agent that makes decisions, invokes tools, or acts on behalf of a user. The AI Cost Posture section becomes required.
+
+The gate is the only AI-specific question on a product feature spec. Authors who answer `no` see no AI-specific structure for the rest of the document.
+
+## The AI Cost Posture Block
+
+When the gate is `yes`, the spec must populate five fields. The fields commit the feature to operational characteristics that downstream operators measure and that future amendments must honor.
+
+### Model-tier commitment
+
+Which model tier the feature commits to, per AI step where multiple steps exist.
+
+<CardGrid>
+  <Card title="Reasoning">
+    Highest reasoning capability, slow, expensive per call. Use for multi-step planning, complex synthesis, hard refactoring.
+  </Card>
+  <Card title="Frontier">
+    State-of-the-art general capability, balanced speed and cost. Use for tool-heavy agents, code generation, conversational UX.
+  </Card>
+  <Card title="Mid">
+    Capable but cheaper and faster than frontier. Use for routine summarization, classification with context, RAG.
+  </Card>
+  <Card title="Fast">
+    Small, fast, cheap, limited reasoning depth. Use for high-volume classification, simple extraction, latency-critical UX.
+  </Card>
+</CardGrid>
+
+A spec with multiple AI steps commits a tier per step with a one-line rationale. The tier is the durable commitment; the specific model is chosen at implementation time and may change as the platform's lineup shifts.
+
+### Latency budget
+
+Three percentile values plus a behavior on breach:
+
+- `p50`, `p95`, `p99` latency targets.
+- Behavior on breach: `degrade` (skip an optional step), `alert` (notify operators), or `halt` (refuse to serve).
+
+The budget is what the operator measures the implementation against. A breach is a signal that either the implementation drifted or the spec under-committed.
+
+### Prompt-stability invariant
+
+Which prompt elements are guaranteed stable across runs to support caching, and what would break the invariant. A typical statement: "the system message and tool schema are fixed across calls within a 24-hour window. A tool-schema change triggers a spec amendment."
+
+The invariant matters for two reasons: prompt caches are a major cost lever, and a silent prompt change is one of the easiest ways for an AI capability to drift away from its spec without anyone noticing.
+
+### Per-call cost ceiling
+
+A hard cap in tokens or dollars per call, plus a behavior on breach: `escalate` (route to human), `halt` (refuse to serve), or `degrade` (fall back to a cheaper path).
+
+The ceiling is the financial guarantee. A call that exceeds it is a cost incident, not a normal cost variation.
+
+### Cost-incident escalation
+
+What cost-side condition triggers a stop or human-review gate. Typical example: "any 1-hour window where 5% of calls exceed the per-call ceiling triggers a stop and post-mortem."
+
+This is the trip wire. The other four fields establish a budget; this one names what trips a human-in-the-loop intervention.
+
+## When the Platform Picks the Model
+
+The five fields presuppose that the spec author operates the AI service: chooses the model, pays per token, monitors latency. That fits one common scenario (a team building an AI product on top of OpenAI, Anthropic, Azure OpenAI, or similar).
+
+The other common scenario is a team consuming a managed AI platform where the runtime picks the model: a hosted developer assistant, an embedded AI feature in another product, or any surface where model selection is governed by the platform rather than the spec.
+
+For runtime-managed scenarios, set each field to `N/A - model chosen by runtime` and add one line per field naming what runtime governs the choice. A worked example:
+
+```text
+- Model-tier commitment: N/A - model chosen by runtime
+  ([platform name] picks per user plan and platform selection logic)
+- Latency budget: N/A - governed by the runtime platform
+- Prompt-stability invariant: agent body and tool list are versioned in
+  this repo; changes trigger a CHANGELOG entry
+- Per-call cost ceiling: N/A - billed via the runtime platform plan
+- Cost-incident escalation: N/A - cost governed by the runtime platform plan
+```
+
+The block still serves as a forcing function: it asks whether the team has thought about what they are committing to operationally. If the honest answer is "nothing, the platform picks", that answer is the commitment.
+
+## What Does Not Go in This Block
+
+Three categories of content that AI-capability specs sometimes try to put in the AI Cost Posture block but that belong elsewhere in the feature template:
+
+| Content type | Where it goes instead |
+|---|---|
+| Behavioral constraints (rules the agent must honor even when tools permit otherwise) | The general `## Invariants` section. "Never APPROVE on a PR" or "never commits to integration branch" are not AI-specific concerns; they apply to any service surface. |
+| Service composition (how the AI capability decomposes into sub-services, sub-agents, or steps) | The general `## Requirements` and `## User Scenarios` sections. The architecture of an AI capability follows the same rules as any other feature's architecture. |
+| Failure modes specific to AI (model unavailability, hallucination, drift) | The general `## Failure Modes` subsection under Requirements. Treat AI-specific failures the same way as any other external dependency failure. |
+
+The AI Cost Posture block carries exactly the content that has no general-template equivalent: operational commitments tied to model selection.
+
+## Related
+
+- [Spec Amendment](../../concepts/spec-amendment/): when an AI capability's behavior drifts from its spec, route the fix to the upstream artifact rather than patching the prompt.
+- [Glossary](../../concepts/glossary/): canonical definitions for AI Cost Posture, Behavioral Constraints, and related terms.
+- [ADR 0014](../../decisions/#adr-0014-agent-intent-governance-): the structural decision behind the gated block and the constructs considered but not adopted.
+
+---
+
+## What to Read Next
+
+- [Spec Amendment](../../concepts/spec-amendment/) for how AI capability specs evolve when implementation reveals a gap
+- [Impact Classification](../../concepts/impact-classification/) for how AI-capability changes are sized

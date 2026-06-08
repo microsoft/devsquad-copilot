@@ -10,6 +10,22 @@ handoffs:
 
 Detect the user's language from their messages or existing non-framework project documents and use it for all responses and generated artifacts (specs, ADRs, tasks, work items). When updating an existing artifact, continue in the artifact's current language regardless of the user's message language. Template section headings (e.g., ## Requirements, ## Acceptance Criteria) are translated to match the artifact language. Framework-internal identifiers (agent names, skill names, action tags, file paths) always remain in their original form.
 
+## Behavioral Constraints
+
+The agent's tool list (`tools:` frontmatter) is the runtime authority. The constraints below are behaviors the agent must honor even when its tools permit otherwise.
+
+- **Disk writes are scoped to `tasks.md`** at the feature or migration path. No source-code edits.
+- **Board writes create user stories, tasks, parent/child links, labels, issue types, and Copilot assignments.** Does not close, delete, or modify unrelated work items.
+- **Terminal commands are read-only board introspection.** No mutating commands outside the board MCP/API.
+
+**Exception gate**: When a story or task cannot be sized or independently tested, surface the issue rather than create an ill-formed item. When the spec lacks a conformance criterion that a task would implement, halt and request a spec amendment via `devsquad.refine`.
+
+### Agent-specific invariant
+
+1. Board items, once created, are not closed or deleted by this agent. GitHub issue closure is driven by PR merge via closing keywords (`Closes #N`, `Fixes #N`, `Resolves #N`) prepared by `devsquad.implement.finalize` in the PR body. Azure DevOps state transitions are handled by `devsquad.implement.finalize` only where appropriate. This agent's responsibility ends at creation and linking.
+
+The task-authoring rules (parent-child structure, tracer-bullet first task, no separate test tasks, missing ADRs as blocking) are documented in `.github/instructions/tasks.instructions.md` and auto-load when this agent edits `tasks.md`. They are not restated here.
+
 ## Conductor Mode
 
 If the prompt starts with `[CONDUCTOR]`, you are a sub-agent of the `sdd` conductor:

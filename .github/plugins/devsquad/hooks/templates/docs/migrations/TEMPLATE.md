@@ -197,6 +197,7 @@
   3. [Verify source system operational]
   4. [Assess and preserve any data written to target during cutover]
 - **Maximum rollback time**: [X minutes from decision to full revert]
+- **Rollback state compatibility**: [Either "Source can safely read state written by target until step <N>" or "Rollback is only viable before step <N>; after that, forward-fix is required".]
 - **Rollback tested**: [Yes/No, date of last test]
 
 ## Requirements *(required)*
@@ -272,3 +273,17 @@
 
 - [FS-001: Feature name](../features/<short-name>/spec.md) - [Relationship description]
 - [MS-001: Migration name](../migrations/<short-name>/spec.md) - [Relationship description]
+
+## Spec Evolution Log *(required)*
+
+<!--
+  Every change to this spec is recorded here with its trigger.
+  Captures the spec's version history. The top-level `Status` field
+  remains the source of truth for the spec's current overall lifecycle
+  state (Draft, Approved, In Progress, Validated, Superseded); the log's
+  latest row mirrors that state in its Change Summary column.
+-->
+
+| Version | Date | Change Summary | Trigger | Author |
+|---------|------|----------------|---------|--------|
+| 1.0 | [YYYY-MM-DD] | Initial draft | new work | [Name or role] |

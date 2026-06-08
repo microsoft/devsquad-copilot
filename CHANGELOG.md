@@ -14,6 +14,55 @@ compatibility-focused categories that always appear at the top of a release:
 
 See `CONTRIBUTING.md` for full conventions.
 
+## [Unreleased]
+
+### Added (Agent Intent Governance — selective Architecture of Intent adoption)
+
+Closes three structural gaps in the framework: framework agents had no explicit behavioral envelope (a reviewer reading `devsquad.implement.agent.md` could not determine in under a minute what the agent was authorized to do, must never do, or how it composes sub-agents); consumer specs describing AI capabilities had no canonical fragment for operational cost commitments; the failure-diagnosis surface had no taxonomy mapping a failure to the upstream artifact that owns the fix. Vocabulary and discipline drawn from "The Architecture of Intent" by Marcel Aldecoa (`https://marcelaldecoa.github.io/TheArchitectureOfIntent/`). The framework adopts the load-bearing principles and deliberately omits parts of the source vocabulary that add no behavior (see "AoI constructs considered and not adopted" in ADR 0014).
+
+**Agent body conventions:**
+
+- `## Behavioral Constraints` body section on 7 user-facing agents (`devsquad`, `devsquad.implement`, `devsquad.plan`, `devsquad.review`, `devsquad.refine`, `devsquad.specify`, `devsquad.decompose`). Captures rules the runtime `tools:` array cannot enforce (for example, "never APPROVE on a PR", "never commits to integration branch"). Worker sub-agents (`*.execute`, `*.verify`, `*.finalize`, `*.validate`, `*.context`, `*.architecture`, `*.design`, `*.code`, `*.tests`, `*.spec`, `*.adr`, `*.security`, `*.artifacts`, `*.health`) carry no manifest; they inherit their envelope from the parent's composition declaration and from their own `description:` frontmatter, which the runtime surfaces at invocation time.
+- `## Composition` body section on 4 coordinator agents (`devsquad.implement`, `devsquad.plan`, `devsquad.review`, `devsquad.refine`). Declares load-bearing cross-component invariants between the coordinator and its typed sub-agents (for example, `validate` runs before `execute` for Medium and High impact tasks; `plan.context` runs before `plan.architecture` and `plan.design`; the parent never downgrades a sub-Guardian's severity finding).
+
+**Template changes (consumer action required):**
+
+- **Feature spec template** (`docs/features/TEMPLATE.md`):
+  - New `Spec Evolution Log` section. Required on every spec, with at least one row at creation time. Each amendment adds a row with version, date, change summary, trigger, and author. Trigger values include `failure (spec)`, `failure (validation)`, `failure (agent)`, plus `new work`, `drift`, `external constraint`, or `other (<short reason>)`.
+  - New `Describes AI capability: yes | no` field in the Executive Summary.
+  - New gated `## AI Cost Posture` section, required only when `Describes AI capability` is `yes`. Five fields: model-tier commitment (Reasoning / Frontier / Mid / Fast per AI step, with one-line rationale), latency budget (p50, p95, p99, behavior on breach), prompt-stability invariant, per-call cost ceiling, cost-incident escalation. Author-facing comment block includes a tier reference (capability profile and typical use per tier) and an N/A pattern for runtime-managed scenarios where the platform picks the model. Non-AI specs see no AI-specific structure.
+- **Migration spec template** (`docs/migrations/TEMPLATE.md`):
+  - New `Spec Evolution Log` section, same shape as the feature template.
+- **Spec instruction files** (`.github/instructions/specs.instructions.md`, `.github/instructions/migration-specs.instructions.md`):
+  - New rule requiring the Spec Evolution Log and the three valid `failure (<category>)` trigger values.
+  - Feature spec rule additionally requires `Describes AI capability: yes | no` in the Executive Summary and a complete `AI Cost Posture` section when `yes`.
+- **Spec quality rubrics** (`rubrica-spec.md`, `rubrica-migration-spec.md`): new criterion checking presence of Spec Evolution Log; feature rubric additionally checks AI Cost Posture completeness when the gate is `yes`.
+
+Consumers running `sdd-init.sh update-all` after upgrading will see these files rewritten (a timestamped `.pre-<version>-<unix>.bak` is saved automatically). Existing specs authored from the previous template remain valid; the Spec Evolution Log and Executive Summary additions are additive and not retroactive.
+
+**Failure-diagnosis surface:**
+
+- `failure-taxonomy.md` reference file added to the `debugging-recovery` skill. Three-category upstream-artifact principle: `failure (spec)` (artifact: `spec.md`, ADR, glossary, or Non-Scope section), `failure (validation)` (artifact: conformance criteria, tests, or rubric file), `failure (agent)` (artifact: agent file body or `agents:` frontmatter, composition declaration, MCP/tool config, or handoff). One worked example shows the spec-vs-validation distinction end-to-end (silent empty-email field in a signup flow).
+- `debugging-recovery/SKILL.md` Failure Source Classification step routes agent-originated failures into the three categories before triage.
+- `quality-gate/SKILL.md` Recording Failure-Driven Amendments uses the same three categories as canonical Spec Evolution Log trigger values.
+- `devsquad.refine.agent.md` Exception gate references the three categories when classifying findings.
+
+**Architecture Decision Record:**
+
+- ADR 0014 "Agent Intent Governance" added at `docs/framework/decisions/0014-agent-intent-governance.md`. Records the structural gaps, the five ranked priorities, the three options considered (full AoI adoption rejected; selective adoption adopted; status quo rejected), the adopted scope (four constructs above), and the AoI constructs considered and explicitly not adopted (custom frontmatter scalars, Reversibility tier, Pattern A/B/C/D/E composition taxonomy, seven-category failure taxonomy, standalone authoring handbook, AoI signal metrics, phase rename).
+- ADR list page (`docs/src/content/docs/decisions/index.mdx`) includes ADR 0014 in the published decisions index.
+
+### Not adopted from AoI
+
+The source vocabulary in "The Architecture of Intent" includes constructs this release deliberately omits because they add documentation surface without changing what the framework does in response. The reasoning for each is recorded in ADR 0014 under "AoI constructs considered and not adopted in this option":
+
+- Custom frontmatter scalars (`archetype`, `agency_level`, `autonomy`, `responsibility`, `reversibility`, `oversight_model`).
+- Reversibility tier (R1-R4) on spec templates.
+- AoI Pattern A/B/C/D/E composition taxonomy labels.
+- Seven-category failure taxonomy (collapsed to three).
+- Standalone `agent-conventions.md` distributed handbook.
+- AoI signal metrics, running scenarios, phase rename.
+
 ## [v0.12.0] - 2026-05-09
 
 ### Template changes (consumer action required)

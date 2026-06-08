@@ -13,7 +13,13 @@ import { Aside } from '@astrojs/starlight/components';
 **ADR (Architecture Decision Record)**
 A document that records a significant technical decision, including context, priorities, options evaluated, and the chosen approach with trade-offs. ADRs follow the lifecycle: `Proposed`, then `Accepted`, then `Superseded by NNNN`. See [Decisions](../../decisions/).
 
+**AI Cost Posture**
+A gated section in the feature spec template, required when the spec declares `Describes AI capability: yes`. Captures five operational commitments: model-tier (Reasoning, Frontier, Mid, or Fast per AI step), latency budget (p50, p95, p99 plus behavior on breach), prompt-stability invariant, per-call cost ceiling, and cost-incident escalation. For platforms where the runtime picks the model, fields are set to `N/A` with a one-line note. See [AI Capability Specs](../../concepts/ai-capability-specs/).
+
 ## C
+
+**Behavioral Constraints (agent body section)**
+A `## Behavioral Constraints` section on a user-facing agent file listing rules the agent must honor even when its runtime `tools:` array would permit otherwise (for example, "never APPROVE on a PR"; "never commits to integration branch"). The `tools:` list is the runtime authority boundary; this section captures only what the runtime cannot enforce. Present on the seven user-facing agents (`devsquad`, `devsquad.implement`, `devsquad.plan`, `devsquad.review`, `devsquad.refine`, `devsquad.specify`, `devsquad.decompose`); worker sub-agents inherit their envelope from the parent.
 
 **Comprehension Checkpoint**
 A verification step triggered before medium or high impact tasks. The agent asks the developer to describe what will happen in their own words, ensuring active understanding rather than passive delegation. Generic responses ("ok", "go") trigger deeper questions. See [Comprehension Checkpoints](../../concepts/comprehension-checkpoints/).
@@ -26,6 +32,9 @@ Testable conditions (identified by CC-XXX format) that verify a specification re
 
 **Coordinator Agent**
 A specialist agent that delegates internally to focused worker sub-agents with isolated context. The framework has four coordinators: `plan`, `implement`, `review`, and `refine`.
+
+**Composition (agent body section)**
+A `## Composition` section on a coordinator agent file declaring load-bearing cross-component invariants between the coordinator and its typed sub-agents (for example, `validate` runs before `execute` for Medium and High impact tasks). The runtime surfaces each sub-agent's `description:` at invocation time, so the section does not re-list sub-agents.
 
 ## D
 
@@ -73,6 +82,9 @@ The development approach where specifications drive all downstream work: plannin
 **Socratic AI**
 An adaptive approach where agents ask clarifying questions, surface trade-offs, and present options rather than making autonomous decisions. Low-impact tasks are fast-tracked; high-impact tasks require comprehension verification. Based on [ADR 0005](../../decisions/#adr-0005-socratic-ai-).
 
+**Spec Evolution Log**
+A required section in every feature and migration spec that records amendment history. Each row carries version, date, change summary, trigger (`new work`, `drift`, `external constraint`, one of three `failure (<category>)` values, or `other (<short reason>)`), and author. The log is the durable signal that the spec changed and why. See [Spec Amendment](../../concepts/spec-amendment/).
+
 **Specialist Agent**
 An agent that owns the logic for a specific delivery phase (e.g., `devsquad.specify` for specifications, `devsquad.implement` for code). Can be invoked directly or through the conductor.
 
@@ -83,6 +95,11 @@ A threat modeling methodology (Spoofing, Tampering, Repudiation, Information Dis
 
 **Tool Extension**
 A mechanism for injecting MCP server tools into existing plugin agents via YAML patches (Preview, [ADR 0010](../../decisions/#adr-0010-agent-tool-extension-)). Consumer creates `.github/devsquad/tool-extensions/*.yml`, and a sync script generates workspace-level agent overrides.
+
+## U
+
+**Upstream Fix (Failure Triage)**
+The discipline of routing an agent-originated failure to the upstream artifact that owns the broken rule, instead of patching the prompt. Three categories: `failure (spec)` (fix in `spec.md`, ADR, or glossary), `failure (validation)` (fix in conformance criteria, tests, or rubric), `failure (agent)` (fix in agent body, composition declaration, or tool config). Prompt patches that mask a symptom without reconciling the upstream artifact are forbidden. See [Spec Amendment](../../concepts/spec-amendment/#failure-driven-amendment).
 
 ## W
 

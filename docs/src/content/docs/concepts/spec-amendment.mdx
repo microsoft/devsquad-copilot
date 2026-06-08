@@ -159,6 +159,56 @@ Amendments follow the same impact classification as any other change:
 | New/changed conformance case within a story | Medium | Scoped refine, developer confirms |
 | User story boundary change, new entity, NFR change | High | Amendment plus ADR update, explicit approval |
 
+## Spec Evolution Log
+
+Every feature and migration spec carries a `Spec Evolution Log` section. The log is the durable record of what changed about the spec and why. Without it, the third reader of a spec cannot tell which clauses are original intent and which were amendments responding to discovered reality.
+
+The log is a table with one row per version:
+
+| Column | Content |
+|---|---|
+| Version | Semantic version of the spec (`1.0` at creation, increments per amendment) |
+| Date | ISO date of the change |
+| Change summary | One-sentence description of what changed |
+| Trigger | Why the change happened, drawn from the enumerated values below |
+| Author | Who authored the change |
+
+Valid trigger values:
+
+| Trigger | When to use |
+|---|---|
+| `new work` | Adding scope, requirements, or scenarios in response to product direction |
+| `drift` | Reconciling the spec with implementation reality discovered during the work |
+| `external constraint` | Compliance, vendor change, platform deprecation, or other outside force |
+| `failure (spec)` | Amendment closes a case the spec was silent on, or disambiguates a clause that admitted two readings |
+| `failure (validation)` | Amendment adds a conformance case, test, or rubric criterion the validation surface missed |
+| `failure (agent)` | Amendment fixes a misaligned agent body, composition declaration, or tool config |
+| `other (<short reason>)` | Transitional escape hatch when none of the above fit. Raises a quality alert prompting maintainers to consider a new category. |
+
+The three `failure (<category>)` triggers tie the log to the framework's upstream-fix discipline (described in the next section).
+
+## Failure-Driven Amendment
+
+Not every amendment is product-direction or implementation-discovery. Some amendments are **failure-driven**: an agent did the wrong thing, and the durable fix is to amend the upstream artifact that owns the rule the agent broke. Prompt patches that mask the symptom without reconciling the upstream artifact are forbidden; they accumulate and degrade the framework.
+
+When an agent-originated failure surfaces, classify it into one of three categories and route the fix to the named upstream artifact:
+
+| Category | When | Upstream artifact |
+|---|---|---|
+| `failure (spec)` | Agent did the wrong thing because the spec was silent, ambiguous, or did not bound scope correctly | `spec.md`, ADR, glossary, or Non-Scope section |
+| `failure (validation)` | The spec required the right behavior but conformance criteria, tests, or the quality-gate rubric did not catch the miss | Conformance criteria, tests, or rubric file |
+| `failure (agent)` | Agent body, composition declaration, tool config, or coordination contract was misaligned with the spec | Agent file (body or `agents:` frontmatter), composition declaration, or handoff |
+
+Selection test: **Was the expected behavior already required by a normative obligation in the artifact stack?**
+
+- If **no**, the failure is `spec`. The validation surface could not catch what the spec did not require.
+- If **yes** but the validation surface did not check it, the failure is `validation`.
+- If **yes** and the validation surface would have caught it but the agent skipped a step, acted out of role, or invoked the wrong sub-agent, the failure is `agent`.
+
+After amending the upstream artifact, record the change in the Spec Evolution Log with the matching `failure (<category>)` value in the Trigger column. The category name is the durable signal that the framework learned from a failure rather than from new product direction.
+
+Worked examples and category-selection guidance live in the `failure-taxonomy.md` reference file in the `debugging-recovery` skill.
+
 ## Related
 
 - [Impact Classification](../../concepts/impact-classification/): amendment ceremony scales with risk in the same way task ceremony does.

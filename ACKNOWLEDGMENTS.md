@@ -38,6 +38,7 @@ This project was shaped by ideas, patterns, and prior art from many sources acro
 | [Compatibility is a Feature](https://yusufaytas.com/compatibility-is-a-feature) by Yusuf Aytas | Mixed-version coexistence, rollback-against-state, and boundary-drift thinking that shaped the Compatibility and Transition section in feature specs |
 | [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) by Martin Fowler | Feedforward/feedback taxonomy for coding agent controls that shaped the harness-learnings skill and hook output contract |
 | [Harness Engineering: Leveraging Codex in an Agent-First World](https://openai.com/index/harness-engineering/) (OpenAI) | Steering loop and layered architecture enforcement patterns that informed the two-tier learning mechanism in ADR-0013 |
+| [The Architecture of Intent](https://marcelaldecoa.github.io/TheArchitectureOfIntent/) by Marcel Aldecoa | Discipline for agent-class governance: behavioral envelope on agents, composition declarations on coordinators, fix-at-the-upstream-artifact failure routing, and cost commitments on AI-capability specs. Selectively adopted in ADR-0014, with parts of the source vocabulary (custom frontmatter scalars, Reversibility tier, Pattern A/B/C/D/E taxonomy, seven-category failure taxonomy) deliberately left out. |
 
 ## Design Patterns and Standards
 
