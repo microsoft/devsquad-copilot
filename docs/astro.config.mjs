@@ -144,6 +144,7 @@ label: 'Reference',
 collapsed: true,
 items: [
 { label: 'Glossary', slug: 'concepts/glossary' },
+{ label: 'Cost & Token Usage', slug: 'cost-and-token-usage' },
 { label: 'FAQ', slug: 'faq' },
 { label: 'Troubleshooting', slug: 'troubleshooting' },
 { label: 'Contributing', slug: 'contributing' },

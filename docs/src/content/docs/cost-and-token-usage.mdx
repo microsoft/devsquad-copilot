@@ -1,0 +1,220 @@
+---
+title: Cost & Token Usage
+description: How to estimate the GitHub Copilot cost of running DevSquad Copilot end-to-end, using a token baseline you convert with your model's current rates.
+banner:
+  content: |
+    This project is under active development and subject to breaking changes. See the <a href="/devsquad-copilot/changelog/">changelog</a> for release notes.
+---
+
+import { Card, CardGrid, Aside, Steps, LinkCard } from '@astrojs/starlight/components';
+
+Use this page to project the cost of adopting DevSquad Copilot. It converts the framework's token consumption into a planning baseline you can map to your own models and plan.
+
+The baseline is expressed in **tokens**, which stay stable over time, with a simple method to convert tokens into dollars or GitHub AI Credits using your model's current rates. Actual usage varies with codebase size, model choice, retry loops, and how much context lives outside the framework.
+
+<Aside type="note" title="Why no fixed prices?">
+  Model pricing changes frequently. Embedding a price table would make this page stale within weeks. Instead, the baseline stays in tokens and you supply the one volatile input (your model's per-token rate from the live pricing page) at the moment you estimate.
+
+  For how the harness itself reduces token usage (prompt caching, tool search, sub-agents), see GitHub's writeup on [improving token efficiency in Copilot](https://code.visualstudio.com/blogs/2026/06/17/improving-token-efficiency-in-github-copilot).
+</Aside>
+
+## Headline numbers at a glance
+
+<CardGrid>
+  <Card title="Small feature" icon="document">
+    **~0.5M tokens** total (specify through review). Around 4 tasks, ~200–500 LOC.
+  </Card>
+  <Card title="Medium feature" icon="document">
+    **~4.6M tokens** total. Around 18 tasks, ~1,500–3,000 LOC, new endpoint with integration.
+  </Card>
+  <Card title="Large feature / migration" icon="document">
+    **~36M tokens** total. Around 60 tasks, ~8,000+ LOC, cross-service and debug-heavy.
+  </Card>
+  <Card title="Typical squad" icon="rocket">
+    **~51M tokens/month** for 3 developers at a sustainable cadence (~17M per developer).
+  </Card>
+</CardGrid>
+
+Framework overhead versus an unstructured Copilot session is **~1–2%** on real work. The bill is dominated by the work being done (code reads, test loops, generation), not by the framework's prompts.
+
+## Estimate your cost
+
+The baseline never goes stale because the volatile input (your model's rate) is supplied at estimate time.
+
+<Steps>
+
+1. Pick the token figure for your scope from the [per-feature](#where-the-tokens-go) or [monthly](#monthly-forecast) tables below.
+
+2. Look up your model's **input** and **output** rates (per 1M tokens) on the live [Models and pricing for GitHub Copilot](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing) page.
+
+3. Apply the formula:
+
+   ```
+   USD        = (input_tokens_M * input_rate) + (output_tokens_M * output_rate)
+   AI credits = USD / credit_value
+   ```
+
+   Where `input_tokens_M` / `output_tokens_M` are your scope's token counts in millions (e.g. 4.65M = `4.65`), `input_rate` / `output_rate` are your model's price per 1M input/output tokens from step 2, and `credit_value` is the USD value of one AI credit (1 credit = $0.01 at the time of writing; confirm the current value on your billing page).
+
+</Steps>
+
+Output tokens are billed roughly 5x input on most models, so the input/output split matters. Per-feature splits:
+
+| Feature | Input tokens | Output tokens | Total |
+| --- | ---: | ---: | ---: |
+| Small | ~480K | ~83K | ~563K |
+| Medium | ~3.97M | ~0.68M | ~4.65M |
+| Large | ~30.8M | ~4.9M | ~35.7M |
+
+Paid plans receive a 10% discount on model costs when using auto model selection. Cached input (the repeated prompt prefix on later turns) is billed up to 10x below the uncached input rate, and modern agentic harnesses keep cache hit rates high (around 94% on Anthropic models for agentic workloads), so the figures above are a conservative upper bound on input cost. Extended prompt caching (up to 24h retention on supported OpenAI models) keeps the cache warm across pauses.
+
+### Worked example
+
+<Aside type="caution" title="Snapshot rates">
+  The numbers below use rates as of **2026-06-09** for a versatile default-class model ($3.00 per 1M input, $15.00 per 1M output). Verify current rates before quoting; pricing changes frequently.
+</Aside>
+
+| Feature | Calculation | USD | AI credits |
+| --- | --- | ---: | ---: |
+| Small | 0.48 × $3.00 + 0.083 × $15.00 | ~$2.69 | ~270 |
+| Medium | 3.97 × $3.00 + 0.68 × $15.00 | ~$22.11 | ~2,210 |
+| Large | 30.8 × $3.00 + 4.9 × $15.00 | ~$165.90 | ~16,600 |
+
+The monthly squad volume scales the same way: apply the same two rates to its input/output split.
+
+### Plan headroom
+
+GitHub meters all of this in AI credits, and every paid plan includes a monthly credit allowance. To check whether your usage fits, compare your plan's allowance against the per-feature credit estimate above:
+
+```
+features per month before overage = monthly included AI credits / credits per feature
+```
+
+Read your plan's current included allowance (and the per-token overage rate) from the [GitHub Copilot billing page](https://docs.github.com/en/copilot/concepts/billing/about-billing-for-github-copilot). Allowances, plan tiers, and the variable flex portion change over time, so the live billing page is the only reliable source. Example: if your plan includes 7,000 credits and a medium feature costs ~2,210 credits at your current rates, you can ship roughly three medium features per month before additional usage applies.
+
+## Where the tokens go
+
+### Reference scenarios
+
+| Profile | Stories | Tasks per story | Total tasks | Code change |
+| --- | ---: | ---: | ---: | --- |
+| Small feature | 2 | 2 | 4 | ~200–500 LOC, well-scoped CRUD |
+| Medium feature | 6 | 3 | 18 | ~1,500–3,000 LOC, new endpoint + integration |
+| Large feature / migration | 18 | 3–4 | 60 | ~8,000+ LOC, cross-service, debug-heavy |
+
+### Per-phase estimates
+
+Token counts include all framework overhead, artifact reads, tool outputs, sub-agent calls, and produced artifacts.
+
+| Phase | Small (in/out) | Medium (in/out) | Large (in/out) |
+| --- | --- | --- | --- |
+| envision (one-time per product) | 15K / 3K | 15K / 3K | 15K / 3K |
+| kickoff (one-time per product) | 20K / 4K | 25K / 5K | 40K / 8K |
+| specify (per feature) | 30K / 5K | 60K / 10K | 120K / 20K |
+| plan (per feature) | 50K / 8K | 120K / 15K | 250K / 30K |
+| decompose (per feature) | 30K / 5K | 70K / 10K | 150K / 25K |
+| sprint (per sprint, amortized) | 25K / 4K | 25K / 4K | 25K / 4K |
+| implement (per task) | 80K / 15K | 200K / 35K | 500K / 80K |
+| review (per feature) | 50K / 5K | 120K / 10K | 300K / 20K |
+| refine (per run, weekly) | 50K / 5K | 50K / 5K | 50K / 5K |
+| security (when triggered) | 30K / 5K | 60K / 8K | 100K / 12K |
+
+### Total tokens per feature
+
+Planning plus implement plus review only.
+
+| Profile | specify | plan | decompose | implement (sum) | review | **Total** |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Small (4 tasks) | 35K | 58K | 35K | 380K | 55K | **~563K** |
+| Medium (18 tasks) | 70K | 135K | 80K | 4.23M | 130K | **~4.65M** |
+| Large (60 tasks) | 140K | 280K | 175K | 34.8M | 320K | **~35.7M** |
+
+The **implementation phase consumes 70–98% of the feature budget**. Planning phases combined are typically 5–25% of total spend.
+
+### Monthly forecast
+
+Assumptions: one squad of 3 developers, 1-week sprints, mixed feature sizes.
+
+| Mix (per month) | Volume | Tokens |
+| --- | --- | --- |
+| 2 small features | 2 × 563K | ~1.13M |
+| 3 medium features | 3 × 4.65M | ~13.95M |
+| 1 large feature | 1 × 35.7M | ~35.7M |
+| 4 sprints | 4 × 29K | ~116K |
+| 4 refine runs (weekly) | 4 × 55K | ~220K |
+| Security reviews (2 triggered) | 2 × 68K | ~136K |
+| Envision + kickoff (one-time amortized) | — | ~48K |
+| **Monthly total per squad** | | **~51.3M** |
+| **Per developer (3 devs)** | | **~17.1M** |
+
+## What drives the bill
+
+Framework prompts are a small fraction of real cost. The dominant terms are:
+
+1. **Artifact re-reading between phases**. Each phase reads spec, ADRs, and related plans from disk: 5–30K input tokens per phase. This is a deliberate trade of tokens for context isolation.
+2. **Repository code reads during implement and review**: 20–200K tokens depending on familiarity and scope.
+3. **Tool output ingestion**: test logs, build errors, lint output. Each failed test cycle adds 5–15K input tokens.
+4. **Retry and debug loops**: a stuck implementation can multiply the per-task cost 3–5x.
+5. **Generated output**: specs, plans, code edits, commit messages. Output tokens cost more per token than input on every model.
+
+### Framework overhead
+
+What DevSquad Copilot adds on top of an unstructured Copilot session producing similar code:
+
+| Source of overhead | Tokens per medium feature |
+| --- | ---: |
+| Coordinator agent prompts (loaded per phase) | ~25K (mostly cached after first turn) |
+| Sub-agent prompts (isolated contexts) | ~30K |
+| Skill auto-triggers | ~15K |
+| Artifact re-reading between phases | ~40K |
+| Quality gates, handoff envelopes, reasoning logs | ~10K |
+| **Total** | **~120K** |
+
+That is **~1.5% of a medium feature's total spend** and **~0.2% of a large one**.
+
+## Reduce your cost
+
+Listed in order of leverage:
+
+1. **Model selection per agent** (highest impact). The framework does not hardcode a model on any agent, since it has no control over which models, regions, or plan restrictions a consumer can access, and models change at a fast pace. Override an agent's `model` field with open-source tooling such as [`agext-cli`](https://www.npmjs.com/package/agext-cli), which layers repo-local overrides on top of the installed plugin without modifying the originals. As a rule, assign a lightweight model family (Haiku-class or mini/flash-class) to routine agents (validate, verify, finalize, decompose) and reserve a frontier family (Sonnet-, Opus-, or GPT-5-class) for plan, implement.execute, and review.code.
+2. **Cap retry loops** in implement, so a stuck task escalates to you after N failed attempts instead of running away.
+3. **Tighter task decomposition**. Smaller tasks read less surrounding code and have shorter debug tails.
+4. **Honor context cleanup boundaries**. Running an entire delivery in one mega-session raises the risk of context contamination, which leads to retries. Use phase boundaries to keep context clean.
+5. **Keep sessions warm and stable**. With extended prompt caching, resuming related work within the cache-retention window reuses the prompt prefix at the cached rate; a long idle gap forces a cold start that reprocesses the whole prefix at full price. Changing the model or reasoning effort mid-session can also invalidate the cache.
+6. **Pooled entitlements for Business/Enterprise**. Heavy implement sessions for one developer are offset by lighter envision/specify work elsewhere in the org.
+7. **Code completions are free**. Inline coding and Next Edit Suggestions remain unlimited. Use them for trivial edits instead of asking an agent.
+
+## Validate the baseline for your setup
+
+<Steps>
+
+1. Pick one medium feature.
+
+2. Run the full sequence end-to-end: `/devsquad.specify`, then `/devsquad.plan`, then `/devsquad.decompose`, then `/devsquad.implement`, then `/devsquad.review`.
+
+3. Download the usage report CSV from the premium request analytics page. Each row includes `aic_quantity` and `aic_gross_amount`.
+
+4. Filter rows by the session window and compare the AI-credit total against the medium-feature estimate above. Because your account converts tokens to credits at whatever rates are current, this validates the baseline without hardcoding any price.
+
+5. If actuals deviate by more than 2x, the cause is almost always model choice mismatch or retry loops on a small number of tasks.
+
+6. Re-run this validation whenever you change your default model or after major harness updates, since both shift the token baseline.
+
+</Steps>
+
+<Aside type="tip" title="Assumptions and caveats">
+  - Figures use a 4 chars/token approximation. Tokenizers vary ±20%.
+  - The per-phase static load is derived from raw agent, skill, and instruction file sizes. It slightly over-counts declarative YAML frontmatter (which does not all reach the model). Tool-schema definitions are not in the file sizes either, but modern harnesses defer most of them via tool search (a tool's full schema loads only when the model searches for it, outside the cached prefix), so per-turn tool overhead is small and shrinking.
+  - Cache hit rates depend on session continuity. With extended prompt caching (up to 24h on supported OpenAI models) shorter pauses still hit cache; only resumes after the retention window pay uncached rates.
+  - Newer model generations trend toward more tokens per task, partially offset by ongoing harness efficiency gains (improved caching, tool search, cheaper sub-agents). Re-validate when you change your default model.
+  - The implement-per-task figures assume 2–4 test cycles. Stuck tasks with 10+ cycles can 3–5x the figure.
+  - Copilot code review (the GitHub-native PR review feature) consumes Actions minutes, not counted here. Third-party agent and MCP server usage may have separate pricing.
+</Aside>
+
+## Next steps
+
+<CardGrid>
+  <LinkCard title="Install & First Run" href="../getting-started/" description="Set up DevSquad Copilot and run your first phase." />
+  <LinkCard title="Framework Architecture" href="../framework/" description="How agents, context, and traceability fit together." />
+  <LinkCard title="Models and pricing (GitHub docs)" href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing" description="Live per-token rates to plug into the formula above." />
+</CardGrid>
