@@ -2,10 +2,14 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import mermaid from 'astro-mermaid';
+import remarkGfm from 'remark-gfm';
 
 export default defineConfig({
 site: 'https://microsoft.github.io',
 base: '/devsquad-copilot/',
+markdown: {
+remarkPlugins: [remarkGfm],
+},
 integrations: [
 mermaid(),
 starlight({
