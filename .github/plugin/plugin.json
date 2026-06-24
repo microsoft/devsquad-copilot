@@ -12,5 +12,5 @@
   "agents": ".github/plugins/devsquad/agents/",
   "skills": [".github/plugins/devsquad/skills/"],
   "hooks": ".github/plugins/devsquad/hooks/hooks.json",
-  "mcpServers": ".github/plugins/devsquad/.mcp.json"
+  "mcpServers": ".mcp.json"
 }
