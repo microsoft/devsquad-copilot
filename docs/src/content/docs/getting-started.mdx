@@ -16,7 +16,7 @@ Install the plugin, initialize your project, and start building.
 
    <Tabs syncKey="platform">
      <TabItem label="VS Code" icon="vscode">
-       - [VS Code](https://code.visualstudio.com/download) 1.113.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
+       - [VS Code](https://code.visualstudio.com/download) 1.115.0+ with the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension
        - GitHub Copilot active subscription, signed in via the Copilot extension
        - Node.js 18+ (required for MCP servers)
        - Enable nested sub-agent workflows:
@@ -36,6 +36,10 @@ Install the plugin, initialize your project, and start building.
      <TabItem label="VS Code" icon="vscode">
        <LinkButton href="vscode://chat-plugin/install?source=microsoft/devsquad-copilot" variant="primary" icon="rocket" iconPlacement="start" class="sl-text-sm" style="padding: 0.35rem 1rem;">Install</LinkButton>
 
+       <Aside type="note" title="Updates">
+         Plugins auto-update on a 24-hour cycle. To update immediately, run the `Chat: Update Plugins` command.
+       </Aside>
+
        If you see an error, check the [Troubleshooting](../troubleshooting/) page.
      </TabItem>
      <TabItem label="GitHub Copilot CLI" icon="github">
@@ -46,8 +50,14 @@ Install the plugin, initialize your project, and start building.
        copilot plugin install devsquad@devsquad-copilot
        ```
 
-       <Aside type="note" title="Direct Install (Deprecated)">
-         Older CLI versions support direct install via `copilot plugin install microsoft/devsquad-copilot`. This method is deprecated and will be removed in a future release.
+       To update an installed plugin to the latest version:
+
+       ```bash
+       copilot plugin update devsquad
+       ```
+
+       <Aside type="note" title="No auto-update">
+         Plugins are not updated automatically on the GitHub Copilot CLI. Run the update command to get the latest version.
        </Aside>
 
        If you see an error, check the [Troubleshooting](../troubleshooting/) page.
