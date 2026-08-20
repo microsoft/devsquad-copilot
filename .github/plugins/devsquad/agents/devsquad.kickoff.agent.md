@@ -1,7 +1,7 @@
 ---
 name: devsquad.kickoff
 description: Structure project hierarchy (epics, features, dependencies) and sync with board.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem']
 handoffs:
   - label: Specify Feature
     agent: devsquad.specify

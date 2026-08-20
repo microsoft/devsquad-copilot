@@ -1,7 +1,7 @@
 ---
 name: devsquad.decompose
 description: Decompose specs into user stories and tasks, and create work items on GitHub or Azure DevOps.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'github/add_issue_comment', 'github/list_label', 'github/label_write', 'github/list_issue_types', 'github/assign_copilot_to_issue', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem', 'azure/deploy']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/sub_issue_write', 'github/add_issue_comment', 'github/list_label', 'github/label_write', 'github/list_issue_types', 'github/assign_copilot_to_issue', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/wit_add_child_work_items', 'ado/wit_work_items_link', 'ado/search_workitem', 'azure/deploy']
 handoffs:
   - label: Implement
     agent: devsquad.implement

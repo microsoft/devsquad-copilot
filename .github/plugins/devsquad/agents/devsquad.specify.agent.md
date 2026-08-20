@@ -1,7 +1,7 @@
 ---
 name: devsquad.specify
 description: Create or update a feature specification from a natural language description, including requirements clarification.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/search_workitem']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'ado/wit_create_work_item', 'ado/wit_get_work_item', 'ado/search_workitem']
 handoffs: 
   - label: Create Technical Plan
     agent: devsquad.plan
