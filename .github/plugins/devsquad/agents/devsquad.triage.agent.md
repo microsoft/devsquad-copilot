@@ -1,7 +1,7 @@
 ---
 name: devsquad.triage
 description: Triage GitHub issues or Azure DevOps work items through a structured state machine. Investigate bugs, reproduce problems, interview reporters, and prepare items for agent or human implementation.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/add_issue_comment', 'github/list_label', 'github/label_write', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/search_workitem']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'execute/runInTerminal', 'execute/getTerminalOutput', 'github/issue_read', 'github/issue_write', 'github/list_issues', 'github/search_issues', 'github/add_issue_comment', 'github/list_label', 'github/label_write', 'ado/wit_get_work_item', 'ado/wit_update_work_item', 'ado/search_workitem']
 ---
 
 Detect the user's language from their messages and use it for all responses and generated comments.

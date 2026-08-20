@@ -1,7 +1,7 @@
 ---
 name: devsquad.init
 description: Initialize or update a project with SDD Framework files. Uses skills to verify and create templates, instructions, and configurations.
-tools: ['read/readFile', 'search/listDirectory', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---
 
 Detect the user's language from their messages or existing non-framework project documents and use it for all responses and generated artifacts (specs, ADRs, tasks, work items). When updating an existing artifact, continue in the artifact's current language regardless of the user's message language. Template section headings (e.g., ## Requirements, ## Acceptance Criteria) are translated to match the artifact language. Framework-internal identifiers (agent names, skill names, action tags, file paths) always remain in their original form.
