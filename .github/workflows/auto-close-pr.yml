@@ -2,7 +2,7 @@ name: Auto Close Unvouched PR
 
 on:
   pull_request_target:
-    types: [opened]
+    types: [opened, reopened]
 
 permissions:
   contents: read
