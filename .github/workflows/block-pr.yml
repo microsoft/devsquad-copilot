@@ -32,4 +32,4 @@ jobs:
             exit 1
           fi
         env:
-          ACTOR: ${{ github.actor }}
+          ACTOR: ${{ github.event.pull_request.user.login }}
