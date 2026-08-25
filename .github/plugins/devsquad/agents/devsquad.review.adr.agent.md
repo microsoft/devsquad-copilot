@@ -2,7 +2,7 @@
 name: devsquad.review.adr
 description: Review worker that validates ADR compliance. Invoked as a sub-agent by devsquad.review. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch']
 ---
 
 ## Role

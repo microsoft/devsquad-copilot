@@ -2,7 +2,7 @@
 name: devsquad.review.tests
 description: Review worker that validates build and test results. Invoked as a sub-agent by devsquad.review. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'execute/runInTerminal', 'execute/getTerminalOutput']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---
 
 ## Role
