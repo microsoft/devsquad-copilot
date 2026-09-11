@@ -16,6 +16,6 @@
     "astro-mermaid": "^2.0.1",
     "mermaid": "^11.17.2",
     "remark-gfm": "^4.0.1",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.4"
   }
 }
