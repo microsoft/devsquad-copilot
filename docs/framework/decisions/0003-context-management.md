@@ -74,4 +74,4 @@ The accepted trade-off is that context reconstruction from artifacts consumes ad
 ## References
 
 * [Context Management between Phases](../context-management.md)
-* [Skill: Reasoning](../../.github/skills/reasoning/SKILL.md) (defines the Handoff Envelope format)
+* [Skill: Reasoning](../../../.github/plugins/devsquad/skills/reasoning/SKILL.md) (defines the Handoff Envelope format)

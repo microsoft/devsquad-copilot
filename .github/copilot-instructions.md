@@ -95,8 +95,6 @@ This repository is the **SDD Framework source code** (GitHub Copilot plugin). Th
 
 ```
 .github/
-├── agents -> plugins/devsquad/agents  # Symlink for workspace discovery
-├── skills -> plugins/devsquad/skills  # Symlink for workspace discovery
 ├── hooks/           # Workspace-level hooks config (references plugin scripts)
 ├── instructions/    # Path-specific instructions (.instructions.md)
 ├── plugin/
@@ -118,7 +116,9 @@ docs/
 └── features/        # Feature specs
 ```
 
-### Agents (`.github/agents/*.agent.md`)
+Load the local plugin through `chat.pluginLocations` in VS Code User Settings (Remote Settings for a remote window), or `copilot --plugin-dir .github/plugins/devsquad` from the repository root. Workspace settings in `.vscode/settings.json` enable plugin support and nested subagents. Do not add `chat.pluginLocations` to workspace settings or recreate agent and skill symlinks.
+
+### Agents (`.github/plugins/devsquad/agents/*.agent.md`)
 
 Official references:
 - [Custom agents (VS Code)](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
@@ -137,7 +137,7 @@ Rules:
 - Prefer parallel execution of sub-agents when subtasks are independent.
 - Coordinator + worker pattern: the coordinator orchestrates, workers execute focused tasks.
 
-### Skills (`.github/skills/<name>/SKILL.md`)
+### Skills (`.github/plugins/devsquad/skills/<name>/SKILL.md`)
 
 Official references:
 - [Create skills](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-skills)

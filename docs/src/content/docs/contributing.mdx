@@ -10,6 +10,70 @@ import { Aside, Steps, Card, CardGrid, LinkCard } from '@astrojs/starlight/compo
 
 Whether you are contributing an agent, skill, instruction, hook, or documentation fix, this page covers the process and conventions.
 
+## Local Development Setup
+
+Load DevSquad directly from your checkout to develop and test changes to agents, skills, and hooks. The [Getting Started guide](../getting-started/) covers installation for use in other projects.
+
+### Clone the Repository
+
+To contribute changes, fork [microsoft/devsquad-copilot](https://github.com/microsoft/devsquad-copilot) and clone your fork. To explore or test locally without submitting changes, you can clone the upstream repository directly.
+
+Replace `YOUR-USERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/devsquad-copilot.git
+cd devsquad-copilot
+```
+
+The following steps assume that the repository root is your workspace and working directory.
+
+### VS Code
+
+Install the GitHub Copilot Chat extension and sign in with your Copilot account. The repository's `.vscode/settings.json` enables plugin support and nested subagent workflows:
+
+```json
+{
+  "chat.plugins.enabled": true,
+  "chat.subagents.allowInvocationsFromSubagents": true
+}
+```
+
+1. Open the repository root in VS Code.
+2. Run **Preferences: Open User Settings (JSON)** from the Command Palette.
+3. Add the local plugin location, preserving any existing entries:
+
+   ```json
+   {
+     "chat.pluginLocations": {
+       ".github/plugins/devsquad": true
+     }
+   }
+   ```
+
+Saving the setting activates the local plugin. No window reload is required.
+
+`chat.pluginLocations` only supports User Settings in a local window or Remote Settings in a remote window. Do not add it to `.vscode/settings.json`. For remote development, add the same entry to Remote Settings with the repository open in the remote workspace.
+
+The relative path assumes that the repository root is open as the workspace. Use an absolute path if you need to target a specific checkout.
+
+### GitHub Copilot CLI
+
+From the repository root, start a session with the local plugin:
+
+```bash
+copilot --plugin-dir .github/plugins/devsquad
+```
+
+No marketplace registration or plugin installation is required. Start a new session with the same command after editing plugin files to load your changes.
+
+### Verify the Local Plugin
+
+Confirm that the DevSquad agents and skills are available in your client. In Copilot CLI, use `/agent` and `/skills`; in VS Code, check the agent picker and **Chat: Configure Skills**.
+
+Edit source files under `.github/plugins/devsquad/`. No `.github/agents` or `.github/skills` symlinks are required.
+
+Avoid loading an installed DevSquad copy alongside the local plugin. If one is already enabled, disable it for development so that you test the checkout you are editing.
+
 ## Reporting Issues
 
 Use GitHub Issues with detailed context:
@@ -20,6 +84,8 @@ Use GitHub Issues with detailed context:
 ## Project Structure
 
 ```
+.vscode/
+  settings.json      # Plugin support and nested subagent settings
 .github/
   plugins/devsquad/
     agents/          # Visible agents and internal worker agents (.agent.md)

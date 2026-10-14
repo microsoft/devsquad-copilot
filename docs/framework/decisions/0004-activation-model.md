@@ -58,7 +58,7 @@ Complemented by:
 
 Differentiated model by activation type (Option 3). The combination of mechanisms allows optimizing the trade-off between determinism and context efficiency on a case-by-case basis.
 
-The accepted trade-off is greater cognitive complexity for the consumer: they need to decide which mechanism to use. The framework mitigates this with a decision tree documented in [extensibility.md](../extensibility.md) and the [devsquad.extend](../../.github/agents/devsquad.extend.agent.md) agent that guides the choice.
+The accepted trade-off is greater cognitive complexity for the consumer: they need to decide which mechanism to use. The framework mitigates this with a decision tree documented in [extensibility.md](../extensibility.md) and the [devsquad.extend](../../../.github/plugins/devsquad/agents/devsquad.extend.agent.md) agent that guides the choice.
 
 ### Selection criteria
 
@@ -89,4 +89,4 @@ Skills with generic descriptions may not activate when needed (under-triggering)
 ## References
 
 * [Framework Extensibility](../extensibility.md) (decision tree and examples)
-* [Agent devsquad.extend](../../.github/agents/devsquad.extend.agent.md) (interactive selection guide)
+* [Agent devsquad.extend](../../../.github/plugins/devsquad/agents/devsquad.extend.agent.md) (interactive selection guide)

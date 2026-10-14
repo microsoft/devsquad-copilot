@@ -60,6 +60,8 @@ This is not a vibe-coding tool. If you are looking for one-shot, fully autonomou
 
 See the [Getting Started guide](https://microsoft.github.io/devsquad-copilot/getting-started/) for installation on VS Code and GitHub Copilot CLI, prerequisites, and project initialization.
 
+To contribute to DevSquad itself, follow the [Local Development Setup guide](https://microsoft.github.io/devsquad-copilot/contributing/#local-development-setup) to load the plugin directly from your checkout.
+
 ## Learn More
 
 | | |

@@ -1,0 +1,4 @@
+{
+  "chat.plugins.enabled": true,
+  "chat.subagents.allowInvocationsFromSubagents": true
+}

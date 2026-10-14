@@ -97,6 +97,14 @@ We use GitHub Issues to track bugs and errors. If you run into an issue:
 * If an issue for your contribution does not exist, [file an issue](https://github.com/microsoft/devsquad-copilot/issues/new) first.
 * Commits should reference related issues for traceability (e.g., "Fixes #123").
 
+#### Local Development Setup
+
+Open the repository root in VS Code and register `.github/plugins/devsquad` in `chat.pluginLocations` in **User Settings**, or **Remote Settings** for a remote window. The repository's `.vscode/settings.json` enables plugin support and nested subagents.
+
+For Copilot CLI, run `copilot --plugin-dir .github/plugins/devsquad` from the repository root.
+
+See the [Local Development Setup guide](https://microsoft.github.io/devsquad-copilot/contributing/#local-development-setup) for cloning, the settings example, and verification steps. Develop against the local plugin instead of an installed copy.
+
 ### Improving The Documentation
 
 Documentation improvements follow the same process as code contributions. If you see issues with the documentation, open an issue or submit a pull request directly.
@@ -104,11 +112,16 @@ Documentation improvements follow the same process as code contributions. If you
 ## Project Structure
 
 ```
+.vscode/
+  settings.json    # Plugin support and nested subagent settings
 .github/
-  agents/          # Custom agents (.agent.md)
-  skills/          # Agent skills (SKILL.md per directory)
+  plugins/devsquad/
+    agents/        # Custom agents (.agent.md)
+    skills/        # Agent skills (SKILL.md per directory)
+    hooks/         # Plugin lifecycle scripts and hooks.json
+    .mcp.json      # MCP server configuration
   instructions/    # Path-specific instructions (.instructions.md)
-  hooks/           # Session hooks (hooks.json + scripts)
+  hooks/           # Workspace hooks referencing plugin scripts
   docs/            # Internal documentation
 docs/
   framework/
@@ -118,15 +131,15 @@ docs/
   features/        # Feature specifications
   architecture/    # Architecture Decision Records
   envisioning/     # Vision documents
-  site/           # Published documentation site (Starlight/Astro, source of truth for guides)
+  src/content/docs/ # Published documentation pages (Starlight/Astro)
 ```
 
 ### Contribution Areas
 
 | Area | Location | Description |
 |------|----------|-------------|
-| Agents | `.github/plugins/devsquad/agents/` (symlinked at `.github/agents/`) | Specialized agents for each delivery phase |
-| Skills | `.github/plugins/devsquad/skills/` (symlinked at `.github/skills/`) | Reusable capabilities activated by semantic matching |
+| Agents | `.github/plugins/devsquad/agents/` | Specialized agents for each delivery phase |
+| Skills | `.github/plugins/devsquad/skills/` | Reusable capabilities activated by semantic matching |
 | Instructions | `.github/instructions/` | Path-specific rules applied automatically by glob pattern |
 | Hooks | `.github/plugins/devsquad/hooks/` | Session lifecycle scripts (sessionStart, preToolUse, etc.) |
 | Templates | `docs/templates/` | Files distributed to consumer projects via `devsquad.init` |
@@ -166,7 +179,7 @@ docs/
 * All documentation in English
 * No emojis or decorative Unicode characters
 * Prefer lists and tables over long paragraphs
-* See the [documentation-style skill](.github/skills/documentation-style/SKILL.md) for complete formatting rules
+* See the [documentation-style skill](.github/plugins/devsquad/skills/documentation-style/SKILL.md) for complete formatting rules
 
 ### Changelog
 
