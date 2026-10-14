@@ -499,7 +499,7 @@ LSP (Language Server Protocol) tools use the language's own compiler or analyzer
 - **Token efficiency**: LSP returns compact, structured results (symbol name, location, type) instead of requiring the agent to read entire files into context to understand code relationships. This reduces token consumption and leaves more context budget for reasoning about the actual task.
 - **Safer refactoring**: `edit/rename` updates statically analyzable references across the project with correct scope awareness (imports, namespaces, re-exports). Grep-based rename cannot distinguish between symbols that share a name in different scopes. Note: dynamic references (reflection, string interpolation, metaprogramming) are not covered by LSP rename and still require manual verification.
 
-These tools are powered by LSP servers running in the background. When no LSP server is configured for the project's language, they silently fall back to less precise text search or return empty results. Run `/lsp` to check which servers are active.
+In VS Code, these tools use the editor's language services. In Copilot CLI, code intelligence uses configured language servers; run `/lsp` to inspect effective servers, including plugin-provided ones. The session-start snapshot in `.memory/lsp-status.md` only records CLI configuration file presence. It does not establish runtime health, language coverage, or VS Code language-service availability.
 
 **Prefer LSP tools** (`search/usages`, `edit/rename`) when:
 - Renaming symbols (functions, classes, variables, methods, parameters)
@@ -514,7 +514,7 @@ These tools are powered by LSP servers running in the background. When no LSP se
 
 When an LSP tool returns no results, distinguish two cases before falling back:
 - **Zero usages (legitimate)**: the symbol genuinely has no other references. Verify by checking the symbol exists and the file is saved.
-- **No LSP server running**: check `.memory/lsp-status.md`. If no LSP config exists, inform the developer that code navigation is operating in text-search mode with less precision and higher token usage, and recommend running `/lsp` to check status.
+- **Language service unavailable or failing**: verify availability in the current client. In Copilot CLI, use `/lsp` and `/lsp test SERVER-NAME`; recommend the `lsp-setup` skill when language support is missing. In VS Code, check the relevant language extension and diagnostics. Do not infer unavailability from `.memory/lsp-status.md` alone. If semantic tools remain unavailable, disclose the text-search limitation before falling back; do not install servers automatically.
 
 **Rule**: Never use `search/textSearch` + manual `edit/editFiles` to rename a code symbol when `edit/rename` is available. LSP-based rename handles imports, namespaces, and scope correctly; grep-based rename does not.
 

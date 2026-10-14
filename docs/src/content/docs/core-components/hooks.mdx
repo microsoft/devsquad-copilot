@@ -1,6 +1,6 @@
 ---
 title: Hooks
-description: Five lifecycle scripts that run automatically at specific points during agent execution.
+description: Lifecycle scripts that run automatically at specific points during agent execution.
 banner:
   content: |
     This project is under active development and subject to breaking changes. See the <a href="/devsquad-copilot/changelog/">changelog</a> for release notes.
@@ -37,6 +37,11 @@ Configuration lives in `hooks.json` with command path and timeout (default 30 se
     **Type**: sessionStart (10s timeout)
 
     Checks if consumer tool extensions are synced with the current plugin version. Warns if extensions are stale or unsynced.
+  </Card>
+  <Card title="detect-lsp-servers.sh" icon="setting">
+    **Type**: sessionStart (10s timeout)
+
+    Records whether `.github/lsp.json` and `~/.copilot/lsp-config.json` exist in `.memory/lsp-status.md`. When neither exists, recommends `/lsp` and the `lsp-setup` skill for missing CLI support. Configuration presence does not establish language coverage or server health. Plugin-provided servers and VS Code language services are not checked. The hook never installs or starts servers.
   </Card>
   <Card title="validate-work-item-tags.sh" icon="approve-check">
     **Type**: postToolUse (10s timeout)
@@ -79,7 +84,7 @@ Hooks return JSON on stdout with results. Stderr is used for descriptive error m
 - Be idempotent (safe to run multiple times)
 
 <Aside type="note">
-  SessionStart hooks (detect-repo-platform, detect-branching-strategy, detect-tool-extensions) use a simpler format with `decision` and `reason` fields on stderr for warnings. The full output contract above applies to postToolUse validation hooks.
+  SessionStart hooks (detect-repo-platform, detect-branching-strategy, detect-tool-extensions, detect-lsp-servers) use a simpler format with `decision` and `reason` fields on stderr for warnings. The full output contract above applies to postToolUse validation hooks.
 </Aside>
 
 ---

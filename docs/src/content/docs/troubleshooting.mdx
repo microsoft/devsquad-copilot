@@ -44,6 +44,20 @@ Clear VS Code cache and restart:
 - Check network connectivity to MCP endpoints
 - For Azure DevOps MCP: ensure `npx @azure-devops/mcp@next` resolves
 
+## Copilot CLI code intelligence unavailable
+
+1. Run `/lsp` to inspect effective language servers. Servers can come from project, plugin, or user configuration.
+2. Use `/lsp test SERVER-NAME` to verify startup and `/lsp logs` to inspect failures. A valid JSON file or reachable executable alone does not establish a working server.
+3. If language support is missing, ask "Set up LSP for this repository" to activate the [`lsp-setup` skill](../skills/development/#lsp-setup). Review the detected languages, installation commands, and scope before approving changes.
+4. After configuration changes, run `/lsp reload`, then check status and test the server again. Use `/lsp help` to check support in your installed CLI; restart only if that version requires it.
+5. Verify a definition or reference lookup in a saved file of the intended language. In monorepos, check whether the server requires a subproject `rootUri`.
+
+`.memory/lsp-status.md` is a session-start snapshot of CLI configuration file presence. It does not check validity, disabled entries, language coverage, plugin-provided servers, or runtime health. The snapshot refreshes at the next session start, not on `/lsp reload`.
+
+Project configuration at `.github/lsp.json` overrides plugin configuration, which overrides user configuration at `~/.copilot/lsp-config.json` for matching server names. Shared configuration does not install server binaries on other contributors' machines.
+
+**VS Code:** Check the relevant language extension and editor diagnostics. CLI configuration and its status snapshot do not determine whether VS Code language services are available.
+
 ## Tool extensions not syncing
 
 - Ensure `.github/devsquad/tool-extensions/` YAML files exist
