@@ -2,7 +2,7 @@
 name: devsquad.review.spec
 description: Review worker that validates spec compliance and conformance criteria traceability. Invoked as a sub-agent by devsquad.review. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch']
 ---
 
 ## Role

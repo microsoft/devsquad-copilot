@@ -2,7 +2,7 @@
 name: devsquad.implement.execute
 description: Implementation worker that executes coding tasks following TDD, phase ordering, and commit-per-task discipline. Invoked as a sub-agent by devsquad.implement. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search']
+tools: ['read/readFile', 'vscode/askQuestions', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search']
 ---
 
 ## Role

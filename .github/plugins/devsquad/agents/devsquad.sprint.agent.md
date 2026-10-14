@@ -1,7 +1,7 @@
 ---
 name: devsquad.sprint
 description: Prepare sprint planning with previous sprint closure, velocity analysis, adaptive capacity, and scope options with committed vs stretch. Does not pre-assign work items.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_get', 'github/projects_list', 'github/projects_write', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'github/search_code', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/work_list_team_iterations', 'ado/work_get_team_capacity', 'ado/wit_get_work_items_for_iteration']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'github/list_pull_requests', 'github/pull_request_read', 'github/projects_get', 'github/projects_list', 'github/projects_write', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'github/search_code', 'ado/wit_get_work_item', 'ado/search_workitem', 'ado/work_list_team_iterations', 'ado/work_get_team_capacity', 'ado/wit_get_work_items_for_iteration']
 handoffs:
   - label: Create Technical Plan
     agent: devsquad.plan

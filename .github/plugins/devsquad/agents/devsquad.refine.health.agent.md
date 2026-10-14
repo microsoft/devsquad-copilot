@@ -2,7 +2,7 @@
 name: devsquad.refine.health
 description: Refine worker that checks staleness, PR health, and security alerts. Invoked as a sub-agent by devsquad.refine. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/listDirectory', 'github/list_pull_requests', 'github/pull_request_read', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'github/search_code']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'github/list_pull_requests', 'github/pull_request_read', 'github/list_dependabot_alerts', 'github/list_code_scanning_alerts', 'github/search_code']
 ---
 
 ## Role

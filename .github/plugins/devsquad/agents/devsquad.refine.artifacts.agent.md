@@ -2,7 +2,7 @@
 name: devsquad.refine.artifacts
 description: Refine worker that checks spec/board consistency, ADR health, design artifact consistency, and hierarchy. Invoked as a sub-agent by devsquad.refine. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'ado/wit_get_work_item', 'ado/search_workitem']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'github/issue_read', 'github/list_issues', 'github/search_issues', 'ado/wit_get_work_item', 'ado/search_workitem']
 ---
 
 ## Role

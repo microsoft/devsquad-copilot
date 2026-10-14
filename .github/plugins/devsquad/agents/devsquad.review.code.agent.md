@@ -2,7 +2,7 @@
 name: devsquad.review.code
 description: Review worker that validates codebase consistency and detects AI code smells. Invoked as a sub-agent by devsquad.review. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages']
 ---
 
 ## Role

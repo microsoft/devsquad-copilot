@@ -2,7 +2,7 @@ name: Auto Close Unvouched PR
 
 on:
   pull_request_target:
-    types: [opened]
+    types: [opened, reopened]
 
 permissions:
   contents: read
@@ -37,7 +37,7 @@ jobs:
             echo "vouched=false" >> $GITHUB_OUTPUT
           fi
         env:
-          ACTOR: ${{ github.actor }}
+          ACTOR: ${{ github.event.pull_request.user.login }}
 
       - name: Comment and close PR
         if: steps.free-pass.outputs.skip != 'true' && steps.check.outputs.vouched == 'false'

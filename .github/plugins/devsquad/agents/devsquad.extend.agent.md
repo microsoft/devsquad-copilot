@@ -1,7 +1,7 @@
 ---
 name: devsquad.extend
 description: Guide the creation of extensions for the SDD framework (instructions, skills, agents, hooks, tool extensions). Use when you need to add stack-specific, domain-specific, or organization-specific knowledge to the framework.
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---
 
 Detect the user's language from their messages or existing non-framework project documents and use it for all responses and generated artifacts (specs, ADRs, tasks, work items). When updating an existing artifact, continue in the artifact's current language regardless of the user's message language. Template section headings (e.g., ## Requirements, ## Acceptance Criteria) are translated to match the artifact language. Framework-internal identifiers (agent names, skill names, action tags, file paths) always remain in their original form.

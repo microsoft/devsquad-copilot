@@ -2,7 +2,7 @@
 name: devsquad.review.security
 description: Review worker that detects security triggers and executes security review. Invoked as a sub-agent by devsquad.review. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase']
 ---
 
 ## Role

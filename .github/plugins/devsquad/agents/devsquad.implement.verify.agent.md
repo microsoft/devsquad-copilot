@@ -2,7 +2,7 @@
 name: devsquad.implement.verify
 description: Implementation worker that runs build, tests, coverage checks, and lint validation. Invoked as a sub-agent by devsquad.implement. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput']
+tools: ['read/readFile', 'vscode/askQuestions', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'execute/runInTerminal', 'execute/getTerminalOutput']
 ---
 
 ## Role

@@ -2,7 +2,7 @@
 name: devsquad.plan.design
 description: Planning worker that designs feature or migration architecture (data model, contracts, infrastructure mapping). Invoked as a sub-agent by devsquad.plan. Do not use directly.
 user-invocable: false
-tools: ['read/readFile', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'drawio/create_diagram']
+tools: ['read/readFile', 'vscode/askQuestions', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'azure/cloudarchitect', 'azure/deploy', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'azure/pricing', 'azure/wellarchitectedframework', 'drawio/create_diagram']
 ---
 
 ## Role
