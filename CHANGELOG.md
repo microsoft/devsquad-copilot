@@ -16,6 +16,11 @@ See `CONTRIBUTING.md` for full conventions.
 
 ## [Unreleased]
 
+### Template changes (consumer action required)
+
+- Documentation style instructions and the `documentation-style` skill now explicitly forbid introducing the em-dash character (Unicode U+2014) in newly written or rewritten Markdown and discourage semicolons in prose. Recast sentences for natural flow while preserving their meaning, without mechanically replacing punctuation with abrupt sentence breaks. Semicolons required by code, technical syntax, or verbatim quotations remain allowed. Preserve existing text outside the requested scope. Existing documents do not require a cleanup.
+- **Consumer action:** Update the DevSquad plugin for the skill change. Apply the same scoped rules to existing `.github/copilot-instructions.md` and `.github/instructions/documentation-style.instructions.md` files, or preview `sdd-init.sh update-all --dry-run` and review all planned overwrites before applying `sdd-init.sh update-all` to refresh managed files.
+
 ### Added (Agent Intent Governance — selective Architecture of Intent adoption)
 
 Closes three structural gaps in the framework: framework agents had no explicit behavioral envelope (a reviewer reading `devsquad.implement.agent.md` could not determine in under a minute what the agent was authorized to do, must never do, or how it composes sub-agents); consumer specs describing AI capabilities had no canonical fragment for operational cost commitments; the failure-diagnosis surface had no taxonomy mapping a failure to the upstream artifact that owns the fix. Vocabulary and discipline drawn from "The Architecture of Intent" by Marcel Aldecoa (`https://marcelaldecoa.github.io/TheArchitectureOfIntent/`). The framework adopts the load-bearing principles and deliberately omits parts of the source vocabulary that add no behavior (see "AoI constructs considered and not adopted" in ADR 0014).

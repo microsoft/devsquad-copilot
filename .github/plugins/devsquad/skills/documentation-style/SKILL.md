@@ -10,6 +10,9 @@ This guide defines standards for all documentation generated in the project.
 ## Formatting
 
 - Ensure there are no spelling errors. Avoid emojis and decorative Unicode characters (such as →, •, ★, ✓, 🎯, ✅).
+- Do not introduce the em-dash character (Unicode U+2014) in newly written or rewritten Markdown text. Rephrase the sentence instead.
+- Avoid semicolons in newly written or rewritten prose. Recast the sentence naturally using a conjunction, a clearer sentence structure, or separate sentences when appropriate. Preserve the original meaning, and avoid turning connected ideas into a series of short, abrupt sentences. Keep semicolons required by code, technical syntax, or verbatim quotations.
+- Preserve existing text outside the requested scope. Do not scan or rewrite documents solely to remove existing em dashes or semicolons.
 - Avoid hyphens or dashes as separators between concepts. Instead of "concept A - concept B", rewrite the sentence.
 - Prefer lists and tables over long paragraphs.
 - Keep documents concise: specs and ADRs should be 1-2 pages, not novels.

@@ -86,6 +86,9 @@ For code rules (values, style, tests, performance, git, PRs), follow `.github/do
 When editing or creating markdown documents:
 
 - No emojis or decorative Unicode (such as arrows, bullets, checkmarks, stars).
+- Do not introduce the em-dash character (Unicode U+2014) in newly written or rewritten Markdown text. Rephrase the sentence instead.
+- Avoid semicolons in newly written or rewritten prose. Recast the sentence naturally using a conjunction, a clearer sentence structure, or separate sentences when appropriate. Preserve the original meaning, and avoid turning connected ideas into a series of short, abrupt sentences. Keep semicolons required by code, technical syntax, or verbatim quotations.
+- Preserve existing text outside the requested scope. Do not scan or rewrite documents solely to remove existing em dashes or semicolons.
 - No hyphens or dashes as separators between concepts. Rewrite the sentence.
 - No `#<number>` in free text (Azure DevOps converts it to a work item link).
 - No contrastive framing ("not just X, it's Y", "goes beyond", "more than just"). Describe directly.
