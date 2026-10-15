@@ -115,10 +115,16 @@ Formatting and style rules for all markdown documentation generated in the proje
 |------|--------|
 | Spelling | No errors allowed |
 | Emojis | Prohibited, including decorative Unicode |
-| Separators | No hyphens between concepts; rewrite the sentence |
+| Em dashes | Rephrase sentences without introducing Unicode U+2014 in newly written or rewritten Markdown |
+| Semicolons | Recast newly written or rewritten prose naturally using conjunctions, clearer structure, or separate sentences when appropriate |
+| Separators | Rephrase sentences instead of separating concepts with hyphens |
 | Work item references | Never use `#<number>` in free text (Azure DevOps auto-links) |
 | Structure | Lists and tables over long paragraphs |
 | Length | Specs and ADRs should be 1-2 pages |
+
+Preserve meaning and natural flow rather than mechanically replacing semicolons with periods or splitting connected ideas into short, abrupt sentences. Keep semicolons required by code, technical syntax, or verbatim quotations.
+
+Preserve existing text outside the requested scope. Do not scan or rewrite documents solely to remove existing em dashes or semicolons. Ordinary hyphens in compound words, identifiers, Markdown lists, and tables remain allowed.
 
 **Language rules:**
 | Avoid | Prefer |
