@@ -99,7 +99,7 @@ Checking artifacts for review...
 Before starting validation, collect IDE data to complement static analysis:
 
 1. **`read/changes`** — List all files with source control changes. This defines the actual review scope (which files were touched).
-2. **`search/usages`** — For each new or modified public symbol, check references to ensure the API is consumed correctly. This tool is powered by LSP; if it returns empty results unexpectedly, check `.memory/lsp-status.md` and note in the review log if LSP is unavailable (text-search fallback is less precise).
+2. **`search/usages`** — For each new or modified public symbol, check references to ensure the API is consumed correctly. If results are unexpectedly empty, verify the symbol and language service in the current client. In Copilot CLI, use `/lsp` and `/lsp test SERVER-NAME`; recommend `lsp-setup` when support is missing. In VS Code, check the language extension and diagnostics. `.memory/lsp-status.md` only records CLI configuration file presence, not runtime or IDE availability. Note any unverified reference checks or text-search fallback in the review log; do not install servers automatically.
 3. **`read/problems`** — Query IDE errors and warnings. Any compilation or lint error is an automatic finding of Major severity.
 
 **If minimum artifacts do not exist** (spec or plan):
