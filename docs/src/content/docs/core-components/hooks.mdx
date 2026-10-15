@@ -41,7 +41,7 @@ Configuration lives in `hooks.json` with command path and timeout (default 30 se
   <Card title="detect-lsp-servers.sh" icon="setting">
     **Type**: sessionStart (10s timeout)
 
-    Records whether `.github/lsp.json` and `~/.copilot/lsp-config.json` exist in `.memory/lsp-status.md`. When neither exists, recommends `/lsp` and the `lsp-setup` skill for missing CLI support. Configuration presence does not establish language coverage or server health. Plugin-provided servers and VS Code language services are not checked. The hook never installs or starts servers.
+    Records whether `.github/lsp.json` and `~/.copilot/lsp-config.json` exist in `.memory/lsp-status.md`. When neither exists, warns only if recognizable source files or build manifests exist outside excluded scaffolding, documentation/examples, templates, dependencies, and generated output. Otherwise, records deferred setup without warning so new repositories can proceed with planning. The lightweight scan does not cover every language; setup can still be requested explicitly. For missing CLI support, recommends `/lsp` and the `lsp-setup` skill. Configuration presence does not establish language coverage or server health. Plugin-provided servers and VS Code language services are not checked. The hook never installs or starts servers.
   </Card>
   <Card title="validate-work-item-tags.sh" icon="approve-check">
     **Type**: postToolUse (10s timeout)

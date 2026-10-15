@@ -14,6 +14,8 @@ These skills support the development workflow: configuring code intelligence, de
 
 Configure Language Server Protocol servers for **Copilot CLI** using evidence from the repository's manifests and source files. The skill confirms the language set, selects trusted servers for the host platform, requests approval for installation and configuration, and preserves existing server entries.
 
+**New repositories:** If no code, build manifests, or explicitly chosen languages establish a stack, defer setup. Envisioning, specification, and planning do not require LSP. If you explicitly request setup before choosing a stack, the skill asks which languages you intend to use. An explicitly chosen stack can be configured with approval before code exists; configuration and startup results are reported separately from code-navigation verification, which remains pending until source files exist.
+
 | Scope | Configuration | Responsibility |
 |-------|---------------|----------------|
 | Project | `.github/lsp.json` | Share server definitions; each contributor installs the required binaries |
@@ -29,7 +31,7 @@ Project entries override plugin entries, which override user entries with the sa
 
 After configuration, run `/lsp reload`, inspect `/lsp`, and use `/lsp test SERVER-NAME` to check startup. Verify a definition or reference lookup on a known symbol before treating setup as complete. Check `/lsp help` for commands supported by the installed CLI version.
 
-The session-start hook writes `.memory/lsp-status.md` as a configuration-file snapshot. It does not verify server health or plugin-provided servers, and it refreshes at the next session start rather than after `/lsp reload`.
+The session-start hook writes `.memory/lsp-status.md` as a configuration-file snapshot. If configuration is missing and no recognizable source or build evidence exists outside excluded directories, it records deferred setup without warning. It excludes framework scaffolding, documentation/examples, templates, dependencies, and generated output. Unsupported file types may not be recognized; request setup explicitly when needed. The snapshot does not verify server health or plugin-provided servers, and it refreshes at the next session start rather than after `/lsp reload`.
 
 **Client boundary:** VS Code uses its own language extensions and services. A missing CLI configuration file does not establish that VS Code code intelligence is unavailable. This skill does not configure IDE extensions or install servers automatically during ordinary implementation or review.
 

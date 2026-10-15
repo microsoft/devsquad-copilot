@@ -46,6 +46,8 @@ Clear VS Code cache and restart:
 
 ## Copilot CLI code intelligence unavailable
 
+**New repository without a stack:** LSP setup is deferred until source files or build manifests appear. Continue envisioning, specification, and planning without installing servers. The hook records this deferral without warning when it finds no recognizable code or build evidence outside excluded directories; this is not proof that the repository is empty. To prepare an explicitly chosen stack before code exists, request setup for those languages. Configuration and startup can be checked separately; code-navigation verification waits for source files.
+
 1. Run `/lsp` to inspect effective language servers. Servers can come from project, plugin, or user configuration.
 2. Use `/lsp test SERVER-NAME` to verify startup and `/lsp logs` to inspect failures. A valid JSON file or reachable executable alone does not establish a working server.
 3. If language support is missing, ask "Set up LSP for this repository" to activate the [`lsp-setup` skill](../skills/development/#lsp-setup). Review the detected languages, installation commands, and scope before approving changes.

@@ -19,9 +19,11 @@ Configure language servers for the languages actually used in the repository. Ke
 
 ### 2. Detect and confirm the language stack
 
-1. Inspect build/dependency manifests and source file extensions, excluding vendored dependencies, generated files, and build output. Do not infer a language from documentation examples alone.
-2. For polyglot repositories, identify the languages with meaningful source presence and any subproject roots.
-3. Present the evidence and proposed language set. Confirm which languages the user wants supported before making changes.
+1. Inspect build/dependency manifests and source file extensions, excluding DevSquad scaffolding, documentation examples, templates, vendored dependencies, generated files, and build output. Do not infer a language from documentation examples alone.
+2. If no stack can be established and the user has neither requested setup nor explicitly selected languages, defer setup without installing software or creating configuration. Envisioning, specification, and planning can proceed without LSP. Revisit setup when implementation introduces source files or manifests.
+3. If the user explicitly requests setup in a repository with no stack evidence, ask which languages they intend to use. Do not choose the application stack on their behalf. If they already explicitly chose languages, offer optional setup for those languages with approval.
+4. For polyglot repositories, identify the languages with meaningful source presence and any subproject roots.
+5. Present the evidence or explicitly chosen languages and proposed language set. Confirm which languages the user wants supported before making changes.
 
 ### 3. Resolve trusted servers and installation methods
 
@@ -54,8 +56,8 @@ Configure language servers for the languages actually used in the repository. Ke
 
 1. Ask the user to run `/lsp reload` in Copilot CLI to load the updated configuration, then `/lsp` to inspect effective server status. Check `/lsp help` if the installed CLI does not support reload; restart only when required by that version.
 2. Run `/lsp test SERVER-NAME` for each configured server, or ask the user to run it and provide the result. Inspect `/lsp logs` when startup fails.
-3. Verify a definition or reference lookup on a known symbol in a saved source file of each configured language. A reachable executable and valid JSON alone do not establish working code intelligence.
-4. Report verified servers, unresolved failures, and any checks awaiting user execution. Never claim successful setup while runtime verification is pending.
+3. Verify a definition or reference lookup on a known symbol in a saved source file of each configured language. If source files do not exist yet, defer this check without creating application code solely for verification. A reachable executable and valid JSON alone do not establish working code intelligence.
+4. Report configuration validity, server startup results, and code-navigation verification separately. For an explicitly chosen stack without code, state that navigation verification is pending until source files exist; startup may also remain unverified if the server requires project files. Report failures and checks awaiting user execution without claiming fully working code intelligence.
 5. Explain that `.memory/lsp-status.md` refreshes at the next session start. Do not treat its older snapshot as the result of `/lsp reload`.
 
 ## Configuration Shape
