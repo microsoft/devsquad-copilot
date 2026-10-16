@@ -16,6 +16,7 @@ When editing markdown documentation, follow these formatting rules:
 - Do not use promotional language: "it's not just X, it's Y", "goes beyond...", "more than just...". Describe directly.
 - Do not use rhetorical questions followed by obvious answers. State the assertion directly.
 - Prefer lists and tables over long paragraphs.
+- Prefer plain, widely understood vocabulary for non-native English speakers. Follow the `documentation-style` skill for examples and exceptions that preserve technical precision.
 - Prefer descriptive names and links over invented identifiers. Follow the `documentation-style` skill for exceptions required by artifact-specific rules and for preserving existing references.
 - Mermaid: detect the platform via the remote (`git config --get remote.origin.url`).
   - Azure DevOps (`dev.azure.com` or `visualstudio.com`): use `:::mermaid` and `:::`

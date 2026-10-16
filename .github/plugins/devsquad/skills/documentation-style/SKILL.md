@@ -28,6 +28,7 @@ This guide defines standards for all documentation generated in the project.
   - "goes beyond..."
 - Describe directly what something is, without negating or minimizing alternatives.
 - Use active voice and direct sentences.
+- Prefer plain, widely understood vocabulary so non-native English speakers can follow the document. Use "place" or "location" instead of "locus", "use" instead of "utilize", and "make easier" instead of "facilitate" when the meaning is unchanged. Keep precise domain terms, API names, code identifiers, and verbatim quotations. Explain necessary unfamiliar terms on first use instead of replacing them with a less accurate word.
 - Avoid generic framing: if the sentence works in any project without modification, it is not saying anything useful.
   - **Avoid**: rhetorical questions followed by an obvious answer ("The solution? Test everything that matters.")
   - **Prefer**: go straight to the statement with project-specific context.
