@@ -10,7 +10,7 @@ Before creating ANY work item, verify:
 1. **Platform**: Read `.memory/board-config.md` to identify GitHub or Azure DevOps
 2. **Duplicates**: Check if a similar work item already exists on the board
 3. **Required tags/labels**: all present (see section below)
-4. **Title in correct format**: see Title section
+4. **Title in correct format**: follow the Title section and check the outgoing title contains no invented sequential task or story identifier
 5. **Body filled in**: per the platform format (see GitHub and Azure DevOps sections)
 6. **Hierarchy**: parent linked correctly
 7. **Durable descriptions**: body describes *behavior* using domain language, not implementation details (see Durability Rules below)
@@ -26,6 +26,7 @@ Work items live on the board, get rendered in GitHub/ADO UIs, and are read by hu
 | No em-dash (—), en-dash (–), or hyphen as separator between concepts | Ambiguous in titles, breaks search, often AI-generated tell. Rewrite the sentence. | `Auth flow — refactor` → `Refactor auth flow` |
 | Never use `#<number>` in free text | Azure DevOps auto-converts to a work item link, breaking references and creating wrong cross-links. Use "first", "third option", or rephrase. | `#1 priority` → `top priority` |
 | No contrastive constructions ("not just X, it's Y", "more than just", "goes beyond") | Generic AI framing that adds words without information | `This is not just a fix, it's a rethink` → `Replace the retry logic` |
+| Descriptive names instead of invented identifiers | Keeps scenarios, assumptions, and risks readable without another numbering scheme. Preserve identifiers required by the source artifact or an established project convention, existing references, and native board IDs. | `RISK-001` added to a risk that can be described by name |
 | Direct active voice, no rhetorical questions | Work items are commands or descriptions, not essays | `What if we cached responses? We should cache them.` → `Cache responses for 60 seconds` |
 | No promotional or exaggerated language | Work items track work, not pitch it | `seamless`, `revolutionary`, `world-class` |
 | Keep titles short and concrete; bodies focused on observable behavior | Titles surface in lists; bodies are read once during planning and again during review | See Durability Rules for body content rules |
@@ -156,6 +157,16 @@ Cache the list of existing labels to avoid repeated calls during the same creati
 - Features: `[Feature] <name>`
 - ADRs: `[ADR] <domain>` or `[<feature>][ADR] <domain>`
 - Tech Debt: `[Tech Debt] <description>`
+
+For GitHub and Azure DevOps, do not add sequential task or story identifiers such as `T-1`, `T001`, or `US-01` to generated titles, including after the feature prefix. Do not copy local draft numbering into the title. The board supplies its own identity, and hierarchy and dependency links preserve relationships.
+
+| Avoid | Use |
+|-------|-----|
+| `T-1 [pix] Prevent duplicate payments` | `[pix] Prevent duplicate payments` |
+| `[pix] T002 Validate payment limits` | `[pix] Validate payment limits` |
+| `[pix] US-01 Send an immediate payment` | `[pix] Send an immediate payment` |
+
+Keep meaningful domain numbers and versions, such as `[pix] Support Pix API v2`. Apply the title rule to newly generated work items without renaming existing board items as a cleanup.
 
 ## Hierarchy
 

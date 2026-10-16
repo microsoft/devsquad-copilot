@@ -18,11 +18,14 @@ See `CONTRIBUTING.md` for full conventions.
 
 ### Template changes (consumer action required)
 
+- Documentation style guidance now favors descriptive names and links over invented identifiers in newly written or rewritten text. Preserve existing references, native board IDs, ADR numbers, technical identifiers, and IDs still required by artifact-specific templates and verification rules. No automatic cleanup of existing documents is required.
+- **Consumer action:** Update the DevSquad plugin and apply the naming guidance to existing `.github/copilot-instructions.md` and `.github/instructions/documentation-style.instructions.md`, or preview `sdd-init.sh update-all --dry-run` and review all planned overwrites before applying `sdd-init.sh update-all`.
 - Documentation style instructions and the `documentation-style` skill now explicitly forbid introducing the em-dash character (Unicode U+2014) in newly written or rewritten Markdown and discourage semicolons in prose. Recast sentences for natural flow while preserving their meaning, without mechanically replacing punctuation with abrupt sentence breaks. Semicolons required by code, technical syntax, or verbatim quotations remain allowed. Preserve existing text outside the requested scope. Existing documents do not require a cleanup.
 - **Consumer action:** Update the DevSquad plugin for the skill change. Apply the same scoped rules to existing `.github/copilot-instructions.md` and `.github/instructions/documentation-style.instructions.md` files, or preview `sdd-init.sh update-all --dry-run` and review all planned overwrites before applying `sdd-init.sh update-all` to refresh managed files.
 
 ### Changed
 
+- Work item creation and decomposition now explicitly exclude invented sequential task and story identifiers from generated GitHub and Azure DevOps titles. The task quality rubric checks this convention while preserving feature prefixes, domain numbers, native board IDs, hierarchy, and dependency links. Existing work items are not renamed automatically.
 - The `test-discipline` skill now explicitly covers tautological assertions, independent behavioral oracles, and behavior-preserving refactoring. Implementation and review workers and the code quality rubric reinforce these checks. Reuse existing behavioral tests and add tests only for concrete coverage gaps, without requiring mutation-testing tooling or banning legitimate test helpers and computed expectations.
 
 ### Added (Agent Intent Governance — selective Architecture of Intent adoption)

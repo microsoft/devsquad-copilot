@@ -139,11 +139,18 @@ Formatting and style rules for all markdown documentation generated in the proje
 | Separators | Rephrase sentences instead of separating concepts with hyphens |
 | Work item references | Never use `#<number>` in free text (Azure DevOps auto-links) |
 | Structure | Lists and tables over long paragraphs |
+| Names and references | Prefer descriptive names and links over invented codes for stories, requirements, scenarios, risks, and findings |
 | Length | Specs and ADRs should be 1-2 pages |
 
 Preserve meaning and natural flow rather than mechanically replacing semicolons with periods or splitting connected ideas into short, abrupt sentences. Keep semicolons required by code, technical syntax, or verbatim quotations.
 
 Preserve existing text outside the requested scope. Do not scan or rewrite documents solely to remove existing em dashes or semicolons. Ordinary hyphens in compound words, identifiers, Markdown lists, and tables remain allowed.
+
+Use formal identifiers only when explicitly requested or required by an established project convention, compliance process, or artifact-specific rules. Keep ordinary numbered procedures, meaningful numeric values, native board IDs, existing ADR numbers, and technical identifiers. Avoid repeating the same requirement solely to assign another code.
+
+Apply the naming defaults only to newly written or rewritten text. Preserve existing identifiers and references outside the requested scope. Current spec templates and verification rules still require requirement and conformance IDs, which remain supported until those contracts are updated together.
+
+For generated work item titles, the `work-item-creation` skill explicitly excludes sequential task and story prefixes such as `T-1`, `T001`, and `US-01`. It retains feature prefixes and native board identity without renaming existing work items.
 
 **Language rules:**
 | Avoid | Prefer |

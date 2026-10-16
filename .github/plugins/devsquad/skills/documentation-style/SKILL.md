@@ -32,6 +32,14 @@ This guide defines standards for all documentation generated in the project.
   - **Avoid**: rhetorical questions followed by an obvious answer ("The solution? Test everything that matters.")
   - **Prefer**: go straight to the statement with project-specific context.
 
+## Names and References
+
+1. Use descriptive headings, scenario names, and plain statements instead of inventing codes for requirements, stories, tasks, assumptions, risks, or review findings. Do not replace numeric codes with another opaque naming scheme.
+2. Add formal identifiers only when explicitly requested or required by an established project convention, compliance process, or artifact-specific template or instruction. Current spec templates and verification rules still require requirement and conformance IDs, so preserve those contracts until they are changed together.
+3. Reference behavior by its descriptive name and document or section link when available. Use a precise link when names could be ambiguous. Preserve native board IDs, existing ADR numbers, and technical identifiers such as protocol fields and error codes.
+4. Keep ordinary numbered procedures and meaningful numeric values. Avoid repeating the same requirement in multiple sections solely to assign it another identifier, while retaining distinct inputs, expected outcomes, and constraints.
+5. Apply these defaults to newly written or rewritten text only. Preserve existing identifiers, anchors, and inbound references outside the requested scope. Convert an existing document only within an approved scope that includes its affected references.
+
 ## Diagrams
 
 For diagram design, review, tool selection (Mermaid vs Draw.io), and platform rendering rules, use the `diagram-design` skill.

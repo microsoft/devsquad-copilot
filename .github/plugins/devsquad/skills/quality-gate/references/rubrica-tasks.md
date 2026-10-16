@@ -17,6 +17,7 @@
 | T6 | Incremental phases | Each phase is a complete and independently testable increment. | Analyze phases |
 | T7 | Complexity analyzed | Each user story had complexity analysis with known work, risks, and recommendation. | Check if complexity-analysis skill was applied |
 | T8 | Consistency with ADRs | Tasks reference correct technologies and versions per ADRs (ADR takes precedence over plan.md). | Cross-check tasks with ADRs |
+| T9 | Readable board titles | Newly generated GitHub and Azure DevOps titles follow `work-item-creation` Title rules without invented sequential task or story identifiers. Required feature prefixes, meaningful domain numbers, native board IDs, and relationship links remain intact. | Check outgoing or newly created titles, without requiring a rename of existing work items |
 
 ## Cross-Verification (deep level)
 
