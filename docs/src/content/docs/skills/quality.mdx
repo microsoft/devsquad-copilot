@@ -1,6 +1,6 @@
 ---
 title: Quality and Security Skills
-description: Skills for artifact validation, security assessment, and documentation formatting.
+description: Skills for artifact validation, behavior-focused testing, security assessment, and documentation formatting.
 banner:
   content: |
     This project is under active development and subject to breaking changes. See the <a href="/devsquad-copilot/changelog/">changelog</a> for release notes.
@@ -8,7 +8,7 @@ banner:
 
 import { Aside, Badge } from '@astrojs/starlight/components';
 
-These three skills enforce quality standards: validating artifacts at the point of creation, assessing security in two modes, and enforcing documentation formatting rules.
+These skills enforce quality standards through artifact validation, behavior-focused testing, security assessment, and documentation formatting.
 
 ## quality-gate <Badge text="specify, plan, decompose, review" variant="tip" />
 
@@ -54,6 +54,25 @@ flowchart TD
 </Aside>
 
 **Activation triggers:** Spec generation, ADR creation, task decomposition, code review.
+
+---
+
+## test-discipline <Badge text="implement, review" variant="tip" />
+
+Guides behavior-focused tests through public interfaces, with independent expected outcomes and tests that survive internal refactoring.
+
+| Scenario | Guidance |
+|----------|----------|
+| Feature or bug fix | Derive expectations from requirements, concrete examples, or independently justified properties |
+| Tautological assertion | Avoid copying production calculations or deriving the expectation from the result being tested |
+| Behavior-preserving refactor | Run and reuse existing behavioral tests, adding tests only for concrete coverage gaps |
+| Test review | Identify a plausible contract violation the assertion would catch and report concrete gaps |
+
+For example, a contract specifying a 20 percent discount on 1,000 cents establishes an expected payable amount of 800 cents. An assertion that copies a buggy calculation returning the discount amount can pass while violating that contract.
+
+Computed expectations, shared fixture builders, snapshots, property-based tests, independent reference implementations, and mocks remain valid when they provide meaningful contract evidence. Review what they prove and whether a shared mistake could pass unnoticed.
+
+**Activation triggers:** Feature implementation, bug fixes, refactoring, test additions, and test-quality review. These checks use the existing test workflow and do not require mutation-testing tooling.
 
 ---
 
