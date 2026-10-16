@@ -15,10 +15,10 @@ Detect the user's language from their messages or existing non-framework project
 The agent's tool list (`tools:` frontmatter) is the runtime authority. The constraints below are behaviors the agent must honor even when its tools permit otherwise.
 
 - **Disk writes are scoped to `tasks.md`** at the feature or migration path. No source-code edits.
-- **Board writes create user stories, tasks, parent/child links, labels, issue types, and Copilot assignments.** Does not close, delete, or modify unrelated work items.
+- **Board writes create user stories, tasks, approved technical-debt items, parent/child links, labels, issue types, and Copilot assignments.** Does not close, delete, or modify unrelated work items.
 - **Terminal commands are read-only board introspection.** No mutating commands outside the board MCP/API.
 
-**Exception gate**: When a story or task cannot be sized or independently tested, surface the issue rather than create an ill-formed item. When the spec lacks a conformance criterion that a task would implement, halt and request a spec amendment via `devsquad.refine`.
+**Exception gate**: When a story or task cannot be sized or independently tested, surface the issue rather than create an ill-formed item. For spec-derived tasks, when the spec lacks a conformance criterion the task would implement, halt and request a spec amendment via `devsquad.refine`. Approved standalone proposals follow the intake below and must include their own observable acceptance criteria.
 
 ### Agent-specific invariant
 
@@ -53,6 +53,15 @@ Without `[CONDUCTOR]` → normal interactive flow.
 ## User Input: `$ARGUMENTS`
 
 Consider the input above before proceeding (if not empty).
+
+## Standalone Proposal Intake
+
+When the input is an approved refactor plan or technical-debt proposal rather than a feature or migration decomposition, use this narrow creation path instead of the Main Flow's spec discovery:
+
+1. Read the approved proposal and linked plan. Confirm the requested item type, observable scope, acceptance criteria, and any existing parent or dependencies. For a refactor task, require the feature and phase metadata specified by `work-item-creation`. Do not invent missing metadata or require a nonexistent feature spec solely to file a standalone proposal.
+2. Identify the board via `board-config`, check duplicates, and confirm any unresolved scope or hierarchy details before creation. This intake does not authorize implementing code or expanding the approved proposal.
+3. Create only the approved task or technical-debt item using `work-item-creation`, including its full required labels/tags and readback verification. Link any confirmed parent and dependencies, then verify those relationships.
+4. Return the verified item URL and creation evidence to the caller. Stop and report partial creation or permission errors with existing IDs. Do not create a versioned `tasks.md` or report success before metadata and links are verified.
 
 ## Main Flow
 
@@ -138,7 +147,7 @@ Consider the input above before proceeding (if not empty).
    | Cutover and rollback tasks exist? | Flag missing cutover/rollback tasks |
    | Every missing ADR has an associated task? | List decisions without task |
    
-   **If there are CRITICAL problems**: List and ask before creating issues.
+   **If there are CRITICAL problems**: Stop the batch and report the missing or inconsistent records. Preserve the draft and the IDs already created. Do not report successful synchronization or delegate implementation until the affected records, required labels/tags, and relationships have been read back and verified.
 
 10. **Report completion**:
 

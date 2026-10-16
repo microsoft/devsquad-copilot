@@ -1,5 +1,7 @@
 # Azure DevOps Format
 
+Apply the parent `work-item-creation` skill's Label and Tag Verification procedure for every item. Creation is incomplete until required labels or tags have been read back and verified.
+
 ## Work Item Types per Process Template
 
 | Process Template | User Story Type | Task Type |
@@ -12,13 +14,13 @@
 ## Epics
 
 - **Type**: Epic
-- **Tags**: `copilot-generated`, `ai-model:<name>`
+- **Tags**: `epic`, `copilot-generated`, `ai-model:<name>`
 
 ## Features
 
 - **Type**: Feature
 - **Priority**: 1/2/3
-- **Tags**: `copilot-generated`, `ai-model:<name>`
+- **Tags**: `feature`, `copilot-generated`, `ai-model:<name>`, `priority:<p1|p2|p3>`
 - **Parent**: use `ado/wit_add_child_work_items`
 
 ## User Stories (or equivalent)
