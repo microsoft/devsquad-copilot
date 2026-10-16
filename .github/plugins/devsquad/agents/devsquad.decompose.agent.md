@@ -112,7 +112,7 @@ Consider the input above before proceeding (if not empty).
 
    **Before saving and creating work items**, present the Reasoning Log in the format from the `reasoning` skill. Wait for confirmation before creating work items.
 
-8. **Create Work Items**: Invoke the `work-item-creation` skill according to the chosen platform.
+8. **Create Work Items**: Invoke the `work-item-creation` skill according to the chosen platform. Validate every outgoing title against its Title rules before creating GitHub or Azure DevOps items. Use the descriptive title without local task or story numbering, retaining the required feature prefix and board hierarchy and dependency links.
 
 9. **Consistency Validation**:
    
