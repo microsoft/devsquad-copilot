@@ -25,6 +25,10 @@ See `CONTRIBUTING.md` for full conventions.
 - Documentation style instructions and the `documentation-style` skill now explicitly forbid introducing the em-dash character (Unicode U+2014) in newly written or rewritten Markdown and discourage semicolons in prose. Recast sentences for natural flow while preserving their meaning, without mechanically replacing punctuation with abrupt sentence breaks. Semicolons required by code, technical syntax, or verbatim quotations remain allowed. Preserve existing text outside the requested scope. Existing documents do not require a cleanup.
 - **Consumer action:** Update the DevSquad plugin for the skill change. Apply the same scoped rules to existing `.github/copilot-instructions.md` and `.github/instructions/documentation-style.instructions.md` files, or preview `sdd-init.sh update-all --dry-run` and review all planned overwrites before applying `sdd-init.sh update-all` to refresh managed files.
 
+### Added
+
+- A dedicated Specs section in the documentation navigation, with feature and migration template links, authoring guidance, AI capability specs, and spec amendment guidance.
+
 ### Changed
 
 - Work item creation now computes the complete required label/tag set, creates missing GitHub labels before issue creation, verifies stored metadata, and reports recoverable partial batches instead of silently continuing. Kickoff and specification agents have the minimum tools needed to apply and repair this metadata.
