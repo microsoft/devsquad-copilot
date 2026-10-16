@@ -1,5 +1,7 @@
 # GitHub Issues Format
 
+Apply the parent `work-item-creation` skill's Label and Tag Verification procedure for every item. Creation is incomplete until required labels or tags have been read back and verified.
+
 ## User Stories
 
 - **Required labels**: `copilot-generated`, `ai-model:<name>`, `type:user-story`, `feature:<name>`, `priority:<p1|p2|p3>`

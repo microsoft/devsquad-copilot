@@ -9,12 +9,21 @@ Before creating ANY work item, verify:
 
 1. **Platform**: Read `.memory/board-config.md` to identify GitHub or Azure DevOps
 2. **Duplicates**: Check if a similar work item already exists on the board
-3. **Required tags/labels**: all present (see section below)
+3. **Required tags/labels**: compute the complete set for this item type and verify they can be applied before creation (see Label and Tag Verification below)
 4. **Title in correct format**: follow the Title section and check the outgoing title contains no invented sequential task or story identifier
 5. **Body filled in**: per the platform format (see GitHub and Azure DevOps sections)
 6. **Hierarchy**: parent linked correctly
 7. **Durable descriptions**: body describes *behavior* using domain language, not implementation details (see Durability Rules below)
 8. **Content style**: title and body follow the Content Style section below
+
+## Label and Tag Verification
+
+1. Before each creation, compute the required set from the common labels, item type, feature, priority, and phase below. Include applicable conditional labels. Apply any confirmed repository naming convention consistently without dropping a required meaning.
+2. For GitHub, list all repository labels, following pagination when needed, and create any missing required definitions before creating the issue. Use `github/list_label` and `github/label_write`, or an available authenticated GitHub CLI/API. Cache definitions within the session, but update the cache after creating a label. If listing or creating labels is denied or unavailable, report the exact missing labels and stop creation. Do not create an unlabeled item as a fallback.
+3. Include the full label set in the GitHub issue creation request. For Azure DevOps, include the full required tag set in `System.Tags` on creation. Tags are values on the work item, not GitHub-style repository label definitions. Surface permission or tag-validation failures instead of silently omitting tags.
+4. Read the created item back and verify that every required label or tag is stored. A successful creation response alone does not prove they were applied. Preserve additional existing labels and tags when repairing an item.
+5. If readback shows omissions, add only the missing labels or merge missing tags into the stored tag set, then re-read once. If verification still fails or cannot be performed, report the existing item's ID or URL and missing values, stop the batch, and resume by repairing that item rather than creating a duplicate.
+6. Only count an item as successfully created or create dependent items after verification passes. Report any partial batch and its verified items explicitly. Do not describe the batch as complete or clean up its draft while label/tag verification is incomplete.
 
 ## Content Style
 
