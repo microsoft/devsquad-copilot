@@ -64,6 +64,16 @@ Additional by type:
 
 Every creation includes the full required label or tag set and a readback check. GitHub label definitions are created before the issue when missing. Azure DevOps tags are stored on the work item. A permission failure or missing value stops the batch with the existing item URLs, allowing repair without duplicates.
 
+## Task Records and Completion
+
+| Mode | Durable task record | After verification |
+|------|---------------------|--------------------|
+| GitHub | Issues, descriptions, relationships, and comments | Persist verified implementation evidence, then add the PR URL when available. Keep the issue open until merge. |
+| Azure DevOps | Work items, relationships, state, and comments | Persist evidence and use a supported nonterminal state if available. Do not assume every Task has a `Resolved` state. |
+| Local only | Feature or migration `tasks.md` | Mark only verified tasks `[x]` and read the update back before committing or moving on. |
+
+Completion evidence is required even when the developer defers a commit or PR. It distinguishes implementation awaiting review from work that still needs coding and from final merged completion. Resumed sessions inspect that evidence and linked PRs before editing again.
+
 ## Workflow
 
 <Aside>
