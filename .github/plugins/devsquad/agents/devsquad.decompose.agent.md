@@ -14,7 +14,7 @@ Detect the user's language from their messages or existing non-framework project
 
 The agent's tool list (`tools:` frontmatter) is the runtime authority. The constraints below are behaviors the agent must honor even when its tools permit otherwise.
 
-- **Disk writes are scoped to `tasks.md`** at the feature or migration path. No source-code edits.
+- **Disk writes are scoped to local-only task lists** at the feature or migration path and optional ignored drafts under `.memory/`. In board mode, do not create a versioned `tasks.md`. No source-code edits.
 - **Board writes create user stories, tasks, approved technical-debt items, parent/child links, labels, issue types, and Copilot assignments.** Does not close, delete, or modify unrelated work items.
 - **Terminal commands are read-only board introspection.** No mutating commands outside the board MCP/API.
 
@@ -117,9 +117,10 @@ When the input is an approved refactor plan or technical-debt proposal rather th
    - **Validate consistency**: Tasks must reflect ADR decisions
    - Validate task completeness (each user story/migration scenario has all necessary tasks)
 
-7. **Save local draft**: Save `docs/features/<feature-name>/tasks.md` or `docs/migrations/<migration-name>/tasks.md` as a record of what was planned.
-
-   **Before saving and creating work items**, present the Reasoning Log in the format from the `reasoning` skill. Wait for confirmation before creating work items.
+7. **Prepare the task record**: Present the Reasoning Log using the `reasoning` skill and obtain confirmation before creating work items.
+   - **Local-only mode**: Save `docs/features/<feature-name>/tasks.md` or `docs/migrations/<migration-name>/tasks.md` as the durable task list. Skip board creation and validate the local list instead.
+   - **GitHub or Azure DevOps mode**: Keep the draft in the session, or under `.memory/decompose/<scope>/` only after confirming that directory is ignored by Git. Do not create or stage a feature or migration `tasks.md` for board mode. The verified work items become the durable task record.
+   - If resuming from an existing `tasks.md`, transfer its full task descriptions, acceptance criteria, dependencies, and relevant completion state. Verify every item and relationship on the board before treating the handoff as complete. Do not delete or overwrite an existing authored or tracked task list without an explicitly approved migration scope. On a partial failure, preserve the draft and report the created IDs so a retry repairs or reuses them instead of creating duplicates.
 
 8. **Create Work Items**: Invoke the `work-item-creation` skill according to the chosen platform. Validate every outgoing title against its Title rules before creating GitHub or Azure DevOps items. Use the descriptive title without local task or story numbering, retaining the required feature prefix and board hierarchy and dependency links.
 
@@ -172,7 +173,7 @@ When the input is an approved refactor plan or technical-debt proposal rather th
     - Cross-cutting: A (project level)
     - Feature-scoped: B (within the feature)
     
-    Local draft: docs/features/<feature>/tasks.md
+    Task record: [verified board item URLs, or tasks.md path in local-only mode]
     
     Summary:
     - Total tasks: T
@@ -183,7 +184,7 @@ When the input is an approved refactor plan or technical-debt proposal rather th
     Next step: `/devsquad.implement` to start implementation
     ```
 
-    When handing off, include the Handoff Envelope per the `reasoning` skill, including: tasks.md, spec.md, plan.md, referenced ADRs, and decomposition assumptions.
+    When handing off, include the Handoff Envelope per the `reasoning` skill, including: verified task and parent work item URLs, spec.md, plan.md, referenced ADRs, and decomposition assumptions. In local-only mode, pass the tasks.md path instead of board URLs. Do not pass a deleted or temporary draft as the authoritative task record.
 
 11. **Delegation to Copilot Coding Agent** (GitHub):
 
@@ -205,11 +206,11 @@ When the input is an approved refactor plan or technical-debt proposal rather th
 
     ```
     github/add_issue_comment(owner, repo, issue_number, body:
-      "📋 Decomposition completed by SDD Framework\n\n
+      "Decomposition completed by SDD Framework\n\n
       - Tasks created: N\n
       - Copilot-candidate: C\n
       - Pending ADRs: A\n\n
-      Details: docs/features/<feature>/tasks.md")
+      Task records: [verified work item URLs]")
     ```
 
 ## Identify Missing ADRs
