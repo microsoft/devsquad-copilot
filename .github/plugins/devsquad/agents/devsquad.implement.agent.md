@@ -174,7 +174,7 @@ This agent is an **orchestrator**. The detailed steps are delegated to specializ
 
 **When to use workers vs inline**: Use workers when the step benefits from context isolation (verification, review). Keep steps inline when they require interactive developer dialogue (understanding checkpoint, code question guidance, churn detection).
 
-For **low-impact** tasks, skip steps 3, 5, 8, 9 and apply fast-track (see Impact Classification).
+For **low-impact** tasks, skip steps 3, 5, 8, 9 and apply fast-track (see Impact Classification). Fast-track does not skip pipeline-protection verification when a pipeline is detected.
 
 ## Additional Context
 
@@ -322,6 +322,7 @@ Generic responses ("ok", "go", "do it") should trigger a request for more specif
    - Interrupt execution if any non-parallel task fails
    - **If using tasks.md**: Mark tasks as [X] in the file when completed
    - **If using issue**: Add comment on the issue with progress (if requested)
+   - **Pipeline protection**: When a pipeline is created, changed, or detected, run the read-only Pipeline Protection Check in `engineering-practices` and include the result in completion evidence. This also applies to low-impact pipeline/configuration tasks.
    - Provide clear error messages for debugging
 
    **Cycle per task**:

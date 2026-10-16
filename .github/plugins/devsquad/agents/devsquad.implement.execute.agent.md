@@ -51,6 +51,10 @@ The test must fail BEFORE the fix and pass AFTER. If the test passes before the 
 - **Consult harness learnings**: Before coding, read `.memory/harness-learnings.md` (if it exists) and check for entries whose Scope overlaps with the task's files. Apply high-confidence Guidance proactively to avoid known pitfalls.
 - **Context budget**: If the conversation is growing large (many tool calls, long outputs), compress completed work into a brief summary and drop raw intermediate output. Commit progress and request a fresh context window from the coordinator rather than degrading in a bloated context.
 
+### 3a. Pipeline Protection
+
+When creating, changing, or detecting CI/CD pipeline configuration, consult the Pipeline Protection Check in `engineering-practices`. Inspect protection read-only on the repository platform and report verified, missing, or unverified required checks for the integration branch. Do not change repository settings without explicit approval. Return this evidence with the implementation result even when no application code changed.
+
 ### 4. Azure Best Practices
 
 When the project stack includes Azure services, **before generating code** that interacts with Azure SDKs:
@@ -114,6 +118,7 @@ Worker: execute
 Tasks completed: [list of task IDs]
 Files modified: [list]
 Tests written: [list of test files/names]
+Pipeline protection: [not applicable | verified required checks | confirmed gap with recommendation | unable to verify with reason]
 
 Changes made:
 - [file]: [what changed and why]
