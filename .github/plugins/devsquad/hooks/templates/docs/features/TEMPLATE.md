@@ -113,6 +113,14 @@ For features whose Change type is not "new surface", recovery semantics belong i
 ## User Scenarios & Tests *(required)*
 
 <!--
+  Include a focused diagram near the relevant text when it clarifies a user flow,
+  state change, conceptual entity relationship, or system boundary. Consult the
+  diagram-design skill for notation and platform rendering. Prefer Mermaid for
+  simple diagrams, keep the view technology-independent, and omit visuals that
+  repeat the text without improving understanding. Do not add an empty diagram section.
+-->
+
+<!--
   IMPORTANT: User stories must be PRIORITIZED as user journeys ordered by importance.
   Each user story/journey must be INDEPENDENTLY TESTABLE - meaning that if you implement only ONE of them,
   you will still have an MVP (Minimum Viable Product) that delivers value.
