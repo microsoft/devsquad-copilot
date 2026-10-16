@@ -28,7 +28,11 @@ Execute the detected commands and capture results:
 - Does the build compile without errors?
 - Do existing tests continue to pass?
 - Do new tests cover the spec scenarios?
-- Do tests meet quality criteria? (Consult the `test-discipline` skill: behavior-focused, public-interface-only, refactor-resistant, correct test doubles hierarchy)
+- Do tests meet quality criteria? (Consult the `test-discipline` skill: behavior-focused, public-interface-only, refactor-resistant, independent behavioral oracle, correct test doubles hierarchy)
+- Do assertions derive expected outcomes from a contract or independently justified property rather than the result under test, a copied production algorithm, or a shared helper that could hide the same bug?
+- For behavior-preserving refactors, do existing tests already protect the affected contract, and do added tests address concrete coverage gaps rather than mirror new internal structure?
+
+For test-quality findings, identify the assertion, explain what makes its expectation circular or coupled to implementation, and name the contract violation left undetected. Assess shared helpers, computed expectations, snapshots, properties, and mocks by what they prove rather than rejecting the technique itself.
 
 ### 3. Analyze Failures
 

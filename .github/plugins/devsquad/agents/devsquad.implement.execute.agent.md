@@ -45,7 +45,7 @@ The test must fail BEFORE the fix and pass AFTER. If the test passes before the 
 - **Anchor to existing patterns**: Before writing new code, search the codebase for a similar implementation (e.g., an existing endpoint, component, or test of the same shape). Use it as the structural exemplar so new code stays consistent with project conventions.
 - **Phase by phase**: Complete each phase before moving to the next
 - **Respect dependencies**: Sequential tasks in order, parallel [P] tasks can run together
-- **Test discipline**: Choose test-first or design-first-then-test as appropriate for each task. Consult the `test-discipline` skill for guidance on when each approach fits, quality criteria, and test doubles hierarchy.
+- **Test discipline**: Choose test-first or design-first-then-test as appropriate for each task. Consult the `test-discipline` skill for quality criteria, independent behavioral oracles, tautological assertions, and test doubles hierarchy. For behavior-preserving refactors, run and reuse existing behavioral tests, adding tests only for concrete coverage gaps rather than newly extracted helpers or delegation details.
 - **ADR compliance**: Follow documented architectural decisions
 - **Traceability**: Add comment referencing spec/task in generated code
 - **Consult harness learnings**: Before coding, read `.memory/harness-learnings.md` (if it exists) and check for entries whose Scope overlaps with the task's files. Apply high-confidence Guidance proactively to avoid known pitfalls.
