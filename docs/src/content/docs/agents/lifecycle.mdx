@@ -25,7 +25,7 @@ flowchart LR
   kickoff -->|"board structure"| specify
   specify -->|"spec.md"| plan
   plan -->|"plan.md + ADRs"| decompose
-  decompose -->|"tasks.md + work items"| implement
+  decompose -->|"board tasks or local task list"| implement
 ```
 
 ---
@@ -76,12 +76,12 @@ Structure project hierarchy (epics, features, dependencies) and sync with the bo
 
 | | |
 |---|---|
-| **Produces** | Board structure + `docs/envisioning/structure.md` (cache) |
+| **Produces** | Board structure with an optional ignored `.memory/structure.md` cache |
 | **Handoff** | to specify or plan |
 | **Skills** | documentation-style, reasoning, work-item-creation, board-config, complexity-analysis |
 
 <Aside>
-  **Board is source of truth.** The `structure.md` file is a cache. GitHub Issues or Azure DevOps is authoritative.
+  **Board is source of truth.** Optional structure caches stay under ignored `.memory/` and are never committed. An existing authored `structure.md` is not deleted automatically.
 </Aside>
 
 Adaptive modes based on state detection:
@@ -139,11 +139,11 @@ Decompose specs into user stories, tasks, and work items.
 
 | | |
 |---|---|
-| **Produces** | `tasks.md` + work items on board |
+| **Produces** | Verified board work items, or `tasks.md` in local-only mode |
 | **Handoff** | to implement |
 | **Skills** | documentation-style, reasoning, work-item-creation, complexity-analysis, work-item-workflow, board-config |
 
-11-step flow: Configuration, Detect environment, Sync board, Load design docs, Identify missing ADRs, Generate tasks, Save draft, Present for confirmation, Create work items, Validate, Report.
+The flow detects the board mode, loads design context, generates and confirms tasks, creates work items with verified labels and relationships, and passes their URLs to implementation. Board-mode drafts remain in the session or ignored `.memory/`, while local-only mode keeps a durable `tasks.md`. Failed or partial synchronization preserves the draft and created IDs for recovery.
 
 Task organization by user story: **Models, Services, Endpoints, Integration**
 

@@ -8,7 +8,7 @@ banner:
 
 import { Tabs, TabItem, Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-The board is the source of truth for **task status, assignment, and workflow state**. Design decisions and specifications remain authoritative as disk artifacts (specs, ADRs, `plan.md`). Local files (`tasks.md`, `structure.md`) are caches. Agents integrate with GitHub Issues and Azure DevOps for bidirectional work item management.
+The board is the source of truth for **task status, assignment, and workflow state**. Design decisions and specifications remain authoritative as disk artifacts (specs, ADRs, `plan.md`). Board-mode drafts and optional `.memory/structure.md` caches are temporary and never committed. In local-only mode, `tasks.md` is the durable task list. Agents integrate with GitHub Issues and Azure DevOps for bidirectional work item management.
 
 ## Platform Detection
 
@@ -71,6 +71,8 @@ Every creation includes the full required label or tag set and a readback check.
 | GitHub | Issues, descriptions, relationships, and comments | Persist verified implementation evidence, then add the PR URL when available. Keep the issue open until merge. |
 | Azure DevOps | Work items, relationships, state, and comments | Persist evidence and use a supported nonterminal state if available. Do not assume every Task has a `Resolved` state. |
 | Local only | Feature or migration `tasks.md` | Mark only verified tasks `[x]` and read the update back before committing or moving on. |
+
+Board-backed decomposition does not create a versioned `tasks.md`. Drafts remain in the session or an ignored `.memory/` directory until all items, required labels/tags, and links have been verified. Existing authored task lists require an approved migration before removal.
 
 Completion evidence is required even when the developer defers a commit or PR. It distinguishes implementation awaiting review from work that still needs coding and from final merged completion. Resumed sessions inspect that evidence and linked PRs before editing again.
 
