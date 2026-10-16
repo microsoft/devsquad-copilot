@@ -1,0 +1,42 @@
+---
+title: Specifications
+description: Feature and migration specs, their templates, and how they guide implementation.
+banner:
+  content: |
+    This project is under active development and subject to breaking changes. See the <a href="/devsquad-copilot/changelog/">changelog</a> for release notes.
+---
+
+Specifications describe the behavior a project needs and how to verify it. This section brings together the spec workflow, templates, and guidance for maintaining specs during implementation.
+
+## Choose a Spec Type
+
+| Type | Use when | Consumer repository location |
+|------|----------|------------------------------|
+| Feature | Adding or changing functionality and user behavior | `docs/features/<name>/spec.md` |
+| Migration | Moving a system while preserving required behavior, data, and operational guarantees | `docs/migrations/<name>/spec.md` |
+
+Run `/devsquad.specify` with the intended behavior or migration goal. Keep technical implementation choices in `plan.md` and ADRs.
+
+## Templates
+
+`devsquad.init` installs these templates into the consumer repository. The framework maintains their sources in the plugin:
+
+- [Feature spec template](https://github.com/microsoft/devsquad-copilot/blob/main/.github/plugins/devsquad/hooks/templates/docs/features/TEMPLATE.md)
+- [Migration spec template](https://github.com/microsoft/devsquad-copilot/blob/main/.github/plugins/devsquad/hooks/templates/docs/migrations/TEMPLATE.md)
+
+These are authoring templates, not completed product specifications. Specs created for your project remain in your repository.
+
+## Write and Maintain a Spec
+
+1. Describe the user journey, scope, and observable behavior using plain language.
+2. Define measurable requirements and conformance cases covering success, failure, and edge conditions.
+3. Add a focused diagram when it clarifies a flow, state change, conceptual relationship, or system boundary. Follow the `diagram-design` skill and keep business-facing diagrams technology-independent.
+4. Follow the installed template's required fields, then create the technical plan and decompose the approved scope into work items.
+5. When implementation reveals a mismatch, amend the affected section through `devsquad.refine` and preserve unrelated requirements and existing references.
+
+## Related Guidance
+
+- [Build a Feature](../guides/feature-walkthrough/) for an end-to-end example of the delivery workflow
+- [AI Capability Specs](../concepts/ai-capability-specs/) for features that embed AI behavior
+- [Spec Amendment](../concepts/spec-amendment/) for controlled changes to an existing spec
+- [Lifecycle Agents](../agents/lifecycle/#devsquadspecify-) for the specification agent
