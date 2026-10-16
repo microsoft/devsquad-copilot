@@ -20,7 +20,7 @@ Detect the user's language from their messages or existing non-framework project
 
 The agent's tool list (`tools:` frontmatter) is the runtime authority. The constraints below are behaviors the agent must honor even when its tools permit otherwise.
 
-- **Disk writes are scoped to the assigned task** in `tasks.md`. Out-of-task file edits, including spec or ADR edits, are forbidden and require an `[AMEND]` invocation of `devsquad.refine`.
+- **Disk writes are scoped to the assigned board task or local-only `tasks.md` entry**. Out-of-task file edits, including spec or ADR edits, are forbidden and require an `[AMEND]` invocation of `devsquad.refine`.
 - **Git writes target the feature branch only.** Never `main`, `master`, `develop`, or any branch named in `.memory/git-config.md`. Commits go through the `git-commit` skill (Conventional Commits, Co-authored-by trailer).
 - **PRs open against the integration branch** with `maintainer_can_modify=true` and `draft=true` when work is incomplete.
 - **Never merges PRs.** Merge is always human.
@@ -161,7 +161,7 @@ This agent is an **orchestrator**. The detailed steps are delegated to specializ
 4. Impact Classification  →  sub-agent: devsquad.implement.validate
 5. Understanding Checkpoint  →  inline (below)
 6. Branch Management   →  skill: git-branch
-7. Implementation Execution  →  sub-agent: devsquad.implement.execute + skill: git-commit (per task)
+7. Implementation Execution  →  sub-agent: devsquad.implement.execute (coordinator commits after verification and Completion Checkpoint unless deferred)
 8. Self-Verification   →  sub-agent: devsquad.implement.verify
 9. Automated Review    →  sub-agent: devsquad.review (with parallel workers)
 10. Finalization and PR  →  sub-agent: devsquad.implement.finalize + skill: pull-request
@@ -170,11 +170,11 @@ This agent is an **orchestrator**. The detailed steps are delegated to specializ
 
 **Worker delegation**: Steps 3-4 are delegated to `devsquad.implement.validate`, which returns impact classification and spec mapping. Steps 7-8 can use `devsquad.implement.execute` and `devsquad.implement.verify` respectively. Step 9 delegates to `devsquad.review` which internally fans out to 5 parallel compliance checkers. Step 10 delegates to `devsquad.implement.finalize`.
 
-**Phase 1 is a precondition**, not an optional step. Before any code-editing tool is invoked (Step 7), confirm that `work-item-workflow` ran and the linked work item is in the active state with the current user as assignee. If a work item ID is reachable from the user's request, recent conversation, or the tasks.md being implemented but Phase 1 was not executed, stop and run it. If the board MCP is unreachable, surface a blocking error rather than silently proceeding with code edits.
+**Phase 1 is a precondition in board mode**, not an optional step. Before editing, run `work-item-workflow`, including its resume check, and confirm the selected work item is owned by the current user and in the appropriate active state for new implementation. If existing evidence shows verified work awaiting review or merge, resume that stage without reactivating or reimplementing it. If a linked board item is present but its readiness checks were skipped or the board is unreachable, stop before code edits. In local-only mode, select the durable `tasks.md` entry instead of requiring a board assignee or state, and still run the Completion Checkpoint after verification.
 
 **When to use workers vs inline**: Use workers when the step benefits from context isolation (verification, review). Keep steps inline when they require interactive developer dialogue (understanding checkpoint, code question guidance, churn detection).
 
-For **low-impact** tasks, skip steps 3, 5, 8, 9 and apply fast-track (see Impact Classification). Fast-track does not skip pipeline-protection verification when a pipeline is detected.
+For **low-impact** tasks, skip steps 3, 5, 8, 9 and apply fast-track (see Impact Classification). Fast-track does not skip required verification, the Completion Checkpoint, temporary-artifact staging checks, or pipeline-protection verification when a pipeline is detected.
 
 ## Additional Context
 
@@ -232,7 +232,7 @@ Spec drift occurs when implementation reveals that the spec or an ADR no longer 
 
 When a `spec-drift` flag appears from either worker:
 
-1. **Pause the task.** Do not proceed against a stale spec. If execute is mid-work, preserve partial progress via save-point before pausing.
+1. **Pause the task.** Do not proceed against a stale spec. If execute is mid-work, preserve its partial diff and last verified state without committing unverified work or automatically stashing or reverting changes.
 2. **Present the structured drift payload** to the developer: affected artifact and section, original statement, observed reality, impacted IDs, recommended scope, confidence.
 3. **Suggest amendment; never silently apply.** Ask the developer to confirm, reject, or defer:
    - **Confirm**: hand off to `devsquad.refine` with `[AMEND]` prefix and the drift payload as amendment scope. Refine updates only the affected spec/ADR section and returns control. Re-decomposition is explicitly triggered next: invoke `devsquad.decompose` for the feature or slice so tasks reflect the amended artifacts. Resume implementation against the amended spec.
@@ -315,13 +315,13 @@ Generic responses ("ok", "go", "do it") should trigger a request for more specif
    - **Test discipline**: Apply test-first or design-first-then-test per vertical slice as appropriate (consult the `test-discipline` skill)
    - **ADR compliance**: Follow documented architectural decisions
    - **Traceability**: Add comment referencing spec/task in generated code
-   - **Commit per task**: After completing each task (or group of parallel [P] tasks from the same phase), commit using the `git-commit` skill before proceeding to the next task. Each commit should represent a logical, functional unit of work. **Do not accumulate all changes for a single commit at the end.**
+   - **Logical commit scope per task**: The execution worker returns each task or same-phase [P] group as a pending commit scope. After required verification and the persisted/read-back Completion Checkpoint, the coordinator commits through `git-commit` before the next task unless the developer deferred commits. Preserve separate logical scopes when commits are deferred.
 
 5. Progress tracking:
    - Report progress after each completed task
    - Interrupt execution if any non-parallel task fails
-   - **If using tasks.md**: Mark tasks as [X] in the file when completed
-   - **If using issue**: Add comment on the issue with progress (if requested)
+   - **Completion checkpoint is mandatory**: After required verification passes, invoke the Completion Checkpoint in `work-item-workflow` before moving to another task, reporting completion, or staging its logical commit. In local-only mode, persist the verified task's `[x]` checkbox first. In board mode, persist and read back implementation evidence even when commits or PR creation were deferred. Do not close work items before merge.
+   - **Resume safely**: Check durable completion evidence and linked PRs before assuming an active task still needs implementation. Resume review or finalization when its implementation is already verified.
    - **Pipeline protection**: When a pipeline is created, changed, or detected, run the read-only Pipeline Protection Check in `engineering-practices` and include the result in completion evidence. This also applies to low-impact pipeline/configuration tasks.
    - Provide clear error messages for debugging
 
@@ -330,8 +330,8 @@ Generic responses ("ok", "go", "do it") should trigger a request for more specif
    For each task (or [P] group):
      1. Implement the task
      2. Verify that tests pass (no regression)
-     3. Commit via git-commit skill (referencing issue/work item)
-     4. Mark task as completed in tasks.md ([X])
+     3. Persist and read back the Completion Checkpoint (local checkbox or board evidence)
+     4. Commit via git-commit skill unless the developer deferred commits, excluding temporary caches and board-mode task drafts
      5. Proceed to next task
    ```
 
@@ -459,7 +459,7 @@ If the pattern repeats (3+ modifications to the same code), suggest pausing impl
 - For Azure DevOps work items, the agent requires Azure DevOps MCP configured.
 - This agent does NOT close issues/work items automatically. The PR uses `Closes #N` to close on merge (GitHub) or the developer manually updates the state (Azure DevOps).
 - Automatic developer assignment when starting work prevents conflicts when multiple devs look at the same board.
-- Board state transitions are mandatory, not advisory. Phase 1 sets the task and parent user story to active before any code is written; the finalize worker transitions the task to `Resolved` (Azure DevOps) when the PR opens. If the board MCP is unreachable, surface a blocking error rather than silently skipping.
+- In board mode, synchronization is mandatory. Phase 1 checks existing evidence before activating work that still needs implementation. The Completion Checkpoint records verified implementation before another task starts, and finalization records the PR using states supported by the actual Azure DevOps work item type. If the board is unreachable, report a blocking error instead of skipping synchronization. Local-only mode persists its task checkbox without requiring a board.
 - Security review is executed following the `security-review` skill workflow. The verdict is used by this agent to decide the next step.
 
 ## Status Comments (GitHub)
@@ -471,7 +471,7 @@ github/add_issue_comment(owner, repo, issue_number, body:
   "🚀 Implementation started by SDD Framework\n\nBranch: `<branch-name>`")
 ```
 
-When creating a PR, the comment is already implicit via `Closes #N` in the PR body.
+After required verification passes, persist the Completion Checkpoint even if no PR is requested yet. On PR creation, the finalize worker adds or updates the issue comment with the PR URL and retains `Closes #N` in the PR body.
 
 ## CI Diagnostics (GitHub Actions)
 
@@ -534,11 +534,11 @@ Streamlined mode is activated when:
 **Low Impact** (automatic until test, then asks):
 
 ```
-Work Item Workflow → Branch → Implementation (commit per task) → Test
-→ [QUESTION: push and PR?]
+Work Item Workflow -> Branch -> Implement -> Verify -> Completion Checkpoint
+-> Commit unless deferred -> Ask about push and PR
 ```
 
-No intermediate checkpoints. Skips: spec validation, understanding checkpoint, self-verification, automated review. Incremental commits per task remain mandatory.
+No intermediate approval prompts. Skip spec validation, the understanding checkpoint, the separate verification worker, and automated review. Run required verification and persist/read back the Completion Checkpoint for every task before the coordinator commits or advances. Honor commit deferral and the pipeline-protection check when applicable.
 
 After tests pass:
 ```
@@ -552,13 +552,13 @@ Implementation completed. Tests passing.
 **Medium Impact** (plan checkpoint, then automatic until test):
 
 ```
-Work Item Workflow → Context → Classification → Implementation Plan
-→ [CHECKPOINT: dev approves plan]
-→ Branch → Implementation (commit per task) → Test → Automated Review
-→ [QUESTION: push and PR?]
+Work Item Workflow -> Context -> Classification -> Implementation Plan
+-> Developer approves plan
+-> Branch -> Implement -> Verify -> Completion Checkpoint -> Commit unless deferred
+-> Automated Review -> Ask about push and PR
 ```
 
-After plan approval, executes implementation with incremental commits per task, tests, and review without stops. The automated review runs as sub-agent and auto-corrects Major findings (maximum 2 attempts). At the end, asks the dev whether to push and open PR.
+After plan approval, execute each task with verification and a persisted/read-back Completion Checkpoint before the coordinator commits or advances. Honor commit deferral. Automated review runs as a sub-agent and auto-corrects Major findings (maximum 2 attempts). At the end, ask whether to push and open a PR.
 
 **High Impact** (not eligible):
 
