@@ -12,17 +12,17 @@ Agents use a multi-layered approach to manage context across phases and sessions
 
 ## Disk Artifacts (Source of Truth)
 
-All persistent state lives in versioned files on disk. Board is the source of truth for **task status and ownership**. Disk artifacts are the source of truth for **design decisions, specifications, and architecture**.
+Design artifacts live in versioned files on disk. The board is the source of truth for **board-backed task descriptions, relationships, status, and ownership**. Local-only projects keep their task lists on disk. Temporary drafts and caches stay in the session or ignored `.memory/`. Disk artifacts are the source of truth for **design decisions, specifications, and architecture**.
 
 | Artifact | Path | Phase |
 |----------|------|-------|
 | Strategic vision | `docs/envisioning/README.md` | Envision |
 | Feature specification | `docs/features/*/spec.md` | Specify |
 | Technical plan | `docs/features/*/plan.md` | Plan |
-| Task decomposition | `docs/features/*/tasks.md` | Decompose |
+| Local-only feature tasks | `docs/features/*/tasks.md` | Decompose |
 | Architecture decisions | `docs/architecture/decisions/*.md` | Plan |
 | Migration specification | `docs/migrations/*/spec.md` | Specify |
-| Migration tasks | `docs/migrations/*/tasks.md` | Decompose |
+| Local-only migration tasks | `docs/migrations/*/tasks.md` | Decompose |
 | Sprint records | `docs/sprints/sprint-N.md` | Sprint |
 
 ## Copilot Memory
@@ -44,7 +44,7 @@ Structured context passing between phases ([ADR 0003](../../decisions/#adr-0003-
 
 <CardGrid>
   <Card title="Relevant Artifacts" icon="document">
-    Paths to files the next phase should read (spec.md, plan.md, ADRs, tasks.md).
+    Paths to design artifacts (`spec.md`, `plan.md`, ADRs), plus verified board work item URLs or a local-only `tasks.md`.
   </Card>
   <Card title="Inherited Assumptions" icon="information">
     Decisions and assumptions from the current phase that carry forward.
@@ -76,8 +76,8 @@ flowchart LR
     P2["ADRs"]
   end
   subgraph decompose["Decompose"]
-    D1["tasks.md"]
-    D2["Work Items"]
+    D1["Confirmed task scope"]
+    D2["Board items or local tasks.md"]
   end
   subgraph implement["Implement"]
     I1["Source Code"]
@@ -92,7 +92,7 @@ flowchart LR
   P1 -->|"handoff envelope"| D1
   P2 -->|"read from disk"| D1
   D1 -->|"handoff envelope"| I1
-  D2 -->|"board state"| I1
+  D2 -->|"task state and evidence"| I1
   I1 --> I2
   I2 -->|"clean context"| R1
 ```
@@ -104,7 +104,7 @@ Each arrow represents a phase boundary where context is explicitly passed via a 
 <Steps>
 1. **specify to plan**: Spec locked, plan starts fresh reading spec from disk
 2. **plan to decompose**: ADRs locked, decompose reads decisions from files
-3. **decompose to implement**: Tasks locked, implement picks one task at a time
+3. **decompose to implement**: Verified board URLs or a local-only task list passed to implementation, which checks existing completion evidence before coding
 4. **implement to review**: Code committed, review reads independently with clean context
 </Steps>
 
