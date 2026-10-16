@@ -230,6 +230,8 @@ After receiving the worker's analysis, proceed with interactive steps:
 
 #### 2.1 Engineering Practices and DevOps/SRE
 
+**Independent pipeline check**: When CI/CD configuration is created, changed, or detected, run the read-only Pipeline Protection Check in `engineering-practices` using available terminal/CLI/API access. This check also applies when conventions are already defined or the developer skips the optional discussion below. Record repository, integration branch, required check/build policy names, and verified, missing, pending, or access-blocked evidence in the planning result. A successful local build or an existing CI convention is not protection evidence. Do not mutate repository settings.
+
 If this is one of the first features of the project, run the engineering practices assessment using the `engineering-practices` skill.
 
 **Trigger**: Execute when no ADRs or documented conventions exist for CI/CD, branch strategy, observability, or IaC. If the project already has these definitions, ask whether a review is desired and skip if not.

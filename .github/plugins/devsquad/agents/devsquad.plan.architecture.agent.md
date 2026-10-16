@@ -41,7 +41,7 @@ Flag conflicts that must be resolved before proceeding.
 
 ### 3. Engineering Practices Assessment
 
-If this is one of the first features of the project (no ADRs or conventions for CI/CD, branch strategy, observability, IaC), identify that an engineering practices discussion is needed.
+If this is one of the first features of the project (no ADRs or conventions for CI/CD, branch strategy, observability, IaC), identify that an engineering practices discussion is needed. Independently report any detected CI/CD configuration to the coordinator, even when conventions are already defined, so it runs the read-only Pipeline Protection Check. This worker does not have repository-policy query tools, so do not claim protection is verified from configuration alone.
 
 ### 4. Azure Architecture Validation (if applicable)
 
@@ -68,6 +68,7 @@ ADR Conflicts:
 Engineering Practices:
 - Status: [Assessment needed | Already defined]
 - Missing: [list of practices without ADR or convention]
+- Pipeline protection handoff: [detected CI/CD files and integration branch for coordinator verification | no pipeline detected]
 
 Azure Validation: [if applicable]
 - Architecture: [validated/not applicable]
