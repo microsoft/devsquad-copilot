@@ -8,7 +8,7 @@ banner:
 
 import { Aside, Badge } from '@astrojs/starlight/components';
 
-These four skills support backlog setup, estimation, work item creation, and workflow checks before implementation starts.
+These four skills support backlog setup, estimation, work item creation, readiness checks, and durable implementation status.
 
 ## board-config <Badge text="devsquad, kickoff, decompose, implement" variant="tip" />
 
@@ -75,12 +75,14 @@ Checks implementation readiness for an existing work item. The skill confirms as
 | Dependencies | Verifies predecessor work is complete |
 | Priority | Confirms ordering against competing work |
 | Capacity | Checks whether the team can absorb the work now |
+| Completion | Persists and reads back verification evidence or local task checkboxes before another task starts |
+| Resume | Checks existing evidence and linked PRs to avoid implementing verified work again |
 
 <Aside>
-  This skill applies to existing board items. It does not create new work items.
+  This skill does not create new work items. Board readiness checks apply to existing items, and the Completion Checkpoint also supports local-only task lists.
 </Aside>
 
-**Activation triggers:** Start of implementation, dependency review, work item readiness check.
+**Activation triggers:** Start of implementation, dependency review, work item readiness checks, verified task completion, and resuming implementation. Completion evidence is required even when a commit or PR is deferred.
 
 ---
 

@@ -338,9 +338,11 @@ Epic: [Product Name]
 
 **Important**: Do not skip step 3. Features must appear as sub-issues of the epic, not as independent issues. Follow `work-item-creation` label/tag readback verification for each created item before creating its dependents or reporting success. On failure, report the existing IDs and missing values rather than continuing with unlabeled items.
 
-### 9. Save Cache
+### 9. Save Temporary Cache
 
-`docs/envisioning/structure.md`:
+Keep the board as the durable record. If a cache is useful, write `.memory/structure.md` only after confirming `.memory/` is ignored by Git. Otherwise keep the summary in the session and report the missing ignore rule. Never create or stage `docs/envisioning/structure.md` as an agent cache, and do not delete an existing user-authored file as cleanup.
+
+`.memory/structure.md` (optional, ignored):
 
 ```markdown
 # Structure (Cache)
@@ -369,4 +371,4 @@ Epic: [Product Name]
 
 ## Handoff Envelope
 
-When handing off to another agent (`devsquad.specify`, `devsquad.plan`), include Handoff Envelope per skill `reasoning`, including: docs/envisioning/structure.md, README.md, feature dependency assumptions, and pending prioritization.
+When handing off to another agent (`devsquad.specify`, `devsquad.plan`), include Handoff Envelope per skill `reasoning`, including: verified board item URLs, README.md, feature dependency assumptions, and pending prioritization. Include `.memory/structure.md` only when that optional cache exists. Never make the next phase depend on a temporary cache.
