@@ -87,6 +87,7 @@ When editing or creating markdown documents:
 - No contrastive framing ("not just X, it's Y", "goes beyond", "more than just"). Describe directly.
 - No rhetorical questions followed by obvious answers. State the assertion directly.
 - Prefer lists and tables over long paragraphs.
+- Prefer plain, widely understood vocabulary for non-native English speakers. Follow the `documentation-style` skill for examples and exceptions that preserve technical precision.
 - Prefer descriptive names and links over invented identifiers. Follow the `documentation-style` skill for exceptions required by artifact-specific rules and for preserving existing references.
 
 ---
