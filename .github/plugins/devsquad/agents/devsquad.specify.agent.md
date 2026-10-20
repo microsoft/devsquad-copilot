@@ -34,6 +34,7 @@ Without `[CONDUCTOR]` → normal interactive flow.
 ## Style Guide
 
 - Skill `documentation-style` (text formatting)
+- Skill `diagram-design` (focused diagrams that clarify behavior or conceptual relationships without prescribing implementation)
 - Skill `reasoning` (reasoning log and handoff envelope)
 - Skill `work-item-creation` (if creating feature on the board)
 - Skill `domain-glossary` (validate spec terms against glossary, if glossary exists)
@@ -196,6 +197,7 @@ Given this feature description, do the following:
          No limit on DEFERRED markers. Unlike NEEDS CLARIFICATION, DEFERRED items do not block sprint readiness.
     4. Fill in User Scenarios and Tests section
        If no clear user flow: ERROR "Unable to determine user scenarios"
+       When flows, state changes, conceptual entity relationships, or system boundaries are easier to understand visually, consult `diagram-design` and add a focused diagram beside the relevant section. Prefer Mermaid for simple diagrams and apply the platform rendering rules. Keep the diagram at the business level without technology choices or internal implementation details. Omit it when prose or a small table is clearer.
     5. Generate Functional Requirements
        Each requirement must be testable
        Use reasonable defaults for unspecified details (document assumptions in the Assumptions section)

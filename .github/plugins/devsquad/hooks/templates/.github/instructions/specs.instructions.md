@@ -8,6 +8,7 @@ When editing feature specs, follow these rules:
 
 - Focus on **WHAT** users need and **WHY**, never on HOW to implement.
 - Written for business stakeholders, not developers.
+- When a visual clarifies a user flow, state transition, conceptual data relationship, or system boundary, consult `diagram-design` and include a focused diagram near the relevant text. Prefer Mermaid for simple diagrams. Keep business specs technology-independent, omit diagrams that add no clarity, and use the platform-appropriate rendering format.
 - Every user story must be prioritized (P1, P2, P3) and independently testable.
 - The spec must describe a vertical slice (tracer bullet) that (1) has at least one conformance case that runs end-to-end, not a unit-level check; (2) can be demoed, called, or observed by someone outside the implementing team without referring to a future spec; (3) touches every layer the feature requires (data, logic, and surface). Each slice cuts through all integration layers, not a horizontal slice of one layer. Sizing is handled by `complexity-analysis` during decomposition, not in the spec — if a slice is too large to estimate, decomposition will flag it.
 - Every functional requirement must be testable and unambiguous. Vague terms like "fast", "easy", "intuitive" must be quantified.
