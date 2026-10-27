@@ -25,6 +25,7 @@ See `CONTRIBUTING.md` for full conventions.
 
 ### Changed
 
+- GitHub Actions now use full-length commit SHAs with release-version comments. Weekly grouped Dependabot updates for Actions use a seven-day cooldown for routine version updates.
 - Work item creation and decomposition now explicitly exclude invented sequential task and story identifiers from generated GitHub and Azure DevOps titles. The task quality rubric checks this convention while preserving feature prefixes, domain numbers, native board IDs, hierarchy, and dependency links. Existing work items are not renamed automatically.
 - The `test-discipline` skill now explicitly covers tautological assertions, independent behavioral oracles, and behavior-preserving refactoring. Implementation and review workers and the code quality rubric reinforce these checks. Reuse existing behavioral tests and add tests only for concrete coverage gaps, without requiring mutation-testing tooling or banning legitimate test helpers and computed expectations.
 
