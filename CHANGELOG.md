@@ -23,6 +23,10 @@ See `CONTRIBUTING.md` for full conventions.
 - Documentation style instructions and the `documentation-style` skill now explicitly forbid introducing the em-dash character (Unicode U+2014) in newly written or rewritten Markdown and discourage semicolons in prose. Recast sentences for natural flow while preserving their meaning, without mechanically replacing punctuation with abrupt sentence breaks. Semicolons required by code, technical syntax, or verbatim quotations remain allowed. Preserve existing text outside the requested scope. Existing documents do not require a cleanup.
 - **Consumer action:** Update the DevSquad plugin for the skill change. Apply the same scoped rules to existing `.github/copilot-instructions.md` and `.github/instructions/documentation-style.instructions.md` files, or preview `sdd-init.sh update-all --dry-run` and review all planned overwrites before applying `sdd-init.sh update-all` to refresh managed files.
 
+### Security
+
+- Vouch workflows now read contributor eligibility through the API at the trusted workflow commit without checking out repository code. Exact, case-insensitive username matching prevents partial-match approvals, and API errors fail visibly without closing PRs. Existing association exemptions and check names are preserved. Maintainer guidance covers the separate JIT-admin event-policy authorization required before December 2, 2026.
+
 ### Changed
 
 - GitHub Actions now use full-length commit SHAs with release-version comments. Weekly grouped Dependabot updates for Actions use a seven-day cooldown for routine version updates.

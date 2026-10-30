@@ -43,6 +43,22 @@ This project uses a **vouch system** to ensure that code contributions come from
 
 PRs from non-vouched contributors are automatically closed with an explanation and a pointer to the Vouch Request discussion template. This is intentional and ensures that contributors have context about the project before submitting code.
 
+### Maintaining the vouch workflows
+
+* Add approved contributors to [`.github/VOUCHED.md`](.github/VOUCHED.md) as one `@username` per line. Matching ignores case and surrounding whitespace but requires the complete username.
+* `OWNER`, `MEMBER`, `COLLABORATOR`, and `CONTRIBUTOR` associations remain exempt. Both workflows read the list through the API at the trusted `pull_request_target` workflow commit (`context.sha`). They never check out or execute PR code. A read failure fails the workflow without closing the PR.
+* Keep the workflow paths, workflow names, and job names (`check` and `close`) stable so existing status-check references continue to work. Keep `contents: read` in both workflows and grant `pull-requests: write` only to the auto-close workflow.
+* Run `node --test .github/tests/vouch-workflows.test.cjs` from the repository root after changing either workflow. The tests require Node.js 20 or later and Ruby with its standard YAML library. They execute the actual inline scripts with controlled GitHub API responses and do not call GitHub or modify PRs.
+
+#### Actions event-policy authorization
+
+GitHub's default event policy will block `pull_request_target` workflows in affected public repositories on **December 2, 2026** unless an applicable policy permits them. Repository-side hardening alone does not grant authorization.
+
+1. Review the [security guidance for `pull_request_target`](https://docs.github.com/en/actions/reference/security/securely-using-pull_request_target). Run CodeQL Actions analysis covering privileged and non-privileged untrusted checkouts and checkout time-of-check/time-of-use (TOCTOU) risks, and confirm zero violations for those checks. Alternatively, obtain a review from the security team. An AI review does not replace that approval.
+2. Ask an administrator with JIT-enabled repository admin access to configure a narrowly targeted event policy for `.github/workflows/auto-close-pr.yml` and `.github/workflows/block-pr.yml`. Verify organization and enterprise policies too because repository policies cannot override stricter parent policies. Follow [GitHub's workflow execution policy guidance](https://docs.github.com/en/actions/how-tos/administer/control-workflow-execution).
+3. Check **Settings > Actions > Policy insights** for blocked and would-be-blocked runs. Validate vouched external contributors, unvouched external contributors, exempt associations, and applicable bot scenarios. Actor restrictions must not prevent the moderation workflows from handling the external PRs they are intended to check.
+4. After authorization and merge, confirm that both workflows still run and report the expected checks. Do not treat a skipped or policy-blocked workflow as a successful vouch check.
+
 ## I Have a Question
 
 Before you ask a question, please search for existing [Issues](https://github.com/microsoft/devsquad-copilot/issues) that might help you. If you have found a suitable issue and still need clarification, you can write your question in that issue.
