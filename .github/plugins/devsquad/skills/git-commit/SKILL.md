@@ -91,11 +91,9 @@ git add docs/features/login/   # commit 3: docs(login)
 
 **Principle: one commit = one coherent logical change.**
 
-If all changes are part of the same logical unit, stage everything:
+Even for a single logical unit, stage explicit reviewed paths rather than using `git add -A`. Before staging, exclude agent-generated `structure.md` caches, ignored `.memory/` drafts, and board-mode `tasks.md` files. Local-only task lists remain durable artifacts and their verified checkbox updates belong in the task commit.
 
-```bash
-git add -A
-```
+If an agent-generated cache is already staged, remove only that cache from the index without deleting its working copy. Do not unstage user changes or remove existing authored files automatically. If a legacy tracked task list needs migration to the board, require an approved scope and verified board transfer before staging its removal.
 
 ### 3. Pre-Commit Checks
 

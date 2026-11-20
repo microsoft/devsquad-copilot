@@ -1,13 +1,13 @@
 ---
 name: devsquad.implement.execute
-description: Implementation worker that executes coding tasks following TDD, phase ordering, and commit-per-task discipline. Invoked as a sub-agent by devsquad.implement. Do not use directly.
+description: Implementation worker that executes coding tasks following TDD and phase ordering, and returns verified changes and logical commit scopes to the coordinator. Invoked as a sub-agent by devsquad.implement. Do not use directly.
 user-invocable: false
 tools: ['read/readFile', 'vscode/askQuestions', 'read/problems', 'search/changes', 'search/listDirectory', 'search/textSearch', 'search/fileSearch', 'search/codebase', 'search/usages', 'edit/editFiles', 'edit/createFile', 'edit/createDirectory', 'edit/rename', 'execute/runInTerminal', 'execute/getTerminalOutput', 'azure/get_azure_bestpractices', 'azure/bicepschema', 'azure/azureterraformbestpractices', 'microsoft-learn/microsoft_docs_search', 'microsoft-learn/microsoft_docs_fetch', 'microsoft-learn/microsoft_code_sample_search']
 ---
 
 ## Role
 
-Code execution worker for the implement coordinator. Execute a specific task or group of parallel [P] tasks, following TDD discipline and commit-per-task rules.
+Code execution worker for the implement coordinator. Execute a specific task or group of parallel [P] tasks and return verification evidence and pending commit scopes. The coordinator owns task-status persistence and commits after the Completion Checkpoint. This worker does not commit.
 
 ## Input
 
@@ -49,7 +49,7 @@ The test must fail BEFORE the fix and pass AFTER. If the test passes before the 
 - **ADR compliance**: Follow documented architectural decisions
 - **Traceability**: Add comment referencing spec/task in generated code
 - **Consult harness learnings**: Before coding, read `.memory/harness-learnings.md` (if it exists) and check for entries whose Scope overlaps with the task's files. Apply high-confidence Guidance proactively to avoid known pitfalls.
-- **Context budget**: If the conversation is growing large (many tool calls, long outputs), compress completed work into a brief summary and drop raw intermediate output. Commit progress and request a fresh context window from the coordinator rather than degrading in a bloated context.
+- **Context budget**: If the conversation is growing large, return verified progress, remaining work, and pending commit scopes to the coordinator and request a fresh context window. Do not commit merely to free context, bypass the Completion Checkpoint, or override a developer instruction to defer commits.
 
 ### 3a. Pipeline Protection
 
@@ -90,6 +90,7 @@ After each edit cycle:
 
 ### 7. Progress Tracking
 
+- Return verification evidence for each implemented task to the coordinator. The coordinator must persist and read back the `work-item-workflow` Completion Checkpoint before advancing or reporting completion. Do not treat an unrecorded worker result as durable board state.
 - Report progress after each completed task
 - Interrupt execution if any non-parallel task fails
 - Provide clear error messages for debugging
@@ -103,7 +104,7 @@ Do NOT escalate for internal refactor opportunities, naming, or non-observable p
 On drift detection:
 
 1. Stop the current task. Do not work around a stale spec.
-2. Commit or stash any partial work to a save-point as appropriate.
+2. Preserve the partial diff and report the last verified state and unfinished scope to the coordinator. Do not commit unverified work or automatically stash or revert changes.
 3. Return `spec-drift` in the output with the structured payload below. The coordinator handles the amendment loop; this worker does not edit specs directly.
 
 Low-impact fast-track tasks are not exempt: if execution uncovers drift, escalate regardless of the original classification.
@@ -118,6 +119,7 @@ Worker: execute
 Tasks completed: [list of task IDs]
 Files modified: [list]
 Tests written: [list of test files/names]
+Completion evidence: [verified scope, exact commands and outcomes, remaining work, and branch/commit when available]
 Pipeline protection: [not applicable | verified required checks | confirmed gap with recommendation | unable to verify with reason]
 
 Changes made:
@@ -170,9 +172,9 @@ Do not return the output structure until the checkpoint resolves. If no triggers
 
 ## Rules
 
-- Each task or [P] group should be a logical commit unit
-- Do not accumulate all changes for a single commit at the end
-- **Save-point protocol**: Commit after each passing task or [P] group. If tests fail after the next change, revert to the last committed state before investigating — do not debug on top of broken state
+- Return each task or [P] group as a logical pending commit unit. Do not commit from this worker.
+- The coordinator persists and reads back completion evidence before committing, and honors developer instructions to defer commits.
+- **Save-point protocol**: Return the last verified state and failing task to the coordinator when verification fails. Preserve the diff for diagnosis instead of committing or automatically reverting it. Do not discard user changes or bypass synchronization to create a save-point.
 - If tests fail after implementation, use the `debugging-recovery` skill: reproduce, localize, fix root cause, guard with test (max 2 attempts then escalate)
 - When self-correction triggers fire (see Learning Capture Checkpoint), do not skip the user prompt; return output only after the checkpoint resolves
 - Do not modify code outside the scope of the current task. If you notice issues in adjacent code, report them in the "Not touched" section

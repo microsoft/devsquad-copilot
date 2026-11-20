@@ -48,8 +48,8 @@ Check existing artifacts to suggest the appropriate phase:
 | No structure on the board | `devsquad.kickoff` |
 | No specs in `docs/features/` | `devsquad.specify` |
 | Specs without `plan.md` | `devsquad.plan` |
-| Plan without `tasks.md` | `devsquad.decompose` |
-| Tasks ready | `devsquad.implement` |
+| Plan without board tasks or a local-only `tasks.md` | `devsquad.decompose` |
+| Board tasks or local-only tasks ready | `devsquad.implement` |
 
 ---
 
