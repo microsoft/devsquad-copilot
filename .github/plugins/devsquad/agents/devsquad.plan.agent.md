@@ -139,7 +139,7 @@ Triggered when the user mentions "refactor", "restructure", "reorganize", or sel
 
 8. **Save**: `docs/features/<feature>/refactor-plan.md`
 
-9. **Optionally create a work item**: offer to file the refactor plan as a GitHub issue or Azure DevOps work item using the `work-item-creation` skill.
+9. **Optionally hand off work item creation**: With developer confirmation, pass the refactor plan to `devsquad.decompose` for GitHub or Azure DevOps creation using `work-item-creation`, including required label/tag readback verification. This agent does not write to the board.
 
 ## Proactive Behavior
 
@@ -289,7 +289,7 @@ Use the `adr-workflow` skill for the complete ADR creation flow: duplicate check
 
 Before proceeding to the zoom in, present a summary: ADRs created/updated, existing ADRs that will be followed, confirmed decisions. Ask `[Y/N]` to proceed.
 
-If technical debt is identified during the analysis, ask whether the user wants to create work items on the board (`work-item-creation` skill, Tech Debt section).
+If technical debt is identified, ask whether to hand the proposed items to `devsquad.decompose` for board creation using `work-item-creation`, including required labels/tags and readback verification. Do not create items directly from this read-only planning agent.
 
 **WAIT** for confirmation before proceeding.
 
