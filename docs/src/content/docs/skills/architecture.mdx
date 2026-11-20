@@ -50,7 +50,7 @@ Explores engineering decisions for delivery and operations. The skill uses proje
 **Core responsibilities:**
 | Topic | Detail |
 |------|--------|
-| Delivery workflow | CI/CD structure, release flow, branch strategy |
+| Delivery workflow | CI/CD structure, release flow, branch strategy, and read-only required-check verification when pipelines are created or detected |
 | Operations | Observability, reliability, ownership, incident handling |
 | Infrastructure | IaC approach, environment model, deployment controls |
 | Decision scope | Distinguishes ADRs from team conventions |
@@ -59,7 +59,9 @@ Explores engineering decisions for delivery and operations. The skill uses proje
   This skill is advisory. It guides questions and trade-offs based on project context instead of applying a fixed solution.
 </Aside>
 
-**Activation triggers:** Initial planning, engineering practice selection, platform and process design.
+Pipeline verification checks the integration branch on the repository platform, including effective GitHub rulesets or Azure DevOps blocking build-validation policies. It reports missing protection separately from access errors and recommends changes without applying settings automatically.
+
+**Activation triggers:** Initial planning, engineering practice selection, platform and process design, pipeline creation or changes, and detection of an existing pipeline.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: engineering-practices
-description: Socratic guide for engineering practice decisions (DevOps, SRE, CI/CD, branch strategy, observability, IaC). Guides the agent to ask questions based on project context, rather than prescribing solutions. Use during planning of initial features. Do not use for application architecture decisions (use devsquad.plan) or for pipeline/infra creation (use devsquad.implement).
+description: Socratic guide for engineering practice decisions (DevOps, SRE, CI/CD, branch strategy, observability, IaC). Guides the agent to ask questions based on project context, rather than prescribing solutions. Use during planning of initial features and when CI/CD pipelines are created, changed, or detected to verify integration-branch protection. Do not use for application architecture decisions (use devsquad.plan) or for creating pipelines or infrastructure themselves (use devsquad.implement).
 ---
 
 ## Purpose
@@ -26,6 +26,17 @@ Does it already exist or does it need to be created?
 ```
 
 Do not suggest baseline as a decision. If everything is covered, confirm and move on.
+
+## Pipeline Protection Check
+
+Run this read-only check when a CI/CD pipeline is created, changed, or detected during a session, including in a small or otherwise fully configured project. Inspect repository protection on the code-hosting platform, which may differ from the work-item platform. This check does not select a new CI platform or branching strategy.
+
+1. Resolve the integration branch from `.memory/git-config.md`, then the repository default branch. Confirm the exact repository and target branch before querying protection. If either is unknown, report verification as blocked rather than guessing.
+2. Identify the CI checks that must pass before merging. Use actual check/job names from pipeline configuration and observed PR runs, including the app identity when available. A workflow filename or successful local build does not establish a required merge check. If names cannot yet be confirmed because the pipeline has not run, report verification as pending.
+3. On GitHub, inspect both classic branch protection and effective active rulesets for the target branch using available read-only tools or authenticated GitHub CLI/API. For example, inspect `GET /repos/{owner}/{repo}/branches/{branch}/protection` and `GET /repos/{owner}/{repo}/rules/branches/{branch}`. Account for branch matching, enforcement, and applicable bypass permissions. Existing protection is insufficient unless the relevant checks are required before merge.
+4. On Azure DevOps, inspect the repository's branch policies for the exact integration branch and confirm the relevant build-validation policy is enabled and blocking. Do not treat an optional, disabled, or differently scoped build policy as protection. Use available read-only tools or an already configured Azure DevOps CLI/API.
+5. Report one of: verified required checks, confirmed missing or incomplete protection, or unable to verify. Include repository, branch, check names, and evidence. Permission errors, authentication failures, unsupported APIs, and ambiguous 404 responses are not proof of missing protection. If access is insufficient, report the error and provide the manual inspection path.
+6. When protection is confirmed missing or incomplete, recommend the specific required-check or blocking build-validation policy and ask for approval before any settings change. Never apply branch protection, alter bypass permissions, or weaken existing rules automatically. In autonomous mode, record the recommendation for the developer instead of applying it without approval.
 
 ## Input
 
